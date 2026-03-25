@@ -228,8 +228,11 @@ function single_post_share($url, $title, $img_url)
     $output = '';
     //get current page url
     $encoded_url = urlencode($url);
+    $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
     //get current page title
     $post_title = str_replace(' ', '%20', $title);
+    $copy_link_label = htmlspecialchars(__('Copy link'), ENT_QUOTES, 'UTF-8');
+    $copy_link_prompt = addslashes(__('Copy this link:'));
 
     //all social share link generate
     $facebook_share_link = 'https://www.facebook.com/sharer/sharer.php?u=' . $encoded_url; //have to change this url
@@ -243,6 +246,7 @@ function single_post_share($url, $title, $img_url)
     $output .= '<li class="list-item"><a class="pintarest-bg" href="' . $pinterest_share_link . '"><i class="lab la-pinterest-p"></i></a></li>';
     $output .= '<li class="list-item"><a class="youtube-bg" href="' . $youtube_share_link . '"><i class="lab la-youtube"></i></a></li>';
     $output .= '<li class="list-item"><a class="instagram-bg" href="' . $instagram_share_link . '"><i class="lab la-instagram"></i></a></li>';
+    $output .= '<li class="list-item"><a class="copylink-bg" href="' . $escaped_url . '" title="' . $copy_link_label . '" aria-label="' . $copy_link_label . '" onclick="event.preventDefault();var link=this.getAttribute(\'href\');if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(link);}else{window.prompt(\'' . $copy_link_prompt . '\', link);}"><i class="las la-link"></i></a></li>';
 
     return $output;
 }
