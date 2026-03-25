@@ -35,14 +35,20 @@
         "stevebauman/location": "^7.3.2",
         "twilio/sdk": "^7.4",
         "xgenious/installer": "^2.3.0",
-        "xgenious/paymentgateway": "^6.2.0",
+        "xgenious/paymentgateway": "6.2.0",
         "xgenious/xgapiclient": "^6.1.1",
         "yajra/laravel-datatables-oracle": "^12.0"
     },
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/Sharifur/paymentgateway.git"
+            "type": "path",
+            "url": "packages/xgenious/paymentgateway",
+            "options": {
+                "symlink": false,
+                "versions": {
+                    "xgenious/paymentgateway": "6.2.0"
+                }
+            }
         }
     ],
     "require-dev": {
