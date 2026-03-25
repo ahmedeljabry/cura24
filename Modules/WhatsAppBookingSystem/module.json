@@ -1,0 +1,13 @@
+{
+    "name": "WhatsAppBookingSystem",
+    "alias": "whatsappbookingsystem",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\WhatsAppBookingSystem\\Providers\\WhatsAppBookingSystemServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

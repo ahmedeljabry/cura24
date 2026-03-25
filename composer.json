@@ -1,0 +1,102 @@
+{
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The Laravel Framework.",
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.3.6",
+        "ext-fileinfo": "*",
+        "barryvdh/laravel-dompdf": "^v3.0.0",
+        "brian2694/laravel-toastr": "^5.56",
+        "doctrine/dbal": "3.6.4",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/psr7": "^2.5",
+        "intervention/image": "^2.5",
+        "kkomelin/laravel-translatable-string-exporter": "^1.11",
+        "kreait/laravel-firebase": "^6.1",
+        "laravel/framework": "^12.0",
+        "laravel/reverb": "^1.5",
+        "laravel/sanctum": "^4.0",
+        "laravel/socialite": "^5.2",
+        "laravel/tinker": "^2.0",
+        "livewire/livewire": "^3.4",
+        "matanyadaev/laravel-eloquent-spatial": "^4.2.1",
+        "mews/purifier": "^3.3",
+        "nwidart/laravel-modules": "^8.3",
+        "php-http/message": "^1.16",
+        "php-http/message-factory": "^1.1",
+        "pusher/pusher-php-server": "^7.0.6",
+        "spatie/laravel-permission": "^6.0",
+        "spatie/laravel-sitemap": "^7.0",
+        "stevebauman/location": "^7.3.2",
+        "twilio/sdk": "^7.4",
+        "xgenious/installer": "^2.3.0",
+        "xgenious/paymentgateway": "^6.2.0",
+        "xgenious/xgapiclient": "^6.1.1",
+        "yajra/laravel-datatables-oracle": "^12.0"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Sharifur/paymentgateway.git"
+        }
+    ],
+    "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.15",
+        "laravel/ui": "^4.0",
+        "mockery/mockery": "^1.0",
+        "nunomaduro/collision": "^8.1",
+        "phpunit/phpunit": "^11.0",
+        "spatie/laravel-ignition": "^2.9.1"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "autoload": {
+        "files": [
+            "app/Helpers/helpers.php",
+            "app/Helpers/DateHelper.php"
+        ],
+        "psr-4": {
+            "App\\": "app/",
+            "Modules\\": "Modules/"
+        },
+        "classmap": [
+            "database/seeds",
+            "database/factories"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ]
+    }
+}

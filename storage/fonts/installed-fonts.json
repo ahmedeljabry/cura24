@@ -1,0 +1,20 @@
+{
+    "baloo tamma 2": {
+        "normal": "baloo-tamma-2-normal_4cd4eeec6e63ec089c0ed2de9ee8d8aa",
+        "600": "baloo-tamma-2-600_65d1c5f601c8871fed00480644517a21",
+        "bold": "baloo-tamma-2-bold_e0fa23073c4121e1d67fc81db18a62fe"
+    },
+    "open sans": {
+        "normal": "open-sans-normal_98b4af7c31a8844ad845b521b340abe8",
+        "600": "open-sans-600_1304de969dbde73ce5495fbae1504843",
+        "bold": "open-sans-bold_f5836ebbb5d80c7cd133581c8d7f6236"
+    },
+    "roboto": {
+        "300_italic": "roboto_300_italic_3d719d848a0b6b3f4f0918985ffd2db7",
+        "300": "roboto_300_32acfcb296f555e063ebba2be7db9e2f",
+        "normal": "roboto_normal_7bc701b343c10631f60048716b96e4f7",
+        "500": "roboto_500_5774d6fb05eba3d096525f821dbe4137",
+        "bold": "roboto_bold_8db5cb5d0586c1e891426d13097b1d04",
+        "900": "roboto_900_7bf41cacaff90e7097ddd49fb9296601"
+    }
+}

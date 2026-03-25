@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["6724UL2KM7.com.cura.cura24h"],
+        "components": [
+          { "/": "/service-list/*" },
+          { "/": "/job/*" }
+        ]
+      }
+    ]
+  }
+}

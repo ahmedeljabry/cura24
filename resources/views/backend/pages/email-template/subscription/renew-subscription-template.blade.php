@@ -1,0 +1,106 @@
+@extends('backend.admin-master')
+@section('site-title')
+    {{__('Renew Subscription Template')}}
+@endsection
+@section('style')
+    <x-media.css/>
+    <link rel="stylesheet" href="{{asset('assets/backend/css/jodit.fat.min.css')}}">
+@endsection
+@section('content')
+    <div class="col-lg-12 col-ml-12 padding-bottom-30">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="margin-top-40"></div>
+                <x-msg.success/>
+                <x-msg.error/>
+            </div>
+            <div class="col-lg-12 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="header-wrapp d-flex justify-content-between">
+                            <h4 class="header-title">{{__('Renew Subscription Template')}}</h4>
+                            <a class="btn btn-info" href="{{route('admin.email.template.all')}}">{{__('All Email Templates')}}</a>
+                        </div>
+                        <form action="{{route('admin.subscription.renew.email')}}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="tab-content margin-top-30">
+                                <div class="form-group">
+                                    <label for="renew_subscription_email_subject">{{__('Email Subject')}}</label>
+                                    <input type="text" name="renew_subscription_email_subject"  class="form-control" value="{{ get_static_option('renew_subscription_email_subject') ?? __('Renew Subscription') }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="renew_subscription_seller_message">{{ __('Email Message For Seller') }}</label>
+                                    <textarea id="renew-subscription-seller-message-editor" class="form-control" name="renew_subscription_seller_message">{!! get_static_option('renew_subscription_seller_message') ?? '' !!}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="renew_subscription_admin_message">{{ __('Email Message For Admin') }}</label>
+                                    <textarea id="renew-subscription-admin-message-editor" class="form-control" name="renew_subscription_admin_message">{!! get_static_option('renew_subscription_admin_message') ?? '' !!}</textarea>
+                                </div>
+                                <small class="form-text text-muted text-danger margin-top-20"><code>@type</code> {{__('will be replaced by dynamically with subscription type.')}}</small>
+                                <small class="form-text text-muted text-danger"><code>@price</code> {{__('will be replaced by dynamically with subscription price.')}}</small>
+                                <small class="form-text text-muted text-danger"><code>@connect</code> {{__('will be replaced by dynamically with subscription connect.')}}</small>
+                                <small class="form-text text-muted text-danger"><code>@service</code> {{__('will be replaced by dynamically with subscription service.')}}</small>
+                                <small class="form-text text-muted text-danger"><code>@job</code> {{__('will be replaced by dynamically with subscription job.')}}</small>
+                                <small class="form-text text-muted text-danger"><code>@seller_name</code> {{__('will be replaced by dynamically with seller name.')}}</small>
+                                <small class="form-text text-muted text-danger"><code>@seller_email</code> {{__('will be replaced by dynamically with seller email.')}}</small>
+
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">{{__('Update')}}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('script')
+    <x-media.js />
+    <script src="{{asset('assets/backend/js/jodit.fat.min.js')}}"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize Jodit for renew subscription seller message editor
+            let renewSubscriptionSellerMessageJodit = null;
+            if ($('#renew-subscription-seller-message-editor').length && !$('#renew-subscription-seller-message-editor').hasClass('jodit-initialized')) {
+                $('#renew-subscription-seller-message-editor').addClass('jodit-initialized');
+                renewSubscriptionSellerMessageJodit = Jodit.make('#renew-subscription-seller-message-editor', {
+                    height: 300,
+                    placeholder: '{{ __("Type Renew Subscription Message For Seller") }}',
+                    buttons: [
+                        'bold', 'italic', 'underline', '|',
+                        'ul', 'ol', '|',
+                        'outdent', 'indent', '|',
+                        'font', 'fontsize', 'brush', 'paragraph', '|',
+                        'align', 'undo', 'redo', '|',
+                        'link', 'image', 'video', 'table', '|',
+                        'hr', 'eraser', 'fullsize'
+                    ],
+                    uploader: {
+                        insertImageAsBase64URI: true
+                    }
+                });
+            }
+
+            // Initialize Jodit for renew subscription admin message editor
+            let renewSubscriptionAdminMessageJodit = null;
+            if ($('#renew-subscription-admin-message-editor').length && !$('#renew-subscription-admin-message-editor').hasClass('jodit-initialized')) {
+                $('#renew-subscription-admin-message-editor').addClass('jodit-initialized');
+                renewSubscriptionAdminMessageJodit = Jodit.make('#renew-subscription-admin-message-editor', {
+                    height: 300,
+                    placeholder: '{{ __("Type Renew Subscription Message For Admin") }}',
+                    buttons: [
+                        'bold', 'italic', 'underline', '|',
+                        'ul', 'ol', '|',
+                        'outdent', 'indent', '|',
+                        'font', 'fontsize', 'brush', 'paragraph', '|',
+                        'align', 'undo', 'redo', '|',
+                        'link', 'image', 'video', 'table', '|',
+                        'hr', 'eraser', 'fullsize'
+                    ],
+                    uploader: {
+                        insertImageAsBase64URI: true
+                    }
+                });
+            }
+        });
+    </script>
+@endsection

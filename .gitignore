@@ -1,0 +1,47 @@
+# Created by https://www.toptal.com/developers/gitignore/api/laravel
+# Edit at https://www.toptal.com/developers/gitignore?templates=laravel
+
+### Laravel ###
+# Laravel 4 specific
+bootstrap/compiled.php
+app/storage/
+
+# Laravel 5 & Lumen specific
+public/storage
+public/hot
+
+# Laravel 5 & Lumen specific with changed public path
+public_html/storage
+public_html/hot
+
+bootstrap/cache
+
+# Environment and dependencies
+.env
+.env.backup
+.env.production
+.DS_Store
+/vendor/
+/node_modules/
+/storage/app/update-file/
+/storage/app/firebase/*.json
+/storage/app/database.sql
+/storage/app/attempt*.txt
+
+# Laravel generated files
+/.phpunit.result.cache
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/logs/*
+
+# Keep framework folders while ignoring generated contents
+!/storage/framework/cache/.gitignore
+!/storage/framework/sessions/.gitignore
+!/storage/framework/testing/.gitignore
+!/storage/framework/views/.gitignore
+!/storage/logs/.gitignore
+!/storage/app/firebase/.gitignore
+
+# End of https://www.toptal.com/developers/gitignore/api/laravel
