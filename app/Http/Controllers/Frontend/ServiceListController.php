@@ -1969,6 +1969,11 @@ class ServiceListController extends Controller
     public function subCategoryServices($slug = null)
     {
         $subcategory = Subcategory::select('id','name', 'slug', 'description')->where('slug',$slug)->first();
+
+        if (is_null($subcategory)) {
+            return view('frontend.pages.404');
+        }
+
         // get child category
         $child_category_under_category = ChildCategory::where('sub_category_id',$subcategory->id)->orderBy('name','asc')->take(20)->get()->transform(function($item) {
             $item->total_service = Service::where('child_category_id',$item->id)->count();

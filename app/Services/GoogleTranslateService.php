@@ -14,6 +14,7 @@ class GoogleTranslateService
     private const OAUTH_SCOPE = 'https://www.googleapis.com/auth/cloud-translation';
 
     private ?Client $client = null;
+    private ?Client $basicClient = null;
 
     public function translatePayload(array $data, array $paths): array
     {
@@ -54,7 +55,7 @@ class GoogleTranslateService
     public function isEnabled(): bool
     {
         return (bool) config('services.google_translate.enabled')
-            && filled(config('services.google_translate.project_id'));
+            && ($this->usesApiKey() || filled(config('services.google_translate.project_id')));
     }
 
     protected function translateMap(array $values, string $mimeType): array
@@ -87,6 +88,10 @@ class GoogleTranslateService
 
     protected function requestTranslations(array $contents, string $mimeType): array
     {
+        if ($this->usesApiKey()) {
+            return $this->requestBasicTranslations($contents, $mimeType);
+        }
+
         $response = $this->client()->post($this->endpoint(), [
             'json' => [
                 'contents' => $contents,
@@ -98,6 +103,29 @@ class GoogleTranslateService
         $payload = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
 
         return $payload['translations'] ?? [];
+    }
+
+    protected function requestBasicTranslations(array $contents, string $mimeType): array
+    {
+        $response = $this->basicClient()->post('language/translate/v2', [
+            'query' => [
+                'key' => config('services.google_translate.api_key'),
+            ],
+            'json' => [
+                'q' => $contents,
+                'target' => config('services.google_translate.target_language', 'it'),
+                'format' => $mimeType === 'text/html' ? 'html' : 'text',
+            ],
+        ]);
+
+        $payload = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+
+        return array_map(function (array $translation): array {
+            return [
+                'translatedText' => $translation['translatedText'] ?? null,
+                'detectedLanguageCode' => $translation['detectedSourceLanguage'] ?? null,
+            ];
+        }, $payload['data']['translations'] ?? []);
     }
 
     protected function client(): Client
@@ -119,6 +147,19 @@ class GoogleTranslateService
             'handler' => $stack,
             'base_uri' => 'https://translate.googleapis.com',
             'auth' => 'google_auth',
+            'timeout' => (float) config('services.google_translate.timeout', 10),
+            'http_errors' => true,
+        ]);
+    }
+
+    protected function basicClient(): Client
+    {
+        if ($this->basicClient !== null) {
+            return $this->basicClient;
+        }
+
+        return $this->basicClient = new Client([
+            'base_uri' => 'https://translation.googleapis.com/',
             'timeout' => (float) config('services.google_translate.timeout', 10),
             'http_errors' => true,
         ]);
@@ -197,5 +238,10 @@ class GoogleTranslateService
         $targetLanguage = Str::lower((string) config('services.google_translate.target_language', 'it'));
 
         return $languageCode !== '' && Str::startsWith($languageCode, $targetLanguage);
+    }
+
+    protected function usesApiKey(): bool
+    {
+        return filled(config('services.google_translate.api_key'));
     }
 }

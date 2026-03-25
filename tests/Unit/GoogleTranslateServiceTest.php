@@ -123,4 +123,34 @@ class GoogleTranslateServiceTest extends TestCase
         $this->assertSame('Servizio di base', $translated['include_service_inputs'][0]['include_service_title']);
         $this->assertSame('Servizio premium', $translated['include_service_inputs'][1]['include_service_title']);
     }
+
+    public function test_it_supports_api_key_authentication_without_project_id(): void
+    {
+        config([
+            'services.google_translate.enabled' => true,
+            'services.google_translate.project_id' => null,
+            'services.google_translate.api_key' => 'demo-api-key',
+            'services.google_translate.target_language' => 'it',
+        ]);
+
+        $service = new class extends GoogleTranslateService {
+            protected function requestTranslations(array $contents, string $mimeType): array
+            {
+                return [
+                    [
+                        'translatedText' => 'Ciao',
+                        'detectedLanguageCode' => 'en',
+                    ],
+                ];
+            }
+        };
+
+        $translated = $service->translatePayload([
+            'title' => 'Hello',
+        ], [
+            'title' => 'text',
+        ]);
+
+        $this->assertSame('Ciao', $translated['title']);
+    }
 }

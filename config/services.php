@@ -50,6 +50,7 @@ return [
     ],
     'google_translate' => [
         'enabled' => env('GOOGLE_TRANSLATE_ENABLED', false),
+        'api_key' => env('GOOGLE_TRANSLATE_API_KEY'),
         'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
         'location' => env('GOOGLE_TRANSLATE_LOCATION', 'global'),
         'target_language' => env('GOOGLE_TRANSLATE_TARGET_LANGUAGE', 'it'),
