@@ -165,6 +165,15 @@
                                 @endif
                             </ul>
 
+                            <div class="details-tag-area padding-top-10">
+                                <div class="social-share">
+                                    <h4 class="share-tiitle">{{ __('Share:') }}</h4>
+                                    <ul>
+                                        {!! single_post_share(route('service.list.details',$service_details->slug),$service_details->title,get_attachment_image_by_id($service_details->image)['img_url'] ?? '') !!}
+                                    </ul>
+                                </div>
+                            </div>
+
                             <ul class="details-tabs tabs margin-top-55">
                                 <li data-tab="tab1" class="list active">
                                     {{ get_static_option('service_details_overview_title') ?? __('Overview') }}
