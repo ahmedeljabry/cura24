@@ -25,6 +25,11 @@
                                 <h4 class="header-title">{{__('Add New Service')}}   </h4>
                             </div>
                         </div>
+                        @if(config('services.google_translate.enabled') && (filled(config('services.google_translate.api_key')) || filled(config('services.google_translate.project_id'))))
+                            <div class="alert alert-info mt-3 mb-0">
+                                {{ __('Google Translate is enabled. Title, description, and meta fields will be translated to Italian when you save this service.') }}
+                            </div>
+                        @endif
                         <form action="{{route('admin.add.service')}}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="single-dashboard-input">

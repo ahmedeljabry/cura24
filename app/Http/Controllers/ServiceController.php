@@ -10,6 +10,7 @@ use App\Mail\BasicMail;
 use App\OnlineServiceFaq;
 use App\Review;
 use App\SellerVerify;
+use App\Services\GoogleTranslateService;
 use App\ServiceCoupon;
 use App\Subcategory;
 use App\Tax;
@@ -22,8 +23,11 @@ use App\Serviceadditional;
 use App\Servicebenifit;
 use App\Service;
 use App\User;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 use App\Helpers\DataTableHelpers\General;
 
@@ -492,7 +496,7 @@ class ServiceController extends Controller
 
     }
 
-    public function add_new_service(Request $request)
+    public function add_new_service(Request $request, GoogleTranslateService $translator)
     {
         if ($request->isMethod('post')) {
             $request->validate([
@@ -503,6 +507,10 @@ class ServiceController extends Controller
                 'seller_id' => 'required',
             ]);
 
+            $translatedData = $this->translateFlatServicePayload($translator, $request->all());
+            $translatedTitle = $translatedData['title'] ?? $request->title;
+            $this->validateTranslatedServiceTitle($translatedTitle);
+
             $seller_country = User::select('id','service_city','country_id','email', 'service_area')->where('id',$request->seller_id)->first();
             $country_tax = Tax::select('tax')->where('country_id',$seller_country->country_id)->first();
 
@@ -510,9 +518,13 @@ class ServiceController extends Controller
             $service->category_id = $request->category;
             $service->subcategory_id = $request->subcategory;
             $service->child_category_id = $request->child_category;
-            $service->title = $request->title;
-            $service->slug = $request->slug;
-            $service->description = $request->description;
+            $service->title = $translatedTitle;
+            $service->slug = $this->resolveServiceSlug(
+                $request->title,
+                $translatedTitle,
+                $request->slug
+            );
+            $service->description = $translatedData['description'] ?? $request->description;
             $service->image = $request->image;
             $service->image_gallery = $request->image_gallery;
             $service->video = $request->video;
@@ -525,16 +537,16 @@ class ServiceController extends Controller
             $service->guard_name = 'admin';
 
             $Metas = [
-                'meta_title'=> purify_html($request->meta_title),
+                'meta_title'=> purify_html($translatedData['meta_title'] ?? $request->meta_title),
                 'meta_tags'=> purify_html($request->meta_tags),
-                'meta_description'=> purify_html($request->meta_description),
+                'meta_description'=> purify_html($translatedData['meta_description'] ?? $request->meta_description),
 
-                'facebook_meta_tags'=> purify_html($request->facebook_meta_tags),
-                'facebook_meta_description'=> purify_html($request->facebook_meta_description),
+                'facebook_meta_tags'=> purify_html($translatedData['facebook_meta_tags'] ?? $request->facebook_meta_tags),
+                'facebook_meta_description'=> purify_html($translatedData['facebook_meta_description'] ?? $request->facebook_meta_description),
                 'facebook_meta_image'=> $request->facebook_meta_image,
 
-                'twitter_meta_tags'=> purify_html($request->twitter_meta_tags),
-                'twitter_meta_description'=> purify_html($request->twitter_meta_description),
+                'twitter_meta_tags'=> purify_html($translatedData['twitter_meta_tags'] ?? $request->twitter_meta_tags),
+                'twitter_meta_description'=> purify_html($translatedData['twitter_meta_description'] ?? $request->twitter_meta_description),
                 'twitter_meta_image'=> $request->twitter_meta_image,
             ];
             $service->save();
@@ -561,15 +573,19 @@ class ServiceController extends Controller
         return view('backend.pages.services.admin-service.add_new_service',compact('categories','sub_categories','sellers'));
     }
 
-    public function edit_service(Request $request, $id)
+    public function edit_service(Request $request, GoogleTranslateService $translator, $id)
     {
         if ($request->isMethod('post')) {
             $request->validate([
                 'category' => 'required',
-                'title' => 'required|max:191|unique:services,id,'.$id,
+                'title' => 'required|max:191|unique:services,title,'.$id,
                 'description' => 'required|min:150',
                 'seller_id' => 'required',
             ]);
+
+            $translatedData = $this->translateFlatServicePayload($translator, $request->all());
+            $translatedTitle = $translatedData['title'] ?? $request->title;
+            $this->validateTranslatedServiceTitle($translatedTitle, (int) $id);
 
             $seller_country = User::select('id','service_city','country_id','email', 'service_area')->where('id',$request->seller_id)->first();
             $country_tax = Tax::select('tax')->where('country_id',$seller_country->country_id)->first();
@@ -581,9 +597,13 @@ class ServiceController extends Controller
                 'category_id' => $request->category,
                 'subcategory_id' => $request->subcategory,
                 'child_category_id' => $request->child_category,
-                'title' => $request->title,
-                'slug' => $request->slug ?? $old_slug->slug,
-                'description' => $request->description,
+                'title' => $translatedTitle,
+                'slug' => $this->resolveServiceSlug(
+                    $request->title,
+                    $translatedTitle,
+                    $request->slug ?? $old_slug->slug
+                ),
+                'description' => $translatedData['description'] ?? $request->description,
                 'seller_id' =>  $request->seller_id,
                 'service_city_id' => $seller_country->service_city,
                 'service_area_id' => $seller_country->service_area,
@@ -595,16 +615,16 @@ class ServiceController extends Controller
 
             $service_meta_update =  Service::findOrFail($id);
             $Metas = [
-                'meta_title'=> purify_html($request->meta_title),
+                'meta_title'=> purify_html($translatedData['meta_title'] ?? $request->meta_title),
                 'meta_tags'=> $request->meta_tags,
-                'meta_description'=> purify_html($request->meta_description),
+                'meta_description'=> purify_html($translatedData['meta_description'] ?? $request->meta_description),
 
-                'facebook_meta_tags'=> purify_html($request->facebook_meta_tags),
-                'facebook_meta_description'=> purify_html($request->facebook_meta_description),
+                'facebook_meta_tags'=> purify_html($translatedData['facebook_meta_tags'] ?? $request->facebook_meta_tags),
+                'facebook_meta_description'=> purify_html($translatedData['facebook_meta_description'] ?? $request->facebook_meta_description),
                 'facebook_meta_image'=> $request->facebook_meta_image,
 
-                'twitter_meta_tags'=> purify_html($request->twitter_meta_tags),
-                'twitter_meta_description'=> purify_html($request->twitter_meta_description),
+                'twitter_meta_tags'=> purify_html($translatedData['twitter_meta_tags'] ?? $request->twitter_meta_tags),
+                'twitter_meta_description'=> purify_html($translatedData['twitter_meta_description'] ?? $request->twitter_meta_description),
                 'twitter_meta_image'=> $request->twitter_meta_image,
             ];
 
@@ -1337,5 +1357,45 @@ class ServiceController extends Controller
             return redirect()->back()->with(FlashMsg::error(__('Not Review Updated')));
         }
 
+    }
+
+    private function translateFlatServicePayload(GoogleTranslateService $translator, array $data): array
+    {
+        return $translator->translatePayload($data, [
+            'title' => 'text',
+            'description' => 'html',
+            'meta_title' => 'text',
+            'meta_description' => 'text',
+            'facebook_meta_tags' => 'text',
+            'facebook_meta_description' => 'text',
+            'twitter_meta_tags' => 'text',
+            'twitter_meta_description' => 'text',
+        ]);
+    }
+
+    private function validateTranslatedServiceTitle(string $title, ?int $ignoreServiceId = null): void
+    {
+        $titleRule = Rule::unique('services', 'title');
+
+        if ($ignoreServiceId !== null) {
+            $titleRule->ignore($ignoreServiceId);
+        }
+
+        Validator::make(
+            ['title' => $title],
+            ['title' => ['required', 'max:191', $titleRule]]
+        )->validate();
+    }
+
+    private function resolveServiceSlug(?string $originalTitle, ?string $translatedTitle, ?string $requestedSlug): string
+    {
+        $normalizedRequestedSlug = Str::slug((string) $requestedSlug);
+        $normalizedOriginalTitle = Str::slug((string) $originalTitle);
+
+        if ($normalizedRequestedSlug !== '' && $normalizedRequestedSlug !== $normalizedOriginalTitle) {
+            return $normalizedRequestedSlug;
+        }
+
+        return Str::slug((string) ($translatedTitle ?: $originalTitle ?: $requestedSlug));
     }
 }
