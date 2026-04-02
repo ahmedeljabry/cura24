@@ -30,6 +30,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="seller_verification_message">{{ __('Email Message') }}</label>
+                                    <small class="d-block text-muted mb-2">
+                                        {{ __('Available placeholders:') }}
+                                        <code>@seller_name</code> {{ __('(Seller\'s full name)') }},
+                                        <code>@seller_email</code> {{ __('(Seller\'s email address)') }}.
+                                        {{ __('Leave blank to use the default built-in template.') }}
+                                    </small>
                                     <textarea id="seller-verification-message-editor" class="form-control" name="seller_verification_message">{!! get_static_option('seller_verification_message') ?? '' !!}</textarea>
                                 </div>
                             </div>

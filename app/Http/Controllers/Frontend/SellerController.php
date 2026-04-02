@@ -3478,9 +3478,43 @@ class SellerController extends Controller
             }
 
             try {
-                $message = get_static_option('seller_verification_message');
+                // Load seller details to include in the notification email
+                $seller_user = Auth::guard('web')->user();
+                $admin_verify_url = route('admin.frontend.seller.verify.all');
+
+                // Use custom template if configured, otherwise build a clear default message
+                $custom_message = get_static_option('seller_verification_message');
+                if (!empty($custom_message)) {
+                    $message = str_replace(
+                        ['@seller_name', '@seller_email'],
+                        [$seller_user->name, $seller_user->email],
+                        $custom_message
+                    );
+                } else {
+                    $message = '
+                        <p>Hello Admin,</p>
+                        <p>A seller has submitted a <strong>verification request</strong> and is waiting for your review.</p>
+                        <table style="border-collapse:collapse; width:100%; margin-top:15px;">
+                            <tr style="background:#f9f9f9;">
+                                <td style="padding:10px; border:1px solid #ddd; font-weight:bold;">Seller Name</td>
+                                <td style="padding:10px; border:1px solid #ddd;">' . e($seller_user->name) . '</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:10px; border:1px solid #ddd; font-weight:bold;">Seller Email</td>
+                                <td style="padding:10px; border:1px solid #ddd;">' . e($seller_user->email) . '</td>
+                            </tr>
+                        </table>
+                        <p style="margin-top:20px;">
+                            <a href="' . $admin_verify_url . '" style="background-color:#007bff; color:#fff; padding:10px 20px; border-radius:5px; text-decoration:none; display:inline-block;">
+                                Review Verification Request
+                            </a>
+                        </p>
+                        <p>Please log in to the admin dashboard to review and approve or reject this request.</p>
+                    ';
+                }
+
                 Mail::to(get_static_option('site_global_email'))->queue(new BasicMail([
-                    'subject' => get_static_option('seller_verification_subject') ?? __('Seller Verification Request'),
+                    'subject' => get_static_option('seller_verification_subject') ?? __('New Seller Verification Request'),
                     'message' => $message
                 ]));
             } catch (\Exception $e) {

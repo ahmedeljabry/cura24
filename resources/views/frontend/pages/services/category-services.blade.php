@@ -33,37 +33,33 @@
                 </div>
             </div>
 
-            <div class="mb-2">
-                <div class="col-lg-12">
-                    <h2 class="section-sub-title">{{ sprintf(__('Available Service Categories in') .' '.'%s', $category->name)  }}</h2>
-                </div>
-              <div id="services_sub_category_load_wrap">
-                <div class="row">
-                @foreach($subcategory_under_category as $sub_cat)
-                    <div class="col-lg-3 col-sm-6 margin-top-30 category-child">
-                        <div class="single-category style-02 wow fadeInUp" data-wow-delay=".2s">
-                            <div class="icon category-bg-thumb-format" {!! render_background_image_markup_by_attachment_id($sub_cat->image) !!}></div>
-                            <div class="category-contents">
-                                <h4 class="category-title"> <a href="{{ route('service.list.subcategory',$sub_cat->slug) }}">{{ $sub_cat->name }}</a> </h4>
-                                <span class="category-para">{{ sprintf(__('Service') .' '.'%s', $sub_cat->total_service) }}</span>
-                            </div>
+            <div class="row">
+                <!-- Left Sidebar (Col-3) -->
+                <div class="col-lg-3">
+                    <div class="mb-5 sub-category-sidebar">
+                        <h4 class="section-title mb-4" style="font-size: 20px; font-weight: 600;">{{ sprintf(__('Subcategories in') .' '.'%s', $category->name)  }}</h4>
+                        <div id="services_sub_category_load_wrap">
+                            <ul class="list-group" style="box-shadow: 0 0 15px rgba(0,0,0,0.05); border-radius: 10px; overflow: hidden;">
+                            @foreach($subcategory_under_category as $sub_cat)
+                                <li class="list-group-item d-flex justify-content-between align-items-center" style="border: none; border-bottom: 1px solid #f1f1f1; padding: 15px 20px;">
+                                    <a href="{{ route('service.list.subcategory',$sub_cat->slug) }}" style="color: #333; font-weight: 500; text-decoration: none;">{{ $sub_cat->name }}</a>
+                                    <span class="badge badge-primary badge-pill" style="background-color: var(--main-color-one); font-size: 13px; font-weight: 500; padding: 6px 12px; border-radius: 20px;">{{ $sub_cat->total_service }}</span>
+                                </li>
+                            @endforeach
+                            </ul>
+
+                            @if(!empty(get_static_option('load_more_button_show_hide_settings')) || $subcategory_under_category->count() > 20)
+                                <div class="load_more_button_warp mt-4" style="text-align: center;">
+                                    <a href="#" id="load_more_btn" data-total="20" class="cmn-btn btn-small btn-bg-1" style="width: 100%;">{{__('Load More')}}</a>
+                                </div>
+                            @endif
                         </div>
                     </div>
-                @endforeach
-               </div>
+                </div>
 
-               @if(!empty(get_static_option('load_more_button_show_hide_settings')))
-                    <div class="load_more_button_warp"><a href="#" id="load_more_btn" data-total="20">{{__('Load More')}}</a></div>
-                @else
-                  @if($subcategory_under_category->count() >20)
-                      <div class="load_more_button_warp"><a href="#" id="load_more_btn" data-total="20">{{__('Load More')}}</a></div>
-                  @endif
-               @endif
-
-          </div>
-          </div>
-
-            <div class="row">
+                <!-- Right Content (Col-9) -->
+                <div class="col-lg-9">
+                    <div class="row">
                 <div class="col-lg-12">
                     <h2 class="section-sub-title margin-top-80">{{ sprintf(__('Available Services in') . ' ' . '%s', $category->name) }}</h2>
                     @php $current_page_url = url()->current(); @endphp
@@ -200,9 +196,11 @@
                     <div class="alert alert-warning">{{sprintf(__('No services found in').' '.'%s', optional($category)->name)}}</div>
                 @endif
 
-            </div>
+            </div> <!-- End Right Content row -->
+            </div> <!-- End Right Content Col-9 -->
 
         </div>
+
     </section>
 
 @endsection

@@ -8,6 +8,8 @@ use App\Mail\BasicMail;
 use App\OnlineServiceFaq;
 use App\SellerVerify;
 use App\Service;
+use App\ServiceArea;
+use App\ServiceCity;
 use App\Serviceadditional;
 use App\Servicebenifit;
 use App\Serviceinclude;
@@ -126,7 +128,17 @@ class AddService extends Component
     public function render()
     {
         $categories = Category::where('status', 1)->get();
-        return view('livewire.add-service-two', compact('categories'));
+        $seller_country_id = Auth::guard('web')->user()->country_id ?? null;
+        $cities = ServiceCity::where('status', 1)
+            ->where('country_id', $seller_country_id)
+            ->with(['service_area' => function($q){
+                $q->where('status', 1);
+            }])
+            ->get();
+        $areas = ServiceArea::where('status', 1)
+            ->whereIn('service_city_id', $cities->pluck('id'))
+            ->get();
+        return view('livewire.add-service-two', compact('categories', 'cities', 'areas'));
     }
 
     public function serviceResetForm()

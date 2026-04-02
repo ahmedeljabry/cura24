@@ -14,18 +14,19 @@ class SMSService
         // Dispatch a closure to the queue for SMS sending
         dispatch(function () use ($number, $message) {
             try {
-                $account_sid = getenv("TWILIO_SID");
-                $auth_token = getenv("TWILIO_TOKEN");
-                $twilio_number = getenv("TWILIO_FROM");
-
-                $client = new Client($account_sid, $auth_token);
-                $client->messages->create($number, [
-                    'from' => $twilio_number,
-                    'body' => $message
-                ]);
+                // Twilio is disabled as per request to use WhatsApp or alternative methods instead.
+                // $account_sid = getenv("TWILIO_SID");
+                // $auth_token = getenv("TWILIO_TOKEN");
+                // $twilio_number = getenv("TWILIO_FROM");
+                // 
+                // $client = new Client($account_sid, $auth_token);
+                // $client->messages->create($number, [
+                //     'from' => $twilio_number,
+                //     'body' => $message
+                // ]);
             } catch (Exception $e) {
-                $errorResponse = $this->handleTwilioError($e->getCode());
-                return redirect()->back()->with(FlashMsg::item_delete(__($errorResponse['message'])));
+                // $errorResponse = $this->handleTwilioError($e->getCode());
+                // return redirect()->back()->with(FlashMsg::item_delete(__($errorResponse['message'])));
             }
         });
 

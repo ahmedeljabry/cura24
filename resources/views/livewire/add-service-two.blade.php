@@ -574,22 +574,96 @@
                     <!-- service Media Uploads end-->
 
                     <!-- service Set Availability start-->
-                    <div   wire:ignore class="tab-pane fade @if($current_tab === "service-set-availability-tab") show active @endif step" id="service-set-availability" role="tabpanel" aria-labelledby="service-set-availability-tab">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="row g-4">
-                                    <div class="col-lg-12">
-                                        <div class="available-all-city-area">
-                                            <span class="text-info">{{__('Is Available All Cities and Area')}}</span>
-                                            <div class="dashboard-switch-single d-flex">
-                                                <input class="hide_show_check_box_new custom-switch is_service_all_cities" id="is_service_all_cities" type="checkbox" wire:model.defer="services.is_service_all_cities"/>
-                                                <label class="switch-label mt-2" for="is_service_all_cities"></label>
-                                            </div>
-                                        </div>
+                    <div wire:ignore class="tab-pane fade @if($current_tab === "service-set-availability-tab") show active @endif step" id="service-set-availability" role="tabpanel" aria-labelledby="service-set-availability-tab">
+                        <div class="row g-4">
+                            <div class="col-sm-12">
+                                <div class="available-all-city-area d-flex align-items-center gap-3">
+                                    <span class="text-info fw-semibold">{{__('Is Available All Cities and Area')}}</span>
+                                    <div class="dashboard-switch-single d-flex">
+                                        <input class="custom-switch is_service_all_cities" id="is_service_all_cities" type="checkbox" wire:model.defer="services.is_service_all_cities"/>
+                                        <label class="switch-label mt-0" for="is_service_all_cities"></label>
                                     </div>
                                 </div>
+                                <p class="text-muted mt-1" style="font-size:13px;">{{__('Turn ON to make this service available in all cities. Turn OFF to select specific cities and areas.')}}</p>
+                            </div>
+
+                            <!-- Cities & Areas checklist — shown only when toggle is OFF -->
+                            <div class="col-sm-12" id="city_area_selector" style="display:none;">
+                                <h6 class="fw-semibold mb-3">{{__('Select Available Cities & Areas')}}</h6>
+                                @if($cities->isEmpty())
+                                    <div class="alert alert-warning">{{__('No cities found for your country. Please contact admin.')}}</div>
+                                @else
+                                    <div class="row g-3">
+                                        @foreach($cities as $city)
+                                            @php $cityAreas = $areas->where('service_city_id', $city->id); @endphp
+                                            <div class="col-lg-4 col-md-6">
+                                                <div class="card border rounded p-3 h-100">
+                                                    <!-- City checkbox -->
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input city-master-check"
+                                                               type="checkbox"
+                                                               name="service_cities[]"
+                                                               value="{{ $city->id }}"
+                                                               id="city_{{ $city->id }}">
+                                                        <label class="form-check-label fw-bold" for="city_{{ $city->id }}">
+                                                            {{ $city->service_city }}
+                                                        </label>
+                                                    </div>
+                                                    <!-- Areas under this city -->
+                                                    @if($cityAreas->isNotEmpty())
+                                                        <div class="ms-3 city-areas-{{ $city->id }}">
+                                                            @foreach($cityAreas as $area)
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input area-check-{{ $city->id }}"
+                                                                           type="checkbox"
+                                                                           name="service_areas[]"
+                                                                           value="{{ $area->id }}"
+                                                                           id="area_{{ $area->id }}">
+                                                                    <label class="form-check-label" for="area_{{ $area->id }}">
+                                                                        {{ $area->service_area }}
+                                                                    </label>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    @else
+                                                        <p class="text-muted ms-3 mb-0" style="font-size:12px;">{{__('No areas listed')}}</p>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endif
                             </div>
                         </div>
+
+                        <script>
+                            (function () {
+                                var toggle = document.getElementById('is_service_all_cities');
+                                var selector = document.getElementById('city_area_selector');
+
+                                function syncToggle() {
+                                    if (toggle && selector) {
+                                        selector.style.display = toggle.checked ? 'none' : 'block';
+                                    }
+                                }
+
+                                if (toggle) {
+                                    toggle.addEventListener('change', syncToggle);
+                                    // Run on load
+                                    syncToggle();
+                                }
+
+                                // City master checkbox → check/uncheck all its areas
+                                document.querySelectorAll('.city-master-check').forEach(function (cityChk) {
+                                    cityChk.addEventListener('change', function () {
+                                        var cityId = this.value;
+                                        document.querySelectorAll('.area-check-' + cityId).forEach(function (areaChk) {
+                                            areaChk.checked = cityChk.checked;
+                                        });
+                                    });
+                                });
+                            })();
+                        </script>
                     </div>
                     <!-- service Set Availability end-->
                 </div>
