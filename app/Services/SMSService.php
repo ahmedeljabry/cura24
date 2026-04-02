@@ -11,26 +11,8 @@ class SMSService
 {
     public function send_sms($number, $message)
     {
-        // Dispatch a closure to the queue for SMS sending
-        dispatch(function () use ($number, $message) {
-            try {
-                // Twilio is disabled as per request to use WhatsApp or alternative methods instead.
-                // $account_sid = getenv("TWILIO_SID");
-                // $auth_token = getenv("TWILIO_TOKEN");
-                // $twilio_number = getenv("TWILIO_FROM");
-                // 
-                // $client = new Client($account_sid, $auth_token);
-                // $client->messages->create($number, [
-                //     'from' => $twilio_number,
-                //     'body' => $message
-                // ]);
-            } catch (Exception $e) {
-                // $errorResponse = $this->handleTwilioError($e->getCode());
-                // return redirect()->back()->with(FlashMsg::item_delete(__($errorResponse['message'])));
-            }
-        });
-
-        return redirect()->back();
+        // Route through WhatsApp instead of SMS
+        \App\Services\WhatsAppNotifier::notify($number, $message);
     }
 
     private function handleTwilioError($errorCode)

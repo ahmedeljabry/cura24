@@ -44,6 +44,11 @@
         <div class="col-sm-6">
             <div class="dashboard__header__right">
                 <div class="dashboard__header__right__flex">
+                    <!-- Language Switcher -->
+                    <div class="dashboard__header__right__item">
+                        <x-frontend.language-switcher/>
+                    </div>
+                    
                     <!-- Chat Icon with Unread Message Badge -->
                     
                     <div class="dashboard__header__right__item">

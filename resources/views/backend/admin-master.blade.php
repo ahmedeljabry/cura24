@@ -148,6 +148,30 @@
                                 </div>
                             </div>
                         </li>
+                        @php
+                            $all_languages = \App\Language::where('status', 'publish')->get();
+                            $current_language_slug = session()->get('lang') ?? get_default_language();
+                            $current_language = $all_languages->firstWhere('slug', $current_language_slug);
+                            $current_language_name = trim(explode('(', $current_language->name ?? strtoupper($current_language_slug))[0]);
+                        @endphp
+                        @if($all_languages->count() > 1)
+                            <li class="dropdown">
+                                <i class="fas fa-globe dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="cursor: pointer; padding: 0 10px;">
+                                    <span style="position:relative; top:-2px; font-size: 14px; margin-left: 2px;">{{ $current_language_name }}</span>
+                                </i>
+                                <div class="dropdown-menu notify-box" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 45px, 0px); top: 0px; left: 0px; will-change: transform; min-width: 150px;">
+                                    <div class="nofity-list">
+                                        @foreach($all_languages as $lang)
+                                            <a class="notify-item" href="{{ route('frontend.lang.change', ['lang' => $lang->slug]) }}">
+                                                <div class="notify-text">
+                                                    <p class="@if($lang->slug === $current_language_slug) font-weight-bold @endif" style="@if($lang->slug === $current_language_slug) color: #2ecc71; @endif">{{ trim(explode('(', $lang->name)[0]) }}</p>
+                                                </div>
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </li>
+                        @endif
                         <li ><label class="switch yes">
                             <input id="darkmode" type="checkbox" data-mode={{ get_static_option('site_admin_dark_mode') }} @if(get_static_option('site_admin_dark_mode') == 'on') checked @else @endif>
                             <span class="slider-color-mode onff"></span>

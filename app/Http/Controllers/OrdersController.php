@@ -20,6 +20,7 @@ use App\Helpers\FlashMsg;
 use App\AdminNotification;
 use App\ReportChatMessage;
 use App\Services\SMSService;
+use App\Services\WhatsAppNotifier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\OrderCompleteDecline;
@@ -300,32 +301,63 @@ class OrdersController extends Controller
                 );
             }
 
-            $smsService = new SMSService();
-            $order_details = Order::find($request->id);
-            $seller_phone = User::select('phone')->where('id', $order_details->seller_id)->first();
-            $buyer_phone = User::select('phone')->where('id', $order_details->buyer_id)->first();
-            $message = __('Order Status Changed.') . __(' and Order ID:') . $request->id;
-            //send sms to buyer
-            $buyer_phone=$buyer_phone->phone;
-            $smsService->send_sms($buyer_phone,  $message);
-            //send sms to seller
-            $seller_phone=$seller_phone->phone;
-            $smsService->send_sms($seller_phone,  $message);
+            // WhatsApp Notifications on Order Status Change
+            $order_details   = Order::find($request->id);
+            $buyer_user      = User::select('phone', 'name')->where('id', $order_details->buyer_id)->first();
+            $seller_user     = User::select('phone', 'name')->where('id', $order_details->seller_id)->first();
 
+            $buyer_phone_no  = $buyer_user?->phone;
+            $seller_phone_no = $seller_user?->phone;
+            $buyer_name      = $buyer_user?->name ?? 'Customer';
+            $seller_name_wa  = $seller_user?->name ?? 'Service Provider';
 
+            // Message for buyer
+            $buyer_wa_msg = implode("\n", [
+                __('Hello') . ' ' . $buyer_name . '!',
+                '',
+                __('Your Order Status Has Been Updated.'),
+                '-------------------------------------------',
+                __('Order ID')    . ': #' . $order_details->id,
+                __('Old Status')  . ': ' . $old_status,
+                __('New Status')  . ': ' . $new_status,
+                '-------------------------------------------',
+                __('Thank you for choosing us!'),
+            ]);
 
-            //$smsService->send_sms($number,  $message);
-            //$smsService->send_sms($number,  $message);
+            // Message for seller
+            $seller_wa_msg = implode("\n", [
+                __('Hello') . ' ' . $seller_name_wa . '!',
+                '',
+                __('An order assigned to you has changed status.'),
+                '-------------------------------------------',
+                __('Order ID')    . ': #' . $order_details->id,
+                __('Old Status')  . ': ' . $old_status,
+                __('New Status')  . ': ' . $new_status,
+                '-------------------------------------------',
+                __('Please check your seller dashboard for details.'),
+            ]);
 
+            // Send WhatsApp to buyer
+            WhatsAppNotifier::notify($buyer_phone_no, $buyer_wa_msg);
+
+            // Send WhatsApp to seller
+            WhatsAppNotifier::notify($seller_phone_no, $seller_wa_msg);
+
+            // Send WhatsApp to all Super Admins
             $admins = Admin::all();
-            foreach ($admins as $admin)  // Send SMS to all super admin
-            {
-
-                if ($admin->role == "Super Admin") {
-                    $seller_name = User::select('name')->where('id', $order_details->seller_id)->first();
-                    $seller_name = $seller_name ? $seller_name->name : 'Unknown Seller';
-                    $smsService->send_sms($admin->phone,  $message);
-                    //smsService->send_sms($number,  $message);
+            foreach ($admins as $admin) {
+                if ($admin->role === 'Super Admin' && !empty($admin->phone)) {
+                    $admin_wa_msg = implode("\n", [
+                        __('Order Status Update'),
+                        '-------------------------------------------',
+                        __('Order ID')    . ': #' . $order_details->id,
+                        __('Buyer')       . ': ' . $buyer_name,
+                        __('Seller')      . ': ' . $seller_name_wa,
+                        __('Old Status')  . ': ' . $old_status,
+                        __('New Status')  . ': ' . $new_status,
+                        '-------------------------------------------',
+                    ]);
+                    WhatsAppNotifier::notify($admin->phone, $admin_wa_msg);
                 }
             }
         } catch (\Exception $e) {
