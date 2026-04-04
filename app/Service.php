@@ -18,8 +18,10 @@ class Service extends Model
         'service_city_id',
         'service_area_id',
         'title',
+        'title_en',
         'slug',
         'description',
+        'description_en',
         'image',
         'status',
         'is_service_on',
@@ -156,6 +158,85 @@ class Service extends Model
             return $this->hasMany('Modules\WhatsAppBookingSystem\Entities\WhatsAppBooking', 'service_id', 'id');
         }
         return null;
+    }
+
+    /**
+     * Cache of English translations keyed by service ID.
+     */
+    private static $enTranslationCache = [];
+
+    /**
+     * Return the English title when the active language is NOT Italian.
+     */
+    public function getTitleAttribute($value)
+    {
+        if ($this->shouldShowEnglish()) {
+            $en = $this->getEnTranslation('title_en');
+            if (!empty($en)) {
+                return $en;
+            }
+        }
+        return $value;
+    }
+
+    /**
+     * Return the English description when the active language is NOT Italian.
+     */
+    public function getDescriptionAttribute($value)
+    {
+        if ($this->shouldShowEnglish()) {
+            $en = $this->getEnTranslation('description_en');
+            if (!empty($en)) {
+                return $en;
+            }
+        }
+        return $value;
+    }
+
+    /**
+     * Check whether the current session language is NOT Italian.
+     */
+    private function shouldShowEnglish(): bool
+    {
+        $lang = session()->get('lang');
+
+        // When no session is set the app defaults to the default language (en_GB).
+        // Italian content lives in the base columns, so we need English whenever
+        // the active language is anything OTHER than Italian.
+        if (empty($lang)) {
+            return true;          // default language is English
+        }
+
+        return $lang !== 'it_IT'; // show English for every non-Italian language
+    }
+
+    /**
+     * Get an English translation field, lazy-loading from DB when the column
+     * was not included in the original SELECT.
+     */
+    private function getEnTranslation(string $field): ?string
+    {
+        // If the column was already loaded by the query, use it directly.
+        if (array_key_exists($field, $this->attributes)) {
+            return $this->attributes[$field];
+        }
+
+        // Lazy-load from the database (with a static cache so each row is
+        // fetched at most once per request).
+        $id = $this->attributes['id'] ?? null;
+        if ($id === null) {
+            return null;
+        }
+
+        if (!isset(self::$enTranslationCache[$id])) {
+            self::$enTranslationCache[$id] = \Illuminate\Support\Facades\DB::table('services')
+                ->where('id', $id)
+                ->select('title_en', 'description_en')
+                ->first();
+        }
+
+        $cached = self::$enTranslationCache[$id];
+        return $cached->{$field} ?? null;
     }
 }
 

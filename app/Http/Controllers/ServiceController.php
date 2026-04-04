@@ -132,7 +132,7 @@ class ServiceController extends Controller
 
     public function change_status($id)
     {
-        $service = Service::select('id','seller_id','status', 'title')->where('id', $id)->first();
+        $service = Service::select('id','seller_id','status', 'title', 'title_en')->where('id', $id)->first();
         $service->status == 1 ? $status = 0 : $status = 1;
         Service::where('id', $id)->update(['status' => $status]);
         $seller = $service->seller;
@@ -519,12 +519,14 @@ class ServiceController extends Controller
             $service->subcategory_id = $request->subcategory;
             $service->child_category_id = $request->child_category;
             $service->title = $translatedTitle;
+            $service->title_en = $request->title;
             $service->slug = $this->resolveServiceSlug(
                 $request->title,
                 $translatedTitle,
                 $request->slug
             );
             $service->description = $translatedData['description'] ?? $request->description;
+            $service->description_en = $request->description;
             $service->image = $request->image;
             $service->image_gallery = $request->image_gallery;
             $service->video = $request->video;
@@ -598,12 +600,14 @@ class ServiceController extends Controller
                 'subcategory_id' => $request->subcategory,
                 'child_category_id' => $request->child_category,
                 'title' => $translatedTitle,
+                'title_en' => $request->title,
                 'slug' => $this->resolveServiceSlug(
                     $request->title,
                     $translatedTitle,
                     $request->slug ?? $old_slug->slug
                 ),
                 'description' => $translatedData['description'] ?? $request->description,
+                'description_en' => $request->description,
                 'seller_id' =>  $request->seller_id,
                 'service_city_id' => $seller_country->service_city,
                 'service_area_id' => $seller_country->service_area,
@@ -1246,7 +1250,7 @@ class ServiceController extends Controller
 
     public function show_service_attributes_by_id($id=null)
 {
-    $service = Service::select('id','title','image')
+    $service = Service::select('id','title','image', 'title_en')
         ->where('id',$id)
         ->first();
 
