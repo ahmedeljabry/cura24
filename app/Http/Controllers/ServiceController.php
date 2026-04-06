@@ -11,6 +11,8 @@ use App\OnlineServiceFaq;
 use App\Review;
 use App\SellerVerify;
 use App\Services\GoogleTranslateService;
+use App\ServiceArea;
+use App\ServiceCity;
 use App\ServiceCoupon;
 use App\Subcategory;
 use App\Tax;
@@ -531,8 +533,20 @@ class ServiceController extends Controller
             $service->image_gallery = $request->image_gallery;
             $service->video = $request->video;
             $service->seller_id = $request->seller_id;
-            $service->service_city_id = $seller_country->service_city;
-            $service->service_area_id = $seller_country->service_area;
+            // Determine city/area: if not all-cities, use the first selected city/area from the form;
+            // otherwise fall back to the seller's profile city (may be null, which is fine when all-cities=1)
+            $isAllCities = $request->has('is_service_all_cities') ? 1 : 0;
+            if (!$isAllCities && $request->filled('service_cities')) {
+                $service->service_city_id = $request->service_cities[0];
+            } else {
+                $service->service_city_id = $seller_country->service_city ?? null;
+            }
+            if (!$isAllCities && $request->filled('service_areas')) {
+                $service->service_area_id = $request->service_areas[0];
+            } else {
+                $service->service_area_id = $seller_country->service_area ?? null;
+            }
+            $service->is_service_all_cities = $isAllCities;
             $service->status = 1;
             $service->tax = $country_tax->tax ?? 0;
             $service->admin_id = Auth::guard('admin')->user()->id;
@@ -572,7 +586,9 @@ class ServiceController extends Controller
         $categories = Category::where('status', 1)->get();
         $sub_categories = Subcategory::all();
         $sellers = user::select('id','name')->where('user_type',0)->get();
-        return view('backend.pages.services.admin-service.add_new_service',compact('categories','sub_categories','sellers'));
+        $cities = ServiceCity::where('status', 1)->with(['service_area' => function($q){ $q->where('status', 1); }])->get();
+        $areas  = ServiceArea::where('status', 1)->get();
+        return view('backend.pages.services.admin-service.add_new_service',compact('categories','sub_categories','sellers','cities','areas'));
     }
 
     public function edit_service(Request $request, GoogleTranslateService $translator, $id)
@@ -609,8 +625,14 @@ class ServiceController extends Controller
                 'description' => $translatedData['description'] ?? $request->description,
                 'description_en' => $request->description,
                 'seller_id' =>  $request->seller_id,
-                'service_city_id' => $seller_country->service_city,
-                'service_area_id' => $seller_country->service_area,
+                // Determine city/area: if not all-cities, use the first selected city/area from the form
+                'service_city_id' => (!$request->has('is_service_all_cities') && $request->filled('service_cities'))
+                    ? $request->service_cities[0]
+                    : ($seller_country->service_city ?? null),
+                'service_area_id' => (!$request->has('is_service_all_cities') && $request->filled('service_areas'))
+                    ? $request->service_areas[0]
+                    : ($seller_country->service_area ?? null),
+                'is_service_all_cities' => $request->has('is_service_all_cities') ? 1 : 0,
                 'image' => $request->image ?? $old_image->image,
                 'image_gallery' => $request->image_gallery ?? $old_image->image_gallery,
                 'video' => $request->video,
@@ -648,7 +670,9 @@ class ServiceController extends Controller
         $categories = Category::where('status', 1)->get();
         $sub_categories = Subcategory::all();
         $sellers = user::select('id','name')->where('user_type',0)->get();
-        return view('backend.pages.services.admin-service.edit_service',compact('service','categories','sub_categories','sellers'));
+        $cities = ServiceCity::where('status', 1)->with(['service_area' => function($q){ $q->where('status', 1); }])->get();
+        $areas  = ServiceArea::where('status', 1)->get();
+        return view('backend.pages.services.admin-service.edit_service',compact('service','categories','sub_categories','sellers','cities','areas'));
 
     }
 

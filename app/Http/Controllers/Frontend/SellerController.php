@@ -1391,10 +1391,10 @@ class SellerController extends Controller
                             'seller_id' => Auth::guard('web')->user()->id,
                             'include_service_title' => $input['include_service_title'],
                             'include_service_price' => $request->is_service_online == 1 ? 0 : ($input['include_service_price'] ?? 0),
-                            'include_service_quantity' => $request->is_service_online == 1 ? 0 : 1,
+                            'include_service_quantity' => $request->is_service_online == 1 ? 0 : (int)($input['include_service_quantity'] ?? 1),
                         ];
                         if ($request->is_service_online != 1) {
-                            $service_total_price += ($input['include_service_price'] ?? 0) * 1;
+                            $service_total_price += ($input['include_service_price'] ?? 0) * (int)($input['include_service_quantity'] ?? 1);
                         }
                     }
                 }
@@ -1421,7 +1421,7 @@ class SellerController extends Controller
                             'seller_id' => Auth::guard('web')->user()->id,
                             'additional_service_title' => $input['additional_service_title'],
                             'additional_service_price' => $input['additional_service_price'] ?? 0,
-                            'additional_service_quantity' => 1,
+                            'additional_service_quantity' => (int)($input['additional_service_quantity'] ?? 1),
                             'additional_service_image' => $input['additional_service_image'] ?? null,
                         ];
                     }

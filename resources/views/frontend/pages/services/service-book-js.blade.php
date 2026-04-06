@@ -860,10 +860,30 @@
         function validateNumberInput(input) {
             // Get the entered value
             var value = parseInt(input.value);
+            var max = parseInt(input.getAttribute('max'));
             // Check if the value is less than 1
             if (value < 1 || isNaN(value) || /^0/.test(input.value)) {
                 // Set the input value to 1
                 input.value = 1;
+                value = 1;
+            } else if (max && value > max) {
+                input.value = max;
+                value = max;
+            }
+
+            let parent = $(input).closest('.package_quantity');
+            if (parent.length) {
+                if (value <= 1) {
+                    parent.find('.substract').addClass('disabled').css({'opacity': '0.35', 'pointer-events': 'none', 'cursor': 'not-allowed'});
+                } else {
+                    parent.find('.substract').removeClass('disabled').css({'opacity': '1', 'pointer-events': 'auto', 'cursor': 'pointer'});
+                }
+
+                if (max && value >= max) {
+                    parent.find('.plus').addClass('disabled').css({'opacity': '0.35', 'pointer-events': 'none', 'cursor': 'not-allowed'});
+                } else {
+                    parent.find('.plus').removeClass('disabled').css({'opacity': '1', 'pointer-events': 'auto', 'cursor': 'pointer'});
+                }
             }
         }
     </script>

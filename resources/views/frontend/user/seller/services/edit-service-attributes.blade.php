@@ -95,7 +95,7 @@
                                                 </div>
                                                 <div class="single-info-input margin-top-20 @if($service->is_service_online==1) is_service_online_hide @endif">
                                                     <label>{{ __('Quantity') }}</label>
-                                                    <input class="form--control numeric-value" type="text" name="include_service_quantity[]" placeholder="{{__('Add Quantity')}}" value="{{$include->include_service_quantity}}" readonly>
+                                                    <input class="form--control numeric-value" type="text" name="include_service_quantity[]" placeholder="{{__('Add Quantity')}}" value="{{$include->include_service_quantity}}" >
                                                 </div>
                                             </div>
                                         @endforeach
@@ -142,7 +142,7 @@
                                                     </div>
                                                     <div class="single-info-input margin-top-20">
                                                         <label>{{ __('Quantity') }}</label>
-                                                        <input class="form--control numeric-value" type="text" name="additional_service_quantity[]" placeholder="{{__('Add Quantity')}}" value="{{$additional->additional_service_quantity}}" readonly>
+                                                        <input class="form--control numeric-value" type="text" name="additional_service_quantity[]" placeholder="{{__('Add Quantity')}}" value="{{$additional->additional_service_quantity}}" >
                                                     </div>
 
                                                     <div class="single-info-input margin-top-30">

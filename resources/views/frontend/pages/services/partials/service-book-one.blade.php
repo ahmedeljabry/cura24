@@ -270,11 +270,11 @@
                                                                             {{ amount_with_currency_symbol($include->include_service_price) }}
                                                                         </span>
                                                                             <span class="value-input">
-                                                                            <input type="number" min="1"
+                                                                            <input type="number" min="1" max="{{ $include->include_service_quantity }}"
                                                                                    class="inc_dec_include_service"
                                                                                    data-id="{{ $include->id }}"
                                                                                    data-price="{{ $include->include_service_price }}"
-                                                                                   value="{{ $include->include_service_quantity }}">
+                                                                                   value="1" {{ $include->include_service_quantity <= 1 ? 'readonly' : '' }} oninput="validateNumberInput(this)">
                                                                         </span>
                                                                         </div>
                                                                     @endif
@@ -311,11 +311,11 @@
                                                                             {{ $additional->additional_service_price }}
                                                                         </span>
                                                                         <span class="value-input">
-                                                                            <input type="number" min="1" class="inc_dec_additional_service"
+                                                                            <input type="number" min="1" max="{{ $additional->additional_service_quantity }}" class="inc_dec_additional_service"
                                                                                    id="additional_service_quantity_{{ $additional->id }}"
                                                                                    data-id="{{ $additional->id }}"
                                                                                    data-price="{{ $additional->additional_service_price }}"
-                                                                                   value="{{ $additional->additional_service_quantity }}">
+                                                                                   value="1" {{ $additional->additional_service_quantity <= 1 ? 'readonly' : '' }} oninput="validateNumberInput(this)">
                                                                         </span>
                                                                     </div>
                                                                     <span class="price-value">

@@ -430,7 +430,7 @@ class EditService extends Component
                             'seller_id' => Auth::guard('web')->user()->id,
                             'include_service_title' => $value['include_service_title'] ?? null,
                             'include_service_price' => $value['include_service_price'] ?? 0,
-                            'include_service_quantity' => 1,
+                            'include_service_quantity' => $value['include_service_quantity'] ?? 1,
                         ];
                     }
                 }
@@ -457,7 +457,7 @@ class EditService extends Component
                         'seller_id' => Auth::guard('web')->user()->id,
                         'additional_service_title' => $value['additional_service_title'] ?? null,
                         'additional_service_price' => $value['additional_service_price'] ?? null,
-                        'additional_service_quantity' => 1,
+                        'additional_service_quantity' => $value['additional_service_quantity'] ?? 1,
                         'additional_service_image' => $value['additional_service_image'] ?? null,
 
                     ];

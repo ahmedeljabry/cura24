@@ -77,7 +77,7 @@
                                             </div>
                                             <div class="single-info-input margin-top-20 is_service_online_hide">
                                                 <label>{{ __('Quantity') }}</label>
-                                                <input class="form--control numeric-value" type="text" name="include_service_quantity[]" value="1" placeholder="{{__('Add Quantity')}}" readonly>
+                                                <input class="form--control numeric-value" type="text" name="include_service_quantity[]" value="1" placeholder="{{__('Add Quantity')}}" >
                                             </div>
                                         </div>
                                     </div>
@@ -120,7 +120,7 @@
                                             </div>
                                             <div class="single-info-input margin-top-20">
                                                 <label>{{ __('Quantity') }}</label>
-                                                <input class="form--control numeric-value" type="text" name="additional_service_quantity[]" value="1" placeholder="{{__('Add Quantity')}}" readonly>
+                                                <input class="form--control numeric-value" type="text" name="additional_service_quantity[]" value="1" placeholder="{{__('Add Quantity')}}" >
                                             </div>
 
                                             <div class="single-info-input margin-top-30">
@@ -209,7 +209,7 @@
                             </div>\
                             <div class="single-info-input margin-top-20 is_service_online_hide">\
                                 <label>{{ __('Quantity') }}</label>\
-                                <input class="form--control numeric-value" name="include_service_quantity[]" value="1" type="text" placeholder="{{__('Add Quantity')}}" readonly>\
+                                <input class="form--control numeric-value" name="include_service_quantity[]" value="1" type="text" placeholder="{{__('Add Quantity')}}" >\
                             </div><span class="btn btn-danger remove-include"><i class="las la-times"></i></span>\
                         </div>'
                     );
@@ -241,7 +241,7 @@
                             </div>\
                             <div class="single-info-input margin-top-20">\
                                 <label>{{ __('Quantity') }}</label>\
-                                <input class="form--control numeric-value" type="text" name="additional_service_quantity[]" value="1" placeholder="{{__('Add Quantity')}}" readonly>\
+                                <input class="form--control numeric-value" type="text" name="additional_service_quantity[]" value="1" placeholder="{{__('Add Quantity')}}" >\
                             </div>\
                             <div class="single-info-input margin-top-30">\
                                 <div class="form-group ">\

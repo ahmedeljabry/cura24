@@ -277,6 +277,77 @@
                                 </div>
                             </div>
 
+
+                            {{-- City & Area Availability --}}
+                            <div class="row mt-4">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="header-title">{{__('Service Availability')}}</h5>
+                                            <div class="d-flex align-items-center gap-3 mt-3">
+                                                <label class="fw-semibold mb-0">{{__('Available in All Cities')}}</label>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           id="is_service_all_cities_admin"
+                                                           name="is_service_all_cities"
+                                                           value="1"
+                                                           @if($service->is_service_all_cities) checked @endif>
+                                                </div>
+                                            </div>
+                                            <small class="text-muted d-block mt-1">{{__('Turn ON to make this service available in all cities. Turn OFF to select specific cities and areas.')}}</small>
+
+                                            {{-- City/Area Checklist --}}
+                                            <div id="admin_city_area_selector" class="mt-4" style="display:none;">
+                                                <h6 class="fw-semibold mb-3">{{__('Select Available Cities & Areas')}}</h6>
+                                                @if($cities->isEmpty())
+                                                    <div class="alert alert-warning">{{__('No cities found. Please add cities from Location settings.')}}</div>
+                                                @else
+                                                    <div class="row g-3">
+                                                        @foreach($cities as $city)
+                                                            @php $cityAreas = $areas->where('service_city_id', $city->id); @endphp
+                                                            <div class="col-lg-4 col-md-6">
+                                                                <div class="card border rounded p-3 h-100">
+                                                                    <div class="form-check mb-2">
+                                                                        <input class="form-check-input admin-city-check"
+                                                                               type="checkbox"
+                                                                               name="service_cities[]"
+                                                                               value="{{ $city->id }}"
+                                                                               id="admin_city_{{ $city->id }}"
+                                                                               @if($service->service_city_id == $city->id) checked @endif>
+                                                                        <label class="form-check-label fw-bold" for="admin_city_{{ $city->id }}">
+                                                                            {{ $city->service_city }}
+                                                                        </label>
+                                                                    </div>
+                                                                    @if($cityAreas->isNotEmpty())
+                                                                        <div class="ms-3 admin-city-areas-{{ $city->id }}">
+                                                                            @foreach($cityAreas as $area)
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input admin-area-check-{{ $city->id }}"
+                                                                                           type="checkbox"
+                                                                                           name="service_areas[]"
+                                                                                           value="{{ $area->id }}"
+                                                                                           id="admin_area_{{ $area->id }}"
+                                                                                           @if($service->service_area_id == $area->id) checked @endif>
+                                                                                    <label class="form-check-label" for="admin_area_{{ $area->id }}">
+                                                                                        {{ $area->service_area }}
+                                                                                    </label>
+                                                                                </div>
+                                                                            @endforeach
+                                                                        </div>
+                                                                    @else
+                                                                        <p class="text-muted ms-3 mb-0" style="font-size:12px;">{{__('No areas listed')}}</p>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="btn-wrapper margin-top-40">
                                 <input type="submit" class="btn btn-success btn-bg-1" value="{{__('Save & Next')}} ">
                             </div>
@@ -300,6 +371,25 @@
         (function ($) {
             "use strict";
             $(document).ready(function () {
+                // City/Area toggle
+                function toggleAdminCitySelector() {
+                    if ($('#is_service_all_cities_admin').is(':checked')) {
+                        $('#admin_city_area_selector').hide();
+                    } else {
+                        $('#admin_city_area_selector').show();
+                    }
+                }
+                toggleAdminCitySelector();
+                $('#is_service_all_cities_admin').on('change', toggleAdminCitySelector);
+
+                // City master check selects/deselects all areas below it
+                $(document).on('change', '.admin-city-check', function () {
+                    var cityId = $(this).val();
+                    var checked = $(this).is(':checked');
+                    $('.admin-area-check-' + cityId).prop('checked', checked);
+                });
+
+
                 //Permalink Code
                 $('.permalink_label').hide();
 

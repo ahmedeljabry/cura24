@@ -381,14 +381,15 @@
                                                                             @if($service_details_for_book->is_service_online !=1)
                                                                                 <div class="btn-wrapper">
                                                                                     <div class="package_quantity">
-                                                                                    <span class="substract package_quantity__icon include_service_qty_decrement">
-                                                                                        <i class="fa-solid fa-minus"></i></span>
-                                                                                        <input type="number" min="1"
+                                                                                    <span class="substract package_quantity__icon include_service_qty_decrement disabled" style="opacity:0.35; pointer-events:none; cursor:not-allowed;">
+                                                                                        <i class="fa-solid fa-minus"></i>
+                                                                                    </span>
+                                                                                    <input type="number" min="1" max="{{ $include->include_service_quantity }}"
                                                                                                class="quantity-input package_quantity__input inc_dec_include_service"
                                                                                                data-id="{{ $include->id }}"
                                                                                                data-price="{{ $include->include_service_price }}"
-                                                                                               value="{{ $include->include_service_quantity }}"  oninput="validateNumberInput(this)">
-                                                                                        <span class="plus package_quantity__icon inc_dec_include_service"><i class="fa-solid fa-plus"></i></span>
+                                                                                               value="1" {{ $include->include_service_quantity <= 1 ? 'readonly' : '' }}  oninput="validateNumberInput(this)">
+                                                                                        <span class="plus package_quantity__icon inc_dec_include_service {{ $include->include_service_quantity <= 1 ? 'disabled' : '' }}" style="{{ $include->include_service_quantity <= 1 ? 'opacity:0.35; pointer-events:none; cursor:not-allowed;' : '' }}"><i class="fa-solid fa-plus"></i></span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="btn-wrapper">
@@ -428,16 +429,13 @@
                                                                         <div class="btn-wrapper">
                                                                             <div class="package_quantity">
                                                                                 <span class="values d-none" price="{{ $additional->id }}"> {{ $additional->additional_service_price }}</span>
-                                                                                <span class="substract package_quantity__icon additional_service_qty_decrement"><i class="fa-solid fa-minus"></i></span>
-                                                                                <input  type="number"
-                                                                                        min="1"
-                                                                                        class="quantity-input package_quantity__input inc_dec_additional_service"
-                                                                                        id="additional_service_quantity_{{ $additional->id }}"
-                                                                                        data-id="{{ $additional->id }}"
-                                                                                        data-price="{{ $additional->additional_service_price }}"
-                                                                                        value="{{ $additional->additional_service_quantity }}" oninput="validateNumberInput(this)">
-
-                                                                                <span class="plus package_quantity__icon inc_dec_additional_service"><i class="fa-solid fa-plus"></i></span>
+                                                                                <span class="substract package_quantity__icon additional_service_qty_decrement disabled" style="opacity:0.35; pointer-events:none; cursor:not-allowed;"><i class="fa-solid fa-minus"></i></span>
+                                                                                <input type="number" min="1" max="{{ $additional->additional_service_quantity }}" class="quantity-input package_quantity__input inc_dec_additional_service"
+                                                                                       id="additional_service_quantity_{{ $additional->id }}"
+                                                                                       data-id="{{ $additional->id }}"
+                                                                                       data-price="{{ $additional->additional_service_price }}"
+                                                                                       value="1" {{ $additional->additional_service_quantity <= 1 ? 'readonly' : '' }} oninput="validateNumberInput(this)">
+                                                                                <span class="plus package_quantity__icon additional_service_qty_decrement {{ $additional->additional_service_quantity <= 1 ? 'disabled' : '' }}" style="{{ $additional->additional_service_quantity <= 1 ? 'opacity:0.35; pointer-events:none; cursor:not-allowed;' : '' }}"><i class="fa-solid fa-plus"></i></span>
                                                                             </div>
                                                                         </div>
 

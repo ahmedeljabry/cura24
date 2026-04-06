@@ -219,7 +219,7 @@
                                                                 <div class="col-lg-4 col-sm-6 is_service_online_hide">
                                                                     <div class="single-info-input">
                                                                         <label class="label_title">{{ __('Quantity') }}</label>
-                                                                        <input class="form--control numeric-value" type="text" value="1" placeholder="{{ __('Add Quantity') }}" readonly>
+                                                                        <input class="form--control numeric-value" name="include_service_quantity[]" type="text" value="1" placeholder="{{ __('Add Quantity') }}">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -293,7 +293,7 @@
                                                                 <div class="col-xl-2 col-sm-6">
                                                                     <div class="single-info-input">
                                                                         <label class="label_title">{{ __('Quantity') }}</label>
-                                                                        <input class="form--control numeric-value" type="text" value="1" placeholder="{{ __('Add Quantity') }}" readonly>
+                                                                        <input class="form--control numeric-value" name="additional_service_quantity[]" type="text" value="1" placeholder="{{ __('Add Quantity') }}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xl-3 col-sm-6">
@@ -727,7 +727,7 @@
                     <div class="col-lg-3 col-sm-6 ${quantityFieldClass}">
                         <div class="single-info-input">
                             <label class="label_title">{{__('Quantity')}}</label>
-                            <input class="form--control numeric-value" type="text" value="1" placeholder="{{__('Add Quantity')}}" readonly>
+                            <input class="form--control numeric-value" type="text" name="include_service_quantity[]" value="1" placeholder="{{__('Add Quantity')}}">
                         </div>
                     </div>
                     <div class="col-lg-1 col-sm-6">
@@ -778,7 +778,7 @@
                 <div class="col-xl-2 col-sm-6">
                     <div class="single-info-input">
                         <label class="label_title">{{ __('Quantity') }}</label>
-                        <input class="form--control numeric-value" type="text" value="1" placeholder="{{ __('Add Quantity') }}" readonly>
+                        <input class="form--control numeric-value" type="text" name="additional_service_quantity[]" value="1" placeholder="{{ __('Add Quantity') }}">
                     </div>
                 </div>
                 <div class="col-xl-3 col-sm-6">
