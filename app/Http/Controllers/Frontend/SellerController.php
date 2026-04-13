@@ -780,12 +780,14 @@ class SellerController extends Controller
             $service->subcategory_id = $request->subcategory;
             $service->child_category_id = $request->child_category;
             $service->title = $translatedData['title'] ?? $request->title;
+            $service->title_en = $request->title;
             $service->slug = $this->resolveServiceSlug(
                 $request->title,
                 $translatedData['title'] ?? $request->title,
                 $request->slug
             );
             $service->description = $translatedData['description'] ?? $request->description;
+            $service->description_en = $request->description;
             $service->image = $request->input('image', '');
             $service->image_gallery = $request->input('image_gallery', '');
             $service->video = $request->video;
@@ -803,6 +805,9 @@ class SellerController extends Controller
             $service_total_price = 0;
             $includeTitles = $translatedData['include_service_title'] ?? $request->input('include_service_title', []);
             $includePrices = $request->input('include_service_price', []);
+            $includeQuantities = $request->input('include_service_quantity', []);
+            // Save the English originals (before translation) — same pattern as Service Info title_en
+            $includeTitlesEn = $request->input('include_service_title', []);
             $allIncludeServices = [];
 
             if ($request->has('is_service_online')) {
@@ -819,7 +824,8 @@ class SellerController extends Controller
                             'service_id' => $service->id,
                             'seller_id' => Auth::guard('web')->user()->id,
                             'include_service_title' => $title,
-                            'include_service_price' => 0, // Price is 0 for online services
+                            'include_service_title_en' => $includeTitlesEn[$key] ?? null,
+                            'include_service_price' => 0,
                             'include_service_quantity' => 0,
                         ];
                     }
@@ -827,14 +833,16 @@ class SellerController extends Controller
             } else {
                 foreach ($includeTitles as $key => $title) {
                     if (!empty($title)) {
+                        $qty = max(1, (int)($includeQuantities[$key] ?? 1));
                         $allIncludeServices[] = [
                             'service_id' => $service->id,
                             'seller_id' => Auth::guard('web')->user()->id,
                             'include_service_title' => $title,
+                            'include_service_title_en' => $includeTitlesEn[$key] ?? null,
                             'include_service_price' => $includePrices[$key] ?? 0,
-                            'include_service_quantity' => 1,
+                            'include_service_quantity' => $qty,
                         ];
-                        $service_total_price += ($includePrices[$key] ?? 0) * 1;
+                        $service_total_price += ($includePrices[$key] ?? 0);
                     }
                 }
                 $service->update(['price' => $service_total_price]);
@@ -845,6 +853,9 @@ class SellerController extends Controller
             $additionalTitles = $translatedData['additional_service_title'] ?? $request->input('additional_service_title', []);
             $additionalPrices = $request->input('additional_service_price', []);
             $additionalImages = $request->input('additional_service_image', []);
+            $additionalQuantities = $request->input('additional_service_quantity', []);
+            // Save the English originals (before translation) — same pattern as Service Info title_en
+            $additionalTitlesEn = $request->input('additional_service_title', []);
             $allAdditionalServices = [];
             foreach ($additionalTitles as $key => $title) {
                 if (!empty($title)) {
@@ -852,8 +863,9 @@ class SellerController extends Controller
                         'service_id' => $service->id,
                         'seller_id' => Auth::guard('web')->user()->id,
                         'additional_service_title' => $title,
+                        'additional_service_title_en' => $additionalTitlesEn[$key] ?? null,
                         'additional_service_price' => $additionalPrices[$key] ?? 0,
-                        'additional_service_quantity' => 1,
+                        'additional_service_quantity' => max(1, (int)($additionalQuantities[$key] ?? 1)),
                         'additional_service_image' => $additionalImages[$key] ?? null,
                     ];
                 }
@@ -862,13 +874,16 @@ class SellerController extends Controller
 
             // Save benefits
             $benefits = $translatedData['benifits'] ?? $request->input('benifits', []);
+            // Save the English originals (before translation) — same pattern as Service Info title_en
+            $benefitsEn = $request->input('benifits', []);
             $allBenefits = [];
-            foreach ($benefits as $benefit) {
+            foreach ($benefits as $key => $benefit) {
                 if (!empty($benefit)) {
                     $allBenefits[] = [
                         'service_id' => $service->id,
                         'seller_id' => Auth::guard('web')->user()->id,
                         'benifits' => $benefit,
+                        'benifits_en' => $benefitsEn[$key] ?? null,
                     ];
                 }
             }
@@ -1342,6 +1357,8 @@ class SellerController extends Controller
                 'image_gallery' => 'nullable|string',
             ]);
 
+            // Capture original English inputs BEFORE translation (same pattern as Service Info title_en)
+            $originalInputs = $request->all();
             $translatedData = $this->translateNestedServicePayload($translator, $request->all());
             $this->validateTranslatedServiceTitle($translatedData['title'] ?? $request->title, $id);
 
@@ -1361,12 +1378,14 @@ class SellerController extends Controller
                     'subcategory_id' => $request->subcategory,
                     'child_category_id' => $request->child_category,
                     'title' => $translatedData['title'] ?? $request->title,
+                    'title_en' => $request->title,
                     'slug' => $this->resolveServiceSlug(
                         $request->title,
                         $translatedData['title'] ?? $request->title,
                         $request->slug
                     ),
                     'description' => $translatedData['description'] ?? $request->description,
+                    'description_en' => $request->description,
                     'image' => $request->image ?? $service->image,
                     'image_gallery' => $request->image_gallery ?? $service->image_gallery,
                     'video' => $request->video,
@@ -1384,12 +1403,15 @@ class SellerController extends Controller
                 ServiceInclude::where('service_id', $service->id)->delete();
                 $service_total_price = 0;
                 $allIncludeServices = [];
-                foreach (($translatedData['include_service_inputs'] ?? $request->input('include_service_inputs', [])) as $input) {
+                $originalIncludes = $originalInputs['include_service_inputs'] ?? [];
+                foreach (($translatedData['include_service_inputs'] ?? $request->input('include_service_inputs', [])) as $key => $input) {
                     if (!empty($input['include_service_title'])) {
                         $allIncludeServices[] = [
                             'service_id' => $service->id,
                             'seller_id' => Auth::guard('web')->user()->id,
                             'include_service_title' => $input['include_service_title'],
+                            // EN = original English before translation
+                            'include_service_title_en' => $originalIncludes[$key]['include_service_title'] ?? $input['include_service_title'],
                             'include_service_price' => $request->is_service_online == 1 ? 0 : ($input['include_service_price'] ?? 0),
                             'include_service_quantity' => $request->is_service_online == 1 ? 0 : (int)($input['include_service_quantity'] ?? 1),
                         ];
@@ -1414,12 +1436,15 @@ class SellerController extends Controller
                 // Update Additional Services
                 Serviceadditional::where('service_id', $service->id)->delete();
                 $allAdditionalServices = [];
-                foreach (($translatedData['additional_service_inputs'] ?? $request->input('additional_service_inputs', [])) as $input) {
+                $originalAdditional = $originalInputs['additional_service_inputs'] ?? [];
+                foreach (($translatedData['additional_service_inputs'] ?? $request->input('additional_service_inputs', [])) as $key => $input) {
                     if (!empty($input['additional_service_title'])) {
                         $allAdditionalServices[] = [
                             'service_id' => $service->id,
                             'seller_id' => Auth::guard('web')->user()->id,
                             'additional_service_title' => $input['additional_service_title'],
+                            // EN = original English before translation
+                            'additional_service_title_en' => $originalAdditional[$key]['additional_service_title'] ?? $input['additional_service_title'],
                             'additional_service_price' => $input['additional_service_price'] ?? 0,
                             'additional_service_quantity' => (int)($input['additional_service_quantity'] ?? 1),
                             'additional_service_image' => $input['additional_service_image'] ?? null,
@@ -1433,12 +1458,15 @@ class SellerController extends Controller
                 // Update Benefits
                 Servicebenifit::where('service_id', $service->id)->delete();
                 $allBenefits = [];
-                foreach (($translatedData['service_benefit_inputs'] ?? $request->input('service_benefit_inputs', [])) as $input) {
+                $originalBenefits = $originalInputs['service_benefit_inputs'] ?? [];
+                foreach (($translatedData['service_benefit_inputs'] ?? $request->input('service_benefit_inputs', [])) as $key => $input) {
                     if (!empty($input['benifits'])) {
                         $allBenefits[] = [
                             'service_id' => $service->id,
                             'seller_id' => Auth::guard('web')->user()->id,
                             'benifits' => $input['benifits'],
+                            // EN = original English before translation
+                            'benifits_en' => $originalBenefits[$key]['benifits'] ?? $input['benifits'],
                         ];
                     }
                 }

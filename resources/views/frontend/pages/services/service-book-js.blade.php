@@ -237,48 +237,83 @@
                 })
 
                 //Increment Decrement include service
-                $(document).on('keyup click', '.inc_dec_include_service, .include_service_qty_decrement', function() {
+                // Helper to refresh +/- button states after any quantity change
+                function refreshIncludeButtons($input) {
+                    var val = parseInt($input.val()) || 1;
+                    var min = parseInt($input.attr('min')) || 1;
+                    var max = parseInt($input.attr('max')) || 1;
+                    var $container = $input.closest('.package_quantity');
+                    var $minus = $container.find('.include_service_qty_decrement');
+                    var $plus  = $container.find('.plus.inc_dec_include_service');
 
+                    if (val <= min) {
+                        $minus.addClass('disabled').css({'opacity':'0.35','pointer-events':'none','cursor':'not-allowed'});
+                    } else {
+                        $minus.removeClass('disabled').css({'opacity':'','pointer-events':'','cursor':''});
+                    }
+
+                    if (val >= max) {
+                        $plus.addClass('disabled').css({'opacity':'0.35','pointer-events':'none','cursor':'not-allowed'});
+                    } else {
+                        $plus.removeClass('disabled').css({'opacity':'','pointer-events':'','cursor':''});
+                    }
+                }
+
+                // Initialise button states on page load
+                $('.inc_dec_include_service.quantity-input').each(function() {
+                    refreshIncludeButtons($(this));
+                });
+
+                // Minus button click
+                $(document).on('click', '.include_service_qty_decrement', function() {
+                    var $input = $(this).closest('.package_quantity').find('.quantity-input.inc_dec_include_service');
+                    var val = parseInt($input.val()) || 1;
+                    var min = parseInt($input.attr('min')) || 1;
+                    if (val > min) {
+                        $input.val(val - 1).trigger('quantitychange');
+                    }
+                });
+
+                // Plus button click
+                $(document).on('click', '.plus.inc_dec_include_service', function() {
+                    var $input = $(this).closest('.package_quantity').find('.quantity-input.inc_dec_include_service');
+                    var val = parseInt($input.val()) || 1;
+                    var max = parseInt($input.attr('max')) || 99;
+                    if (val < max) {
+                        $input.val(val + 1).trigger('quantitychange');
+                    }
+                });
+
+                // Recalculate on quantity change (manual input or triggered)
+                $(document).on('keyup quantitychange', '.quantity-input.inc_dec_include_service', function() {
                     var include_total_price = 0;
-                    var include_service_id = 0;
-                    var quantity = 0;
+                    var $input = $(this);
+                    var include_service_id = $input.data('id');
+                    var min = parseInt($input.attr('min')) || 1;
+                    var max = parseInt($input.attr('max')) || 99;
+                    var quantity = parseInt($input.val()) || min;
 
-                     include_service_id = $(this).prev('.inc_dec_include_service').data('id');
-                     quantity = Number($(this).prev('.inc_dec_include_service').val());
+                    // Clamp value
+                    if (quantity < min) { quantity = min; $input.val(min); }
+                    if (quantity > max) { quantity = max; $input.val(max); }
 
-                     if(typeof include_service_id === 'undefined'){
-                         include_service_id = $(this).data('id');
-                         quantity = Number($(this).val());
-                     }
-
-                     if(typeof include_service_id === 'undefined'){
-                         include_service_id = $(this).next('.inc_dec_include_service').data('id');
-                         quantity = Number($(this).next('.inc_dec_include_service').val());
-                     }
-
-
+                    refreshIncludeButtons($input);
 
                     $('#include_service_quantity_2_' + include_service_id).text(quantity);
                     $('#include_service_quantity_3_' + include_service_id).text(quantity);
 
-                    if (isNaN(quantity)) {
-
-                    } else {
-
-                        let included_services = $("div.single-include");
-
-                        for (let i = 0; i < included_services.length; i++) {
-                            let service_data = $(included_services[i]).find('.inc_dec_include_service');
-                            let service_count = Number(service_data.val());
-                            let service_total_price = Number(service_data.data('price'));
-                            include_total_price += (service_count * service_total_price);
-                        }
-
-                        $('.package-fee').text(site_default_currency_symbol+include_total_price);
-                        $('input[name="package_fee_input_hiddend_field_for_js_calculation"]').val(parseFloat(include_total_price));
-                        subtotal_calculate();
-                        total_amount();
+                    let included_services = $("div.single-include");
+                    for (let i = 0; i < included_services.length; i++) {
+                        let service_data = $(included_services[i]).find('.quantity-input.inc_dec_include_service');
+                        let service_count = parseInt(service_data.val()) || 1;
+                        let service_total_price = Number(service_data.data('price'));
+                        include_total_price += (service_count * service_total_price);
                     }
+
+                    $('.package-fee').text(site_default_currency_symbol + include_total_price);
+                    $('input[name="package_fee_input_hiddend_field_for_js_calculation"]').val(parseFloat(include_total_price));
+                    subtotal_calculate();
+                    total_amount();
                 })
 
                 //Upgrade order with extras

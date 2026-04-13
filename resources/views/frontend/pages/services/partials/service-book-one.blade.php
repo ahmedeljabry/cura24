@@ -274,7 +274,7 @@
                                                                                    class="inc_dec_include_service"
                                                                                    data-id="{{ $include->id }}"
                                                                                    data-price="{{ $include->include_service_price }}"
-                                                                                   value="1" {{ $include->include_service_quantity <= 1 ? 'readonly' : '' }} oninput="validateNumberInput(this)">
+                                                                                   value="1" oninput="validateNumberInput(this)">
                                                                         </span>
                                                                         </div>
                                                                     @endif

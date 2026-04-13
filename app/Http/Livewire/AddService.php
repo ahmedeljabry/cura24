@@ -311,19 +311,25 @@ class AddService extends Component
                 Serviceinclude::insert($all_include_service);
             }
            }else {
-          // include service add
-            if (!empty($this->include_service_title)){
-                foreach ($this->include_service_title as $key => $value) {
-               
+           // include service add
+            $req_include_titles = request()->input('include_service_title', []);
+            $req_include_prices = request()->input('include_service_price', []);
+            $req_include_quantities = request()->input('include_service_quantity', []);
+            $include_titles = !empty($this->include_service_title) ? $this->include_service_title : $req_include_titles;
+
+            if (!empty($include_titles)){
+                foreach ($include_titles as $key => $title) {
+                    if (empty($title)) continue;
+                    $price = $this->include_service_price[$key] ?? $req_include_prices[$key] ?? 0;
+                    $qty = max(1, (int)($req_include_quantities[$key] ?? 1));
                     $all_include_service[] = [
                         'service_id' => $service->id,
                         'seller_id' => Auth::guard('web')->user()->id,
-                        'include_service_title' => $this->include_service_title[$key] ?? null,
-                        'include_service_price' => $this->include_service_price[$key] ?? 0,
-                        'include_service_quantity' => 1,
+                        'include_service_title' => $title,
+                        'include_service_price' => $price,
+                        'include_service_quantity' => $qty,
                     ];
-
-                    $service_total_price += $this->include_service_price[$key] * 1;
+                    $service_total_price += $price;
                 }
             }
             Serviceinclude::insert($all_include_service);
@@ -332,16 +338,22 @@ class AddService extends Component
 
 
         // additional service add
-        if (!empty($this->additional_service_title)) {
-            foreach ($this->additional_service_title as $key => $value) {
-                if (!empty($this->additional_service_title[$key])) {
+        $req_additional_titles = request()->input('additional_service_title', []);
+        $req_additional_prices = request()->input('additional_service_price', []);
+        $req_additional_quantities = request()->input('additional_service_quantity', []);
+        $req_additional_images = request()->input('additional_service_image', []);
+        $additional_titles = !empty($this->additional_service_title) ? $this->additional_service_title : $req_additional_titles;
+
+        if (!empty($additional_titles)) {
+            foreach ($additional_titles as $key => $title) {
+                if (!empty($title)) {
                     $all_additional_service[] = [
                         'service_id' => $service->id,
                         'seller_id' => Auth::guard('web')->user()->id,
-                        'additional_service_title' => $this->additional_service_title[$key] ?? null,
-                        'additional_service_price' => $this->additional_service_price[$key] ?? null,
-                        'additional_service_quantity' => 1,
-                        'additional_service_image' => $this->additional_service_image[$key] ?? null,
+                        'additional_service_title' => $title,
+                        'additional_service_price' => $this->additional_service_price[$key] ?? $req_additional_prices[$key] ?? null,
+                        'additional_service_quantity' => max(1, (int)($req_additional_quantities[$key] ?? 1)),
+                        'additional_service_image' => $this->additional_service_image[$key] ?? $req_additional_images[$key] ?? null,
                     ];
                 }
             }

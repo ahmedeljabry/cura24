@@ -11,4 +11,23 @@ class Serviceinclude extends Model
 
     protected $table = 'serviceincludes';
     protected $fillable = ['seller_id', 'service_id', 'include_service_title', 'include_service_price', 'include_service_quantity'];
+
+    public function getIncludeServiceTitleAttribute($value)
+    {
+        if ($this->shouldShowEnglish()) {
+            if (!empty($this->attributes['include_service_title_en'])) {
+                return $this->attributes['include_service_title_en'];
+            }
+        }
+        return $value;
+    }
+
+    private function shouldShowEnglish(): bool
+    {
+        $lang = session()->get('lang');
+        if (empty($lang)) {
+            return true;
+        }
+        return $lang !== 'it_IT';
+    }
 }
