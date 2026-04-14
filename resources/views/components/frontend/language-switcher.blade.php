@@ -17,7 +17,7 @@
                     $lang_name = trim(explode('(', $lang->name)[0]);
                 @endphp
                 <li class="list">
-                    <a href="{{ route('frontend.lang.change', ['lang' => $lang->slug]) }}">
+                    <a href="{{ \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($lang->slug) }}">
                         {{ $lang_name }}
                         @if($lang->slug === $current_language_slug)
                             <i class="las la-check"></i>

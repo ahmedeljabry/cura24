@@ -2,7 +2,12 @@
 use Illuminate\Support\Facades\Route;
 
 
-Route::group(['prefix'=>'buyer','middleware'=>['auth','inactiveuser','UserRoleCheck','userEmailVerify','setlang']],function(){
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
+Route::group([
+    'prefix' => LaravelLocalization::setLocale() . '/buyer',
+    'middleware'=>['auth','inactiveuser','UserRoleCheck','userEmailVerify', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'globalVariable']
+],function(){
 
     Route::get('/dashboard', 'Frontend\BuyerController@buyerDashboard')->name('buyer.dashboard');
     Route::get('/profile','Frontend\BuyerController@buyerProfile')->name('buyer.profile');

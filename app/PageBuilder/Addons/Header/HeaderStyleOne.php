@@ -36,28 +36,54 @@ class HeaderStyleOne extends \App\PageBuilder\PageBuilderBase
         $widget_saved_values = $this->get_settings();
 
 
-        $output .= Text::get([
-            'name' => 'title',
-            'label' => __('Title'),
-            'value' => $widget_saved_values['title'] ?? null,
-        ]);
-        $output .= Text::get([
-            'name' => 'subtitle',
-            'label' => __('Subtitle'),
-            'value' => $widget_saved_values['subtitle'] ?? null,
-        ]);
+        $output .= $this->admin_language_tab();
+        $output .= $this->admin_language_tab_start();
 
-        $output .= Text::get([
-            'name' => 'satisfied_customer_title',
-            'label' => __('Satisfied Customer Title'),
-            'value' => $widget_saved_values['satisfied_customer_title'] ?? null,
-        ]);
+        $all_languages = \App\Helpers\LanguageHelper::all_languages();
+        foreach ($all_languages as $key => $lang) {
+            $output .= $this->admin_language_tab_content_start([
+                'class' => $key == 0 ? 'tab-pane fade show active' : 'tab-pane fade',
+                'id' => 'nav-home-' . $lang->slug
+            ]);
 
-        $output .= Text::get([
-            'name' => 'service_type',
-            'label' => __('Review Title'),
-            'value' => $widget_saved_values['service_type'] ?? null,
-        ]);
+            $output .= Text::get([
+                'name' => 'title_'.$lang->slug,
+                'label' => __('Title'),
+                'value' => $widget_saved_values['title_'.$lang->slug] ?? null,
+            ]);
+            $output .= Text::get([
+                'name' => 'subtitle_'.$lang->slug,
+                'label' => __('Subtitle'),
+                'value' => $widget_saved_values['subtitle_'.$lang->slug] ?? null,
+            ]);
+
+            $output .= Text::get([
+                'name' => 'satisfied_customer_title_'.$lang->slug,
+                'label' => __('Satisfied Customer Title'),
+                'value' => $widget_saved_values['satisfied_customer_title_'.$lang->slug] ?? null,
+            ]);
+
+            $output .= Text::get([
+                'name' => 'service_type_'.$lang->slug,
+                'label' => __('Review Title'),
+                'value' => $widget_saved_values['service_type_'.$lang->slug] ?? null,
+            ]);
+            
+            $output .= Text::get([
+                'name' => 'button_one_title_'.$lang->slug,
+                'label' => __('Button One Title'),
+                'value' => $widget_saved_values['button_one_title_'.$lang->slug] ?? null,
+            ]);
+
+            $output .= Text::get([
+                'name' => 'button_two_title_'.$lang->slug,
+                'label' => __('Button Two Title'),
+                'value' => $widget_saved_values['button_two_title_'.$lang->slug] ?? null,
+            ]);
+
+            $output .= $this->admin_language_tab_content_end();
+        }
+        $output .= $this->admin_language_tab_end();
         $output .= IconPicker::get([
             'name' => 'service_icon',
             'label' => __('Review Icon'),
@@ -99,21 +125,9 @@ class HeaderStyleOne extends \App\PageBuilder\PageBuilderBase
 
 
         $output .= Text::get([
-            'name' => 'button_one_title',
-            'label' => __('Button One Title'),
-            'value' => $widget_saved_values['button_one_title'] ?? null,
-        ]);
-
-        $output .= Text::get([
             'name' => 'button_one_link',
             'label' => __('Button One Link'),
             'value' => $widget_saved_values['button_one_link'] ?? null,
-        ]);
-
-        $output .= Text::get([
-            'name' => 'button_two_title',
-            'label' => __('Button Two Title'),
-            'value' => $widget_saved_values['button_two_title'] ?? null,
         ]);
 
         $output .= Text::get([
@@ -177,12 +191,14 @@ class HeaderStyleOne extends \App\PageBuilder\PageBuilderBase
     {
         $settings = $this->get_settings();
 
-        $title = $settings['title'] ?? '';
-        $subtitle = $settings['subtitle'] ?? '';
-        $satisfied_customer_title = $settings['satisfied_customer_title'] ?? '';
+        $current_lang = app()->getLocale();
+
+        $title = $settings['title_'.$current_lang] ?? $settings['title'] ?? '';
+        $subtitle = $settings['subtitle_'.$current_lang] ?? $settings['subtitle'] ?? '';
+        $satisfied_customer_title = $settings['satisfied_customer_title_'.$current_lang] ?? $settings['satisfied_customer_title'] ?? '';
         $header_background_color = $settings['header_background_color'] ?? '';
         $review_icon = $settings['service_icon'] ?? '';
-        $review_title = $settings['service_type'] ?? '';
+        $review_title = $settings['service_type_'.$current_lang] ?? $settings['service_type'] ?? '';
         $review_banner_show_hide =$settings['review_banner_area'] ?? '';
         $satisfied_customer_show_hide =$settings['satisfied_customer_show_hide'] ?? '';
         $five_star_review_clients_count = Review::where('rating', 5)->where('status','1')->count();
@@ -191,8 +207,8 @@ class HeaderStyleOne extends \App\PageBuilder\PageBuilderBase
         $satisfied_customer_images = $settings['satisfied_customer_01'] ?? 0;
 
         // button section
-        $button_one_title = $settings['button_one_title'] ?? '';
-        $button_two_title = $settings['button_two_title'] ?? '';
+        $button_one_title = $settings['button_one_title_'.$current_lang] ?? $settings['button_one_title'] ?? '';
+        $button_two_title = $settings['button_two_title_'.$current_lang] ?? $settings['button_two_title'] ?? '';
         $button_one_link = $settings['button_one_link'] ?? '';
         $button_two_link = $settings['button_two_link'] ?? '';
         $button_one_show_hide = $settings['button_one_show_hide'] ?? '';

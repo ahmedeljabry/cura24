@@ -30,37 +30,51 @@ class AboutUs extends \App\PageBuilder\PageBuilderBase
         $widget_saved_values = $this->get_settings();
 
 
-        $output .= Text::get([
-            'name' => 'title',
-            'label' => __('Title'),
-            'value' => $widget_saved_values['title'] ?? null,
-        ]);
-        $output .= Textarea::get([
-            'name' => 'subtitle',
-            'label' => __('Subtitle'),
-            'value' => $widget_saved_values['subtitle'] ?? null,
-        ]);
+        $output .= $this->admin_language_tab();
+        $output .= $this->admin_language_tab_start();
 
-        $output .= Text::get([
-            'name' => 'year',
-            'label' => __('Year of Experience'),
-            'value' => $widget_saved_values['year'] ?? null,
-        ]);
+        $all_languages = \App\Helpers\LanguageHelper::all_languages();
+        foreach ($all_languages as $key => $lang) {
+            $output .= $this->admin_language_tab_content_start([
+                'class' => $key == 0 ? 'tab-pane fade show active' : 'tab-pane fade',
+                'id' => 'nav-home-' . $lang->slug
+            ]);
+
+            $output .= Text::get([
+                'name' => 'title_'.$lang->slug,
+                'label' => __('Title'),
+                'value' => $widget_saved_values['title_'.$lang->slug] ?? null,
+            ]);
+            $output .= Textarea::get([
+                'name' => 'subtitle_'.$lang->slug,
+                'label' => __('Subtitle'),
+                'value' => $widget_saved_values['subtitle_'.$lang->slug] ?? null,
+            ]);
+
+            $output .= Text::get([
+                'name' => 'year_'.$lang->slug,
+                'label' => __('Year of Experience'),
+                'value' => $widget_saved_values['year_'.$lang->slug] ?? null,
+            ]);
 
 
-        $output .= Text::get([
-            'name' => 'button_title',
-            'label' => __('Button Title'),
-            'value' => $widget_saved_values['button_title'] ?? null,
-            'info' => __('add button title')
-        ]);
+            $output .= Text::get([
+                'name' => 'button_title_'.$lang->slug,
+                'label' => __('Button Title'),
+                'value' => $widget_saved_values['button_title_'.$lang->slug] ?? null,
+                'info' => __('add button title')
+            ]);
 
-        $output .= Text::get([
-            'name' => 'button_link',
-            'label' => __('Button Link'),
-            'value' => $widget_saved_values['button_link'] ?? null,
-            'info' => __('add button link')
-        ]);
+            $output .= Text::get([
+                'name' => 'button_link_'.$lang->slug,
+                'label' => __('Button Link'),
+                'value' => $widget_saved_values['button_link_'.$lang->slug] ?? null,
+                'info' => __('add button link')
+            ]);
+
+            $output .= $this->admin_language_tab_content_end();
+        }
+        $output .= $this->admin_language_tab_end();
 
         $output .= Switcher::get([
             'name' => 'experience_show_hide',
@@ -126,12 +140,13 @@ class AboutUs extends \App\PageBuilder\PageBuilderBase
     public function frontend_render() : string
     {
         $settings = $this->get_settings();
-        $title =$settings['title'] ?? '';
-        $subtitle = $settings['subtitle'] ?? '';
-        $year = $settings['year'] ?? '';
+        $current_lang = app()->getLocale();
+        $title = $settings['title_'.$current_lang] ?? $settings['title'] ?? '';
+        $subtitle = $settings['subtitle_'.$current_lang] ?? $settings['subtitle'] ?? '';
+        $year = $settings['year_'.$current_lang] ?? $settings['year'] ?? '';
 
-        $button_link = $settings['button_link'] ?? '';
-        $button_title = $settings['button_title'] ?? '';
+        $button_link = $settings['button_link_'.$current_lang] ?? $settings['button_link'] ?? '';
+        $button_title = $settings['button_title_'.$current_lang] ?? $settings['button_title'] ?? '';
 
         $experience_show_hide = $settings['experience_show_hide'] ??  '';
         $about_list_show_hide = $settings['about_list_show_hide'] ??  '';

@@ -2,7 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix'=>'seller','middleware'=>['auth','inactiveuser','BuyerCheck','userEmailVerify','setlang','globalVariable']],function(){
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
+Route::group([
+    'prefix' => LaravelLocalization::setLocale() . '/seller',
+    'middleware'=>['auth','inactiveuser','BuyerCheck','userEmailVerify', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'globalVariable']
+],function(){
 
     Route::get('/dashboard','Frontend\SellerController@sellerDashboard')->name('seller.dashboard');
     Route::get('/profile','Frontend\SellerController@sellerProfile')->name('seller.profile');

@@ -25,6 +25,7 @@
         "laravel/tinker": "^2.0",
         "livewire/livewire": "^3.4",
         "matanyadaev/laravel-eloquent-spatial": "^4.2.1",
+        "mcamara/laravel-localization": "^2.4",
         "mews/purifier": "^3.3",
         "nwidart/laravel-modules": "^8.3",
         "php-http/message": "^1.16",

@@ -4,9 +4,13 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 
-// frontend starts
-Route::group(['middleware' => ['globalVariable', 'maintains_mode','setlang']], function () {
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
+// frontend starts
+Route::group([
+    'prefix' => LaravelLocalization::setLocale(),
+    'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'globalVariable', 'maintains_mode' ]
+], function () {
     Route::get('/', 'FrontendController@index')->name('homepage');
     Route::get('/home-search', 'FrontendController@home_search')->name('frontend.home.search');
     Route::get('/home-search-two', 'FrontendController@home_search_two')->name('frontend.home.search.two');
@@ -149,7 +153,10 @@ Route::middleware(['setlang'])->group(function () {
     Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 });
 
-Route::group(['middleware' => ['setlang', 'globalVariable', 'maintains_mode']], function () {
+Route::group([
+    'prefix' => LaravelLocalization::setLocale(),
+    'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'globalVariable', 'maintains_mode' ]
+], function () {
     Route::get('/{slug}', 'FrontendController@dynamic_single_page')->name('frontend.dynamic.page');
     Route::get('/{username?}', 'FrontendController@dynamic_single_page')->name('about.seller.profile');
     Route::get('/buyer-profile/{username?}', 'FrontendController@buyerProfile')->name('about.buyer.profile');

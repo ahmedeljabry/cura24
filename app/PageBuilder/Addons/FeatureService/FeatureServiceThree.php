@@ -28,16 +28,36 @@ class FeatureServiceThree extends \App\PageBuilder\PageBuilderBase
         $widget_saved_values = $this->get_settings();
 
 
-        $output .= Text::get([
-            'name' => 'title',
-            'label' => __('Title'),
-            'value' => $widget_saved_values['title'] ?? null,
-        ]);
-        $output .= Text::get([
-            'name' => 'explore_all',
-            'label' => __('Explore Text'),
-            'value' => $widget_saved_values['explore_all'] ?? null,
-        ]);
+        $output .= $this->admin_language_tab();
+        $output .= $this->admin_language_tab_start();
+
+        $all_languages = \App\Helpers\LanguageHelper::all_languages();
+        foreach ($all_languages as $key => $lang) {
+            $output .= $this->admin_language_tab_content_start([
+                'class' => $key == 0 ? 'tab-pane fade show active' : 'tab-pane fade',
+                'id' => 'nav-home-' . $lang->slug
+            ]);
+
+            $output .= Text::get([
+                'name' => 'title_'.$lang->slug,
+                'label' => __('Title'),
+                'value' => $widget_saved_values['title_'.$lang->slug] ?? null,
+            ]);
+            $output .= Text::get([
+                'name' => 'explore_all_'.$lang->slug,
+                'label' => __('Explore Text'),
+                'value' => $widget_saved_values['explore_all_'.$lang->slug] ?? null,
+            ]);
+
+            $output .= Text::get([
+                'name' => 'book_appointment_'.$lang->slug,
+                'label' => __('Book Appointment Button Text'),
+                'value' => $widget_saved_values['book_appointment_'.$lang->slug] ?? 'Book Now',
+            ]);
+
+            $output .= $this->admin_language_tab_content_end();
+        }
+        $output .= $this->admin_language_tab_end();
 
         $output .= Number::get([
             'name' => 'items',
@@ -77,11 +97,6 @@ class FeatureServiceThree extends \App\PageBuilder\PageBuilderBase
             'info' => __('select color you want to show in frontend'),
         ]);
 
-        $output .= Text::get([
-            'name' => 'book_appointment',
-            'label' => __('Book Appointment Button Text'),
-            'value' => $widget_saved_values['book_appointment'] ?? 'Book Now',
-        ]);
 
         $output .= $this->admin_form_submit_button();
         $output .= $this->admin_form_end();
@@ -95,15 +110,16 @@ class FeatureServiceThree extends \App\PageBuilder\PageBuilderBase
     {
         
         $settings = $this->get_settings();
-        $section_title =$settings['title'];
-        $explore_text =$settings['explore_all'];
+        $current_lang = app()->getLocale();
+        $section_title = $settings['title_'.$current_lang] ?? $settings['title'] ?? '';
+        $explore_text = $settings['explore_all_'.$current_lang] ?? $settings['explore_all'] ?? '';
         $items =$settings['items'];
         $padding_top = $settings['padding_top'] ?? '';
         $padding_bottom = $settings['padding_bottom'] ?? '';
         $section_bg = $settings['section_bg'] ?? '';
         $btn_color = $settings['btn_color'] ?? '';
         $button_text_color = $settings['button_text_color'] ?? '';
-        $book_appoinment = $settings['book_appointment'] ?? 'Book Now';
+        $book_appoinment = $settings['book_appointment_'.$current_lang] ?? $settings['book_appointment'] ?? 'Book Now';
 
 
         //static text helpers

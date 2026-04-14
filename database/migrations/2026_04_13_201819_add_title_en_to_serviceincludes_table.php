@@ -13,6 +13,7 @@ class AddTitleEnToServiceincludesTable extends Migration
         });
     }
 
+
     public function down()
     {
         Schema::table('serviceincludes', function (Blueprint $table) {

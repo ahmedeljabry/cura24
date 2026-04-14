@@ -1398,6 +1398,11 @@ class ServiceController extends Controller
             'facebook_meta_description' => 'text',
             'twitter_meta_tags' => 'text',
             'twitter_meta_description' => 'text',
+            'include_service_title.*' => 'text',
+            'additional_service_title.*' => 'text',
+            'benifits.*' => 'text',
+            'faqs_title.*' => 'text',
+            'faqs_description.*' => 'text',
         ]);
     }
 
