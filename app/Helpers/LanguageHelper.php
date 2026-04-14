@@ -29,13 +29,9 @@ class LanguageHelper
     public static function user_lang()
     {
         if (self::$user_lang === null) {
-            $session_lang = session()->get('lang');
-            if ( !empty($session_lang) && $session_lang !== self::default_slug()){
-                self::$user_lang = self::lang_instance()->where('slug',session()->get('lang'))->first();
-            }else{
-                self::$user_lang = self::default();
-            }
-
+            $current_lang = app()->getLocale();
+            $lang = self::lang_instance()->where('slug', $current_lang)->first();
+            self::$user_lang = $lang ? $lang : self::default();
         }
         return self::$user_lang;
     }
