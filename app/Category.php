@@ -68,13 +68,8 @@ class Category extends Model
             return false;
         }
 
-        $lang = session()->get('lang');
-
-        if (empty($lang)) {
-            return true;
-        }
-
-        return $lang !== 'it_IT';
+        $lang = \App\Helpers\LanguageHelper::user_lang_slug();
+        return !in_array($lang, ['it', 'it_IT']);
     }
 
     /**

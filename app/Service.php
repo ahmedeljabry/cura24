@@ -202,16 +202,8 @@ class Service extends Model
             return false;
         }
 
-        $lang = session()->get('lang');
-
-        // When no session is set the app defaults to the default language (en_GB).
-        // Italian content lives in the base columns, so we need English whenever
-        // the active language is anything OTHER than Italian.
-        if (empty($lang)) {
-            return true;          // default language is English
-        }
-
-        return $lang !== 'it_IT'; // show English for every non-Italian language
+        $lang = \App\Helpers\LanguageHelper::user_lang_slug();
+        return !in_array($lang, ['it', 'it_IT']);
     }
 
     /**
