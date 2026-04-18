@@ -198,6 +198,10 @@ class Service extends Model
      */
     private function shouldShowEnglish(): bool
     {
+        if (request()->is('admin-home*') || request()->is('seller*') || request()->is('api/v1/seller*')) {
+            return false;
+        }
+
         $lang = session()->get('lang');
 
         // When no session is set the app defaults to the default language (en_GB).

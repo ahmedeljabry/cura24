@@ -28,6 +28,10 @@ class MetaData extends Model
 
     private function shouldShowEnglish(): bool
     {
+        if (request()->is('admin-home*') || request()->is('seller*') || request()->is('api/v1/seller*')) {
+            return false;
+        }
+
         $lang = session()->get('lang');
         if (empty($lang)) return true;
         return $lang !== 'it_IT';
