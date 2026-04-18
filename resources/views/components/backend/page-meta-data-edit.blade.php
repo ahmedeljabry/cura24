@@ -26,23 +26,40 @@
         <div class="tab-pane fade show active dynamic-page-meta" id="v-pills-home"
              role="tabpanel" aria-labelledby="v-pills-home-tab">
             <div class="form-group">
-                <label for="title">{{__('Meta Title')}}</label>
+                <label for="title">{{__('Meta Title (Italian)')}}</label>
                 <input type="text" class="form-control" name="meta_title"
                        value="{{$pagepost->meta_data->meta_title ?? ''}}">
             </div>
             <div class="form-group">
-                <label for="slug">{{__('Meta Tags')}}</label>
+                <label for="meta_title_en">{{__('Meta Title (English)')}}</label>
+                <input type="text" class="form-control" name="meta_title_en"
+                       value="{{$pagepost->meta_data->meta_title_en ?? ''}}">
+            </div>
+            <div class="form-group">
+                <label for="slug">{{__('Meta Tags (Italian)')}}</label>
                 <input type="text" class="form-control" name="meta_tags"
                        value="{{$pagepost->meta_data->meta_tags ?? ''}}" data-role="tagsinput">
+            </div>
+            <div class="form-group">
+                <label for="meta_tags_en">{{__('Meta Tags (English)')}}</label>
+                <input type="text" class="form-control" name="meta_tags_en"
+                       value="{{$pagepost->meta_data->meta_tags_en ?? ''}}" data-role="tagsinput">
             </div>
 
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label for="title">{{__('Meta Description')}}</label>
+                    <label for="title">{{__('Meta Description (Italian)')}}</label>
                     <textarea name="meta_description"
                               class="form-control max-height-140"
                               cols="20"
                               rows="4">{!! $pagepost->meta_data->meta_description ?? '' !!}</textarea>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="meta_description_en">{{__('Meta Description (English)')}}</label>
+                    <textarea name="meta_description_en"
+                              class="form-control max-height-140"
+                              cols="20"
+                              rows="4">{!! $pagepost->meta_data->meta_description_en ?? '' !!}</textarea>
                 </div>
             </div>
 
@@ -51,18 +68,30 @@
         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
              aria-labelledby="v-pills-profile-tab">
             <div class="form-group">
-                <label for="title">{{__('Facebook Meta Tag')}}</label>
+                <label for="title">{{__('Facebook Meta Tag (Italian)')}}</label>
                 <input type="text" class="form-control" data-role="tagsinput"
                        name="facebook_meta_tags" value="{{$pagepost->meta_data->facebook_meta_tags ?? ''}}">
+            </div>
+            <div class="form-group">
+                <label for="facebook_meta_tags_en">{{__('Facebook Meta Tag (English)')}}</label>
+                <input type="text" class="form-control" data-role="tagsinput"
+                       name="facebook_meta_tags_en" value="{{$pagepost->meta_data->facebook_meta_tags_en ?? ''}}">
             </div>
 
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label for="title">{{__('Facebook Meta Description')}}</label>
+                    <label for="title">{{__('Facebook Meta Description (Italian)')}}</label>
                     <textarea name="facebook_meta_description"
                               class="form-control max-height-140"
                               cols="20"
                               rows="4">{!! $pagepost->meta_data->facebook_meta_description ?? '' !!}</textarea>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="facebook_meta_description_en">{{__('Facebook Meta Description (English)')}}</label>
+                    <textarea name="facebook_meta_description_en"
+                              class="form-control max-height-140"
+                              cols="20"
+                              rows="4">{!! $pagepost->meta_data->facebook_meta_description_en ?? '' !!}</textarea>
                 </div>
             </div>
 
@@ -88,18 +117,30 @@
         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
              aria-labelledby="v-pills-messages-tab">
             <div class="form-group">
-                <label for="title">{{__('Twitter Meta Tag')}}</label>
+                <label for="title">{{__('Twitter Meta Tag (Italian)')}}</label>
                 <input type="text" class="form-control" data-role="tagsinput"
                        name="twitter_meta_tags" value=" {{$pagepost->meta_data->twitter_meta_tags ?? ''}}">
+            </div>
+            <div class="form-group">
+                <label for="twitter_meta_tags_en">{{__('Twitter Meta Tag (English)')}}</label>
+                <input type="text" class="form-control" data-role="tagsinput"
+                       name="twitter_meta_tags_en" value=" {{$pagepost->meta_data->twitter_meta_tags_en ?? ''}}">
             </div>
 
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label for="title">{{__('Twitter Meta Description')}}</label>
+                    <label for="title">{{__('Twitter Meta Description (Italian)')}}</label>
                     <textarea name="twitter_meta_description"
                               class="form-control max-height-140 meta-desc"
                               cols="20"
                               rows="4">{!! $pagepost->meta_data->twitter_meta_description ?? '' !!}</textarea>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="twitter_meta_description_en">{{__('Twitter Meta Description (English)')}}</label>
+                    <textarea name="twitter_meta_description_en"
+                              class="form-control max-height-140 meta-desc"
+                              cols="20"
+                              rows="4">{!! $pagepost->meta_data->twitter_meta_description_en ?? '' !!}</textarea>
                 </div>
             </div>
             <div class="form-group">

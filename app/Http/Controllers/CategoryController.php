@@ -48,7 +48,9 @@ class CategoryController extends Controller
            $request->slug=='' ? $slug = Str::slug($request->name) : $slug = $request->slug;
             $category = Category::create([
                'name' => $request->name,
+               'name_en' => $request->name_en,
                'description' => $request->description,
+               'description_en' => $request->description_en,
                'slug' => $slug,
                'icon' => $request->icon,
                'image' => $request->image,
@@ -98,7 +100,9 @@ class CategoryController extends Controller
 
               Category::where('id',$id)->update([
                 'name'=>$request->name,
+                'name_en'=>$request->name_en,
                 'description' => $request->description,
+                'description_en' => $request->description_en,
                 'slug'=>$request->slug ?? $old_slug->slug,
                 'icon'=>$request->icon,
                 'mobile_icon'=>$request->mobile_icon,

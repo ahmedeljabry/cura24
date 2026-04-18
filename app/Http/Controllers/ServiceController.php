@@ -521,14 +521,14 @@ class ServiceController extends Controller
             $service->subcategory_id = $request->subcategory;
             $service->child_category_id = $request->child_category;
             $service->title = $translatedTitle;
-            $service->title_en = $request->title;
+            $service->title_en = $request->title_en;
             $service->slug = $this->resolveServiceSlug(
                 $request->title,
                 $translatedTitle,
                 $request->slug
             );
             $service->description = $translatedData['description'] ?? $request->description;
-            $service->description_en = $request->description;
+            $service->description_en = $request->description_en;
             $service->image = $request->image;
             $service->image_gallery = $request->image_gallery;
             $service->video = $request->video;
@@ -554,15 +554,22 @@ class ServiceController extends Controller
 
             $Metas = [
                 'meta_title'=> purify_html($translatedData['meta_title'] ?? $request->meta_title),
+                'meta_title_en'=> purify_html($request->meta_title_en),
                 'meta_tags'=> purify_html($request->meta_tags),
+                'meta_tags_en'=> purify_html($request->meta_tags_en),
                 'meta_description'=> purify_html($translatedData['meta_description'] ?? $request->meta_description),
+                'meta_description_en'=> purify_html($request->meta_description_en),
 
                 'facebook_meta_tags'=> purify_html($translatedData['facebook_meta_tags'] ?? $request->facebook_meta_tags),
+                'facebook_meta_tags_en'=> purify_html($request->facebook_meta_tags_en),
                 'facebook_meta_description'=> purify_html($translatedData['facebook_meta_description'] ?? $request->facebook_meta_description),
+                'facebook_meta_description_en'=> purify_html($request->facebook_meta_description_en),
                 'facebook_meta_image'=> $request->facebook_meta_image,
 
                 'twitter_meta_tags'=> purify_html($translatedData['twitter_meta_tags'] ?? $request->twitter_meta_tags),
+                'twitter_meta_tags_en'=> purify_html($request->twitter_meta_tags_en),
                 'twitter_meta_description'=> purify_html($translatedData['twitter_meta_description'] ?? $request->twitter_meta_description),
+                'twitter_meta_description_en'=> purify_html($request->twitter_meta_description_en),
                 'twitter_meta_image'=> $request->twitter_meta_image,
             ];
             $service->save();
@@ -616,14 +623,14 @@ class ServiceController extends Controller
                 'subcategory_id' => $request->subcategory,
                 'child_category_id' => $request->child_category,
                 'title' => $translatedTitle,
-                'title_en' => $request->title,
+                'title_en' => $request->title_en,
                 'slug' => $this->resolveServiceSlug(
                     $request->title,
                     $translatedTitle,
                     $request->slug ?? $old_slug->slug
                 ),
                 'description' => $translatedData['description'] ?? $request->description,
-                'description_en' => $request->description,
+                'description_en' => $request->description_en,
                 'seller_id' =>  $request->seller_id,
                 // Determine city/area: if not all-cities, use the first selected city/area from the form
                 'service_city_id' => (!$request->has('is_service_all_cities') && $request->filled('service_cities'))
@@ -642,15 +649,22 @@ class ServiceController extends Controller
             $service_meta_update =  Service::findOrFail($id);
             $Metas = [
                 'meta_title'=> purify_html($translatedData['meta_title'] ?? $request->meta_title),
+                'meta_title_en'=> purify_html($request->meta_title_en),
                 'meta_tags'=> $request->meta_tags,
+                'meta_tags_en'=> $request->meta_tags_en,
                 'meta_description'=> purify_html($translatedData['meta_description'] ?? $request->meta_description),
+                'meta_description_en'=> purify_html($request->meta_description_en),
 
                 'facebook_meta_tags'=> purify_html($translatedData['facebook_meta_tags'] ?? $request->facebook_meta_tags),
+                'facebook_meta_tags_en'=> purify_html($request->facebook_meta_tags_en),
                 'facebook_meta_description'=> purify_html($translatedData['facebook_meta_description'] ?? $request->facebook_meta_description),
+                'facebook_meta_description_en'=> purify_html($request->facebook_meta_description_en),
                 'facebook_meta_image'=> $request->facebook_meta_image,
 
                 'twitter_meta_tags'=> purify_html($translatedData['twitter_meta_tags'] ?? $request->twitter_meta_tags),
+                'twitter_meta_tags_en'=> purify_html($request->twitter_meta_tags_en),
                 'twitter_meta_description'=> purify_html($translatedData['twitter_meta_description'] ?? $request->twitter_meta_description),
+                'twitter_meta_description_en'=> purify_html($request->twitter_meta_description_en),
                 'twitter_meta_image'=> $request->twitter_meta_image,
             ];
 

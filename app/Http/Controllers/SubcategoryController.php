@@ -49,7 +49,9 @@ class SubcategoryController extends Controller
             $request->slug=='' ? $slug = Str::slug($request->name) : $slug = $request->slug;
             $sub_category = Subcategory::create([
                'name' => $request->name,
+               'name_en' => $request->name_en,
                'description' => $request->description,
+               'description_en' => $request->description_en,
                'slug' => $slug,
                'category_id' => $request->category_id,
                'image' => $request->image,
@@ -118,7 +120,9 @@ class SubcategoryController extends Controller
 
        Subcategory::where('id',$request->id)->update([
              'name'=>$request->name,
+             'name_en'=>$request->name_en,
              'description'=>$request->description,
+             'description_en'=>$request->description_en,
              'category_id'=>$request->category_id,
              'slug'=>$request->slug ?? $old_slug->slug,
              'image'=>$request->image ?? $old_image->image,

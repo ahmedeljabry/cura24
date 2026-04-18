@@ -16,7 +16,7 @@
                         <h4 class="header-title mb-4">{{__("Basic Settings")}}</h4>
                         <form action="{{route('admin.general.basic.settings')}}" method="POST" enctype="multipart/form-data">
                             @csrf
-
+                            <h5 class="mt-4 mb-3 text-primary">{{__('Italian Content')}}</h5>
                             <div class="form-group">
                                 <label for="site_title">{{__('Site Title')}}</label>
                                 <input type="text" name="site_title"  class="form-control" value="{{get_static_option('site_title')}}" id="site_title">
@@ -30,6 +30,23 @@
                                 <input type="text" name="site_footer_copyright"  class="form-control" value="{{get_static_option('site_footer_copyright')}}" id="site_footer_copyright">
                                 <small class="form-text text-muted">{{__('{copy} will replace by ©; and {year} will be replaced by current year.')}}</small>
                             </div>
+
+                            <h5 class="mt-4 mb-3 text-info">{{__('English Content')}}</h5>
+                            <div class="form-group">
+                                <label for="site_title_en">{{__('Site Title (English)')}}</label>
+                                <input type="text" name="site_title_en"  class="form-control" value="{{get_static_option('site_title_en')}}" id="site_title_en">
+                            </div>
+                            <div class="form-group">
+                                <label for="site_tag_line_en">{{__('Site Tag Line (English)')}}</label>
+                                <input type="text" name="site_tag_line_en"  class="form-control" value="{{get_static_option('site_tag_line_en')}}" id="site_tag_line_en">
+                            </div>
+                            <div class="form-group">
+                                <label for="site_footer_copyright_en">{{__('Footer Copyright (English)')}}</label>
+                                <input type="text" name="site_footer_copyright_en"  class="form-control" value="{{get_static_option('site_footer_copyright_en')}}" id="site_footer_copyright_en">
+                                <small class="form-text text-muted">{{__('{copy} will replace by ©; and {year} will be replaced by current year.')}}</small>
+                            </div>
+                            
+                            <hr class="my-4">
                             <div class="form-group">
                                 <label for="site_canonical_url_type">{{__('Canonical URL Type')}}</label>
                                 <select name="site_canonical_url_type" class="form-control">

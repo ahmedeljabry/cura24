@@ -38,10 +38,48 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="name">{{__('Sub Category Name')}}</label>
-                                    <input type="text" class="form-control" name="name" id="name" value="{{$subcategory->name}}" placeholder="{{__('Sub Category Name')}}">
+                                <div class="card mb-4 mt-4">
+                                    <div class="card-header bg-transparent border-bottom-0">
+                                        <ul class="nav nav-tabs" id="subcategoryLangTab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link active" id="subcategory-it-tab" data-toggle="tab" href="#subcategory-it" role="tab" aria-controls="subcategory-it" aria-selected="true" style="color: blue">{{__('Italian (Default)')}}</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link" id="subcategory-en-tab" data-toggle="tab" href="#subcategory-en" role="tab" aria-controls="subcategory-en" aria-selected="false" style="color: blue">{{__('English')}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="tab-content" id="subcategoryLangTabContent">
+                                            <!-- Italian Tab -->
+                                            <div class="tab-pane fade show active" id="subcategory-it" role="tabpanel" aria-labelledby="subcategory-it-tab">
+                                                <div class="form-group">
+                                                    <label for="name">{{__('Sub Category Name (Italian)')}}</label>
+                                                    <input type="text" class="form-control" name="name" id="name" value="{{$subcategory->name}}" placeholder="{{__('Sub Category Name')}}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>{{__('Description (Italian)')}}</label>
+                                                    <textarea id="jodit-editor" style="height: 400px;"></textarea>
+                                                    <!-- Hidden textarea for form submission -->
+                                                    <textarea name="description" id="description" class="d-none">{{ $subcategory->description}}</textarea>
+                                                </div>
+                                            </div>
+                                            <!-- English Tab -->
+                                            <div class="tab-pane fade" id="subcategory-en" role="tabpanel" aria-labelledby="subcategory-en-tab">
+                                                <div class="form-group">
+                                                    <label for="name_en">{{__('Sub Category Name (English)')}}</label>
+                                                    <input type="text" class="form-control" name="name_en" id="name_en" value="{{$subcategory->name_en}}" placeholder="{{__('Sub Category Name (English)')}}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>{{__('Description (English)')}}</label>
+                                                    <textarea id="jodit-editor-en" style="height: 400px;"></textarea>
+                                                    <textarea name="description_en" id="description_en" class="d-none">{{ $subcategory->description_en}}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+
                                 <div class="form-group permalink_label">
                                     <label class="text-dark">{{__('Permalink * :')}}
                                         <span id="slug_show" class="display-inline"></span>
@@ -52,14 +90,6 @@
                                         </span>
                                     </label>
                                 </div>
-
-                                <div class="form-group">
-                                    <label>{{__('Description')}}</label>
-                                    <textarea id="jodit-editor" style="height: 400px;"></textarea>
-                                    <!-- Hidden textarea for form submission -->
-                                    <textarea name="description" id="description" class="d-none">{{ $subcategory->description}}</textarea>
-                                </div>
-
                                 <!-- meta section start -->
                                 <div class="row mt-4">
                                     <div class="col-lg-3">
@@ -276,6 +306,7 @@
 
 
             let jodit = null;
+            let joditEn = null;
             if ($('#jodit-editor').length && !$('#jodit-editor').hasClass('jodit-initialized')) {
                 $('#jodit-editor').addClass('jodit-initialized');
                 jodit = Jodit.make('#jodit-editor', {
@@ -304,6 +335,37 @@
                 const initialContent = $('#description').val();
                 if (initialContent && initialContent.trim() !== '') {
                     jodit.setEditorValue(initialContent);
+                }
+            }
+            
+            if ($('#jodit-editor-en').length && !$('#jodit-editor-en').hasClass('jodit-initialized')) {
+                $('#jodit-editor-en').addClass('jodit-initialized');
+                joditEn = Jodit.make('#jodit-editor-en', {
+                    height: 400,
+                    placeholder: '{{ __("Type Content (English)") }}',
+                    buttons: [
+                        'bold', 'italic', 'underline', '|',
+                        'ul', 'ol', '|',
+                        'outdent', 'indent', '|',
+                        'font', 'fontsize', 'brush', 'paragraph', '|',
+                        'align', 'undo', 'redo', '|',
+                        'link', 'image', 'video', 'table', '|',
+                        'hr', 'eraser', 'fullsize'
+                    ],
+                    uploader: {
+                        insertImageAsBase64URI: true
+                    }
+                });
+
+                // Sync Jodit content with hidden textarea
+                joditEn.events.on('change', () => {
+                    $('#description_en').val(joditEn.getEditorValue());
+                });
+
+                // Set initial content if exists
+                const initialContentEn = $('#description_en').val();
+                if (initialContentEn && initialContentEn.trim() !== '') {
+                    joditEn.setEditorValue(initialContentEn);
                 }
             }
 

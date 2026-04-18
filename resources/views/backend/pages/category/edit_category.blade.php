@@ -32,17 +32,45 @@
                             @csrf
 
                             <div class="tab-content margin-top-40">
-                                
-                                <div class="form-group">
-                                    <label for="name">{{__('Name')}}</label>
-                                    <input type="text" class="form-control" name="name" id="name" value="{{$category->name}}" placeholder="{{__('Name')}}">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>{{__('Description')}}</label>
-                                    <textarea id="jodit-editor" style="height: 400px;"></textarea>
-                                    <!-- Hidden textarea for form submission -->
-                                    <textarea name="description" id="description" class="d-none">{{$category->description}}</textarea>
+                                <div class="card mb-4">
+                                    <div class="card-header bg-transparent border-bottom-0">
+                                        <ul class="nav nav-tabs" id="categoryLangTab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link active" id="category-it-tab" data-toggle="tab" href="#category-it" role="tab" aria-controls="category-it" aria-selected="true" style="color: blue">{{__('Italian (Default)')}}</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link" id="category-en-tab" data-toggle="tab" href="#category-en" role="tab" aria-controls="category-en" aria-selected="false" style="color: blue">{{__('English')}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="tab-content" id="categoryLangTabContent">
+                                            <!-- Italian Tab -->
+                                            <div class="tab-pane fade show active" id="category-it" role="tabpanel" aria-labelledby="category-it-tab">
+                                                <div class="form-group">
+                                                    <label for="name">{{__('Name (Italian)')}}</label>
+                                                    <input type="text" class="form-control" name="name" id="name" value="{{$category->name}}" placeholder="{{__('Name')}}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>{{__('Description (Italian)')}}</label>
+                                                    <textarea id="jodit-editor" style="height: 400px;"></textarea>
+                                                    <textarea name="description" id="description" class="d-none">{{$category->description}}</textarea>
+                                                </div>
+                                            </div>
+                                            <!-- English Tab -->
+                                            <div class="tab-pane fade" id="category-en" role="tabpanel" aria-labelledby="category-en-tab">
+                                                <div class="form-group">
+                                                    <label for="name_en">{{__('Name (English)')}}</label>
+                                                    <input type="text" class="form-control" name="name_en" id="name_en" value="{{$category->name_en}}" placeholder="{{__('Name (English)')}}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>{{__('Description (English)')}}</label>
+                                                    <textarea id="jodit-editor-en" style="height: 400px;"></textarea>
+                                                    <textarea name="description_en" id="description_en" class="d-none">{{$category->description_en}}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group permalink_label">
@@ -299,6 +327,7 @@
 
 
             let jodit = null;
+            let joditEn = null;
             if ($('#jodit-editor').length && !$('#jodit-editor').hasClass('jodit-initialized')) {
                 $('#jodit-editor').addClass('jodit-initialized');
                 jodit = Jodit.make('#jodit-editor', {
@@ -327,6 +356,37 @@
                 const initialContent = $('#description').val();
                 if (initialContent && initialContent.trim() !== '') {
                     jodit.setEditorValue(initialContent);
+                }
+            }
+            
+            if ($('#jodit-editor-en').length && !$('#jodit-editor-en').hasClass('jodit-initialized')) {
+                $('#jodit-editor-en').addClass('jodit-initialized');
+                joditEn = Jodit.make('#jodit-editor-en', {
+                    height: 400,
+                    placeholder: '{{ __("Type Content (English)") }}',
+                    buttons: [
+                        'bold', 'italic', 'underline', '|',
+                        'ul', 'ol', '|',
+                        'outdent', 'indent', '|',
+                        'font', 'fontsize', 'brush', 'paragraph', '|',
+                        'align', 'undo', 'redo', '|',
+                        'link', 'image', 'video', 'table', '|',
+                        'hr', 'eraser', 'fullsize'
+                    ],
+                    uploader: {
+                        insertImageAsBase64URI: true
+                    }
+                });
+
+                // Sync Jodit content with hidden textarea
+                joditEn.events.on('change', () => {
+                    $('#description_en').val(joditEn.getEditorValue());
+                });
+
+                // Set initial content if exists
+                const initialContentEn = $('#description_en').val();
+                if (initialContentEn && initialContentEn.trim() !== '') {
+                    joditEn.setEditorValue(initialContentEn);
                 }
             }
 

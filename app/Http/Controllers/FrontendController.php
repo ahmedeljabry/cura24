@@ -304,7 +304,9 @@ class FrontendController extends Controller
             session()->put('lang', $selected_lang);
         }
 
-        return redirect()->back();
+        // Redirect to the localized URL so the URL prefix also changes
+        $localizedUrl = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($selected_lang ?? app()->getLocale(), url()->previous());
+        return redirect($localizedUrl ?: url()->previous());
     }
 
 

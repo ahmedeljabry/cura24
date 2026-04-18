@@ -63,13 +63,6 @@
 
                             <input type="hidden" name="lang" value="{{$default_lang}}">
                             <div class="tab-content margin-top-40">
-
-                                <div class="form-group">
-                                    <label for="title">{{__('Title')}}</label>
-                                    <input type="text" class="form-control" name="title" placeholder="{{__('Title')}}" id="title">
-                                </div>
-
-
                                 <div class="form-group permalink_label">
                                     <label class="text-dark">{{__('Permalink * :')}}
                                         <span id="slug_show" class="display-inline"></span>
@@ -82,11 +75,46 @@
                                     </label>
                                 </div>
 
-                                <div class="form-group classic-editor-wrapper">
-                                    <label>{{__('Content')}}</label>
-                                    <textarea id="jodit-editor" style="height: 400px;"></textarea>
-                                    <!-- Hidden textarea for form submission -->
-                                    <textarea name="page_content" id="page_content" class="d-none">{{ old('page_content')}}</textarea>
+                                <div class="card mb-4">
+                                    <div class="card-header bg-transparent border-bottom-0">
+                                        <ul class="nav nav-tabs" id="pageLangTab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link active" id="page-it-tab" data-toggle="tab" href="#page-it" role="tab" aria-controls="page-it" aria-selected="true" style="color: blue">{{__('Italian (Default)')}}</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link" id="page-en-tab" data-toggle="tab" href="#page-en" role="tab" aria-controls="page-en" aria-selected="false" style="color: blue">{{__('English')}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="tab-content" id="pageLangTabContent">
+                                            <!-- Italian Tab -->
+                                            <div class="tab-pane fade show active" id="page-it" role="tabpanel" aria-labelledby="page-it-tab">
+                                                <div class="form-group">
+                                                    <label for="title">{{__('Title (Italian)')}}</label>
+                                                    <input type="text" class="form-control" name="title" placeholder="{{__('Title')}}" id="title">
+                                                </div>
+                                                <div class="form-group classic-editor-wrapper">
+                                                    <label>{{__('Content (Italian)')}}</label>
+                                                    <textarea id="jodit-editor" style="height: 400px;"></textarea>
+                                                    <!-- Hidden textarea for form submission -->
+                                                    <textarea name="page_content" id="page_content" class="d-none">{{ old('page_content')}}</textarea>
+                                                </div>
+                                            </div>
+                                            <!-- English Tab -->
+                                            <div class="tab-pane fade" id="page-en" role="tabpanel" aria-labelledby="page-en-tab">
+                                                <div class="form-group">
+                                                    <label for="title_en">{{__('Title (English)')}}</label>
+                                                    <input type="text" class="form-control" name="title_en" placeholder="{{__('Title (English)')}}" id="title_en">
+                                                </div>
+                                                <div class="form-group classic-editor-wrapper">
+                                                    <label>{{__('Content (English)')}}</label>
+                                                    <textarea id="jodit-editor-en" style="height: 400px;"></textarea>
+                                                    <textarea name="page_content_en" id="page_content_en" class="d-none">{{ old('page_content_en')}}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -284,6 +312,7 @@
                 });
 
                 let jodit = null;
+                let joditEn = null;
                 if ($('#jodit-editor').length && !$('#jodit-editor').hasClass('jodit-initialized')) {
                     $('#jodit-editor').addClass('jodit-initialized');
                     jodit = Jodit.make('#jodit-editor', {
@@ -312,6 +341,37 @@
                     const initialContent = $('#page_content').val();
                     if (initialContent && initialContent.trim() !== '') {
                         jodit.setEditorValue(initialContent);
+                    }
+                }
+                
+                if ($('#jodit-editor-en').length && !$('#jodit-editor-en').hasClass('jodit-initialized')) {
+                    $('#jodit-editor-en').addClass('jodit-initialized');
+                    joditEn = Jodit.make('#jodit-editor-en', {
+                        height: 400,
+                        placeholder: '{{ __("Type Content (English)") }}',
+                        buttons: [
+                            'bold', 'italic', 'underline', '|',
+                            'ul', 'ol', '|',
+                            'outdent', 'indent', '|',
+                            'font', 'fontsize', 'brush', 'paragraph', '|',
+                            'align', 'undo', 'redo', '|',
+                            'link', 'image', 'video', 'table', '|',
+                            'hr', 'eraser', 'fullsize'
+                        ],
+                        uploader: {
+                            insertImageAsBase64URI: true
+                        }
+                    });
+
+                    // Sync Jodit content with hidden textarea
+                    joditEn.events.on('change', () => {
+                        $('#page_content_en').val(joditEn.getEditorValue());
+                    });
+
+                    // Set initial content if exists
+                    const initialContentEn = $('#page_content_en').val();
+                    if (initialContentEn && initialContentEn.trim() !== '') {
+                        joditEn.setEditorValue(initialContentEn);
                     }
                 }
             });

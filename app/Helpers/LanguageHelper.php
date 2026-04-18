@@ -64,7 +64,17 @@ class LanguageHelper
     public static function user_lang_slug(){
         if (self::$user_lang_slug === null) {
             $default = self::lang_instance()->where('default', '1')->first();
-            self::$user_lang_slug = session()->get('lang') ?? $default->slug;
+
+            // Priority 1: app locale set by mcamara from URL prefix (e.g. /en/, /it/)
+            $appLocale = app()->getLocale();
+            $localeExists = self::lang_instance()->where('slug', $appLocale)->where('status', 'publish')->exists();
+
+            if ($localeExists) {
+                self::$user_lang_slug = $appLocale;
+            } else {
+                // Priority 2: session-based lang (legacy fallback)
+                self::$user_lang_slug = session()->get('lang') ?? $default->slug;
+            }
         }
         return self::$user_lang_slug;
     }

@@ -75,15 +75,7 @@
                                 </div>
                             </div>
 
-                            <div class="single-dashboard-input">
-                                <div class="single-info-input margin-top-30">
-                                    <label for="title" class="info-title"> {{__('Service Title*')}} </label>
-                                    <input class="form-control" name="title" id="title" value="{{ $service->title }}" type="text" placeholder="{{__('Add title')}}">
-                                </div>
-                                
-                            </div>
-
-                            <div class="single-dashboard-input">
+                            <div class="single-dashboard-input mt-3">
                                 <div class="single-info-input margin-top-30 permalink_label">
                                     <label for="title" class="info-title text-dark"> {{__('Permalink*')}} </label>
                                     <span id="slug_show" class="display-inline"></span>
@@ -93,13 +85,53 @@
                                           <button class="btn btn-info btn-sm slug_update_button mt-2" style="display: none">{{__('Update')}}</button>
                                 </div>
                             </div>
-
-                            <div class="single-dashboard-input">
-                                <div class="single-info-input margin-top-30">
-                                    <label for="description" class="info-title"> {{__('Service Description*')}} <span class="text-danger">{{ __('minimum 150 characters.') }}</span> </label>
-                                    <textarea id="jodit-editor" style="height: 400px;"></textarea>
-                                    <!-- Hidden textarea for form submission -->
-                                    <textarea name="description" id="description" class="d-none">{{ $service->description }}</textarea>
+                            <div class="card mb-4 mt-4">
+                                <div class="card-header bg-transparent border-bottom-0">
+                                    <ul class="nav nav-tabs" id="serviceLangTab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link active" id="service-it-tab" data-toggle="tab" href="#service-it" role="tab" aria-controls="service-it" aria-selected="true" style="color: blue">{{__('Italian (Default)')}}</a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link" id="service-en-tab" data-toggle="tab" href="#service-en" role="tab" aria-controls="service-en" aria-selected="false" style="color: blue">{{__('English')}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content" id="serviceLangTabContent">
+                                        <!-- Italian Tab -->
+                                        <div class="tab-pane fade show active" id="service-it" role="tabpanel" aria-labelledby="service-it-tab">
+                                            <div class="single-dashboard-input">
+                                                <div class="single-info-input mt-3">
+                                                    <label for="title" class="info-title"> {{__('Service Title (Italian)*')}} </label>
+                                                    <input class="form-control" name="title" id="title" value="{{ $service->title }}" type="text" placeholder="{{__('Add title')}}">
+                                                </div>
+                                            </div>
+                                            <div class="single-dashboard-input">
+                                                <div class="single-info-input margin-top-30">
+                                                    <label for="description" class="info-title"> {{__('Service Description (Italian)*')}} <span class="text-danger">{{ __('minimum 150 characters.') }}</span> </label>
+                                                    <textarea id="jodit-editor" style="height: 400px;"></textarea>
+                                                    <!-- Hidden textarea for form submission -->
+                                                    <textarea name="description" id="description" class="d-none">{{ $service->description }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- English Tab -->
+                                        <div class="tab-pane fade" id="service-en" role="tabpanel" aria-labelledby="service-en-tab">
+                                            <div class="single-dashboard-input">
+                                                <div class="single-info-input mt-3">
+                                                    <label for="title_en" class="info-title"> {{__('Service Title (English)')}} </label>
+                                                    <input class="form-control" name="title_en" id="title_en" value="{{ $service->title_en }}" type="text" placeholder="{{__('Add title (English)')}}">
+                                                </div>
+                                            </div>
+                                            <div class="single-dashboard-input">
+                                                <div class="single-info-input margin-top-30">
+                                                    <label for="description_en" class="info-title"> {{__('Service Description (English)')}} <span class="text-danger">{{ __('minimum 150 characters.') }}</span> </label>
+                                                    <textarea id="jodit-editor-en" style="height: 400px;"></textarea>
+                                                    <textarea name="description_en" id="description_en" class="d-none">{{ $service->description_en }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -173,23 +205,41 @@
                                                         <div class="tab-pane fade show active" id="v-pills-home"
                                                              role="tabpanel" aria-labelledby="v-pills-home-tab">
                                                             <div class="form-group">
-                                                                <label for="title">{{__('Meta Title')}}</label>
+                                                            <div class="form-group">
+                                                                <label for="title">{{__('Meta Title (Italian)')}}</label>
                                                                 <input type="text" class="form-control" name="meta_title"
                                                                        value="{{$service->metaData->meta_title ?? ''}}">
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="slug">{{__('Meta Tags')}}</label>
+                                                                <label for="title_en">{{__('Meta Title (English)')}}</label>
+                                                                <input type="text" class="form-control" name="meta_title_en"
+                                                                       value="{{$service->metaData->meta_title_en ?? ''}}">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="slug">{{__('Meta Tags (Italian)')}}</label>
                                                                 <input type="text" class="form-control"  data-role="tagsinput" name="meta_tags"
                                                                        value="{{$service->metaData->meta_tags ?? ''}}">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="slug_en">{{__('Meta Tags (English)')}}</label>
+                                                                <input type="text" class="form-control"  data-role="tagsinput" name="meta_tags_en"
+                                                                       value="{{$service->metaData->meta_tags_en ?? ''}}">
                                                             </div>
 
                                                             <div class="row">
                                                                 <div class="form-group col-md-12">
-                                                                    <label for="title">{{__('Meta Description')}}</label>
+                                                                    <label for="title">{{__('Meta Description (Italian)')}}</label>
                                                                     <textarea name="meta_description"
                                                                               class="form-control max-height-140"
                                                                               cols="20"
                                                                               rows="4">{!! $service->metaData->meta_description ?? '' !!}</textarea>
+                                                                </div>
+                                                                <div class="form-group col-md-12">
+                                                                    <label for="title_en">{{__('Meta Description (English)')}}</label>
+                                                                    <textarea name="meta_description_en"
+                                                                              class="form-control max-height-140"
+                                                                              cols="20"
+                                                                              rows="4">{!! $service->metaData->meta_description_en ?? '' !!}</textarea>
                                                                 </div>
                                                             </div>
 
@@ -198,18 +248,30 @@
                                                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                                                              aria-labelledby="v-pills-profile-tab">
                                                             <div class="form-group">
-                                                                <label for="title">{{__('Facebook Meta Title')}}</label>
+                                                                <label for="title">{{__('Facebook Meta Title (Italian)')}}</label>
                                                                 <input type="text" class="form-control" placeholder="{{__('Title')}}"
                                                                        name="facebook_meta_tags" value="{{$service->metaData->facebook_meta_tags ?? ''}}">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="title_en">{{__('Facebook Meta Title (English)')}}</label>
+                                                                <input type="text" class="form-control" placeholder="{{__('Title (English)')}}"
+                                                                       name="facebook_meta_tags_en" value="{{$service->metaData->facebook_meta_tags_en ?? ''}}">
                                                             </div>
 
                                                             <div class="row">
                                                                 <div class="form-group col-md-12">
-                                                                    <label for="title">{{__('Facebook Meta Description')}}</label>
+                                                                    <label for="title">{{__('Facebook Meta Description (Italian)')}}</label>
                                                                     <textarea name="facebook_meta_description"
                                                                               class="form-control max-height-140 meta-desc"
                                                                               cols="20"
                                                                               rows="4">{!! $service->metaData->facebook_meta_description ?? '' !!}</textarea>
+                                                                </div>
+                                                                <div class="form-group col-md-12">
+                                                                    <label for="title_en">{{__('Facebook Meta Description (English)')}}</label>
+                                                                    <textarea name="facebook_meta_description_en"
+                                                                              class="form-control max-height-140 meta-desc"
+                                                                              cols="20"
+                                                                              rows="4">{!! $service->metaData->facebook_meta_description_en ?? '' !!}</textarea>
                                                                 </div>
                                                             </div>
 
@@ -235,18 +297,30 @@
                                                         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
                                                              aria-labelledby="v-pills-messages-tab">
                                                             <div class="form-group">
-                                                                <label for="title">{{__('Twitter Meta Title')}}</label>
+                                                                <label for="title">{{__('Twitter Meta Title (Italian)')}}</label>
                                                                 <input type="text" class="form-control" placeholder="{{__('Title')}}"
                                                                        name="twitter_meta_tags" value=" {{$service->metaData->twitter_meta_tags ?? ''}}">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="title_en">{{__('Twitter Meta Title (English)')}}</label>
+                                                                <input type="text" class="form-control" placeholder="{{__('Title (English)')}}"
+                                                                       name="twitter_meta_tags_en" value=" {{$service->metaData->twitter_meta_tags_en ?? ''}}">
                                                             </div>
 
                                                             <div class="row">
                                                                 <div class="form-group col-md-12">
-                                                                    <label for="title">{{__('Twitter Meta Description')}}</label>
+                                                                    <label for="title">{{__('Twitter Meta Description (Italian)')}}</label>
                                                                     <textarea name="twitter_meta_description"
                                                                               class="form-control max-height-140 meta-desc"
                                                                               cols="20"
                                                                               rows="4">{!! $service->metaData->twitter_meta_description ?? '' !!}</textarea>
+                                                                </div>
+                                                                <div class="form-group col-md-12">
+                                                                    <label for="title_en">{{__('Twitter Meta Description (English)')}}</label>
+                                                                    <textarea name="twitter_meta_description_en"
+                                                                              class="form-control max-height-140 meta-desc"
+                                                                              cols="20"
+                                                                              rows="4">{!! $service->metaData->twitter_meta_description_en ?? '' !!}</textarea>
                                                                 </div>
                                                             </div>
 
@@ -432,6 +506,7 @@
                 });
 
                 let jodit = null;
+                let joditEn = null;
                 if ($('#jodit-editor').length && !$('#jodit-editor').hasClass('jodit-initialized')) {
                     $('#jodit-editor').addClass('jodit-initialized');
                     jodit = Jodit.make('#jodit-editor', {
@@ -460,6 +535,37 @@
                     const initialContent = $('#description').val();
                     if (initialContent && initialContent.trim() !== '') {
                         jodit.setEditorValue(initialContent);
+                    }
+                }
+                
+                if ($('#jodit-editor-en').length && !$('#jodit-editor-en').hasClass('jodit-initialized')) {
+                    $('#jodit-editor-en').addClass('jodit-initialized');
+                    joditEn = Jodit.make('#jodit-editor-en', {
+                        height: 400,
+                        placeholder: '{{ __("Type Content (English)") }}',
+                        buttons: [
+                            'bold', 'italic', 'underline', '|',
+                            'ul', 'ol', '|',
+                            'outdent', 'indent', '|',
+                            'font', 'fontsize', 'brush', 'paragraph', '|',
+                            'align', 'undo', 'redo', '|',
+                            'link', 'image', 'video', 'table', '|',
+                            'hr', 'eraser', 'fullsize'
+                        ],
+                        uploader: {
+                            insertImageAsBase64URI: true
+                        }
+                    });
+
+                    // Sync Jodit content with hidden textarea
+                    joditEn.events.on('change', () => {
+                        $('#description_en').val(joditEn.getEditorValue());
+                    });
+
+                    // Set initial content if exists
+                    const initialContentEn = $('#description_en').val();
+                    if (initialContentEn && initialContentEn.trim() !== '') {
+                        joditEn.setEditorValue(initialContentEn);
                     }
                 }
 

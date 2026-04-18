@@ -48,7 +48,9 @@ class PagesController extends Controller
         $page = new Page();
  
         $page->title =  purify_html($request->title);
+        $page->title_en =  purify_html($request->title_en);
         $page->page_content =  $request->page_content;
+        $page->page_content_en =  $request->page_content_en;
         $slug = !empty($request->slug) ? $request->slug : Str::slug($request->title);
         $slug_check = Page::where(['slug' => $slug])->count();
         $slug = $slug_check > 0 ? $slug.'-6' : $slug;
@@ -70,15 +72,22 @@ class PagesController extends Controller
 
         $Metas = [
             'meta_title'=> purify_html($request->meta_title),
+            'meta_title_en'=> purify_html($request->meta_title_en),
             'meta_tags'=> purify_html($request->meta_tags),
+            'meta_tags_en'=> purify_html($request->meta_tags_en),
             'meta_description'=> purify_html($request->meta_description),
+            'meta_description_en'=> purify_html($request->meta_description_en),
 
             'facebook_meta_tags'=> purify_html($request->facebook_meta_tags),
+            'facebook_meta_tags_en'=> purify_html($request->facebook_meta_tags_en),
             'facebook_meta_description'=> purify_html($request->facebook_meta_description),
+            'facebook_meta_description_en'=> purify_html($request->facebook_meta_description_en),
             'facebook_meta_image'=> $request->facebook_meta_image,
 
             'twitter_meta_tags'=> purify_html($request->twitter_meta_tags),
+            'twitter_meta_tags_en'=> purify_html($request->twitter_meta_tags_en),
             'twitter_meta_description'=> purify_html($request->twitter_meta_description),
+            'twitter_meta_description_en'=> purify_html($request->twitter_meta_description_en),
             'twitter_meta_image'=> $request->twitter_meta_image,
         ];
 
@@ -108,7 +117,9 @@ class PagesController extends Controller
 
         $page = Page::find($id);
             $page->title =  purify_html($request->title);
+            $page->title_en =  purify_html($request->title_en);
             $page->page_content =  $request->page_content;
+            $page->page_content_en =  $request->page_content_en;
 
         $slug = !empty($request->slug) ? $request->slug : Str::slug($request->title);
         $slug_check = Page::where(['slug' => $slug])->count();
@@ -132,15 +143,22 @@ class PagesController extends Controller
 
         $Metas = [
             'meta_title'=> purify_html($request->meta_title),
+            'meta_title_en'=> purify_html($request->meta_title_en),
             'meta_tags'=> purify_html($request->meta_tags),
+            'meta_tags_en'=> purify_html($request->meta_tags_en),
             'meta_description'=> purify_html($request->meta_description),
+            'meta_description_en'=> purify_html($request->meta_description_en),
 
             'facebook_meta_tags'=> purify_html($request->facebook_meta_tags),
+            'facebook_meta_tags_en'=> purify_html($request->facebook_meta_tags_en),
             'facebook_meta_description'=> purify_html($request->facebook_meta_description),
+            'facebook_meta_description_en'=> purify_html($request->facebook_meta_description_en),
             'facebook_meta_image'=> $request->facebook_meta_image,
 
             'twitter_meta_tags'=> purify_html($request->twitter_meta_tags),
+            'twitter_meta_tags_en'=> purify_html($request->twitter_meta_tags_en),
             'twitter_meta_description'=> purify_html($request->twitter_meta_description),
+            'twitter_meta_description_en'=> purify_html($request->twitter_meta_description_en),
             'twitter_meta_image'=> $request->twitter_meta_image,
         ];
 

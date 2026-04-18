@@ -9,7 +9,7 @@ class Subcategory extends Model
 {
     use HasFactory;
     protected $table = 'subcategories';
-    protected $fillable = ['name','slug','category_id','status','image', 'description'];
+    protected $fillable = ['name','name_en','slug','category_id','status','image', 'description','description_en'];
 
     public function category(){
         return $this->belongsTo('App\Category');
@@ -24,5 +24,78 @@ class Subcategory extends Model
     }
     public function metaData(){
         return $this->morphOne(MetaData::class,'meta_taggable');
+    }
+
+    /**
+     * Cache of English translations keyed by subcategory ID.
+     */
+    private static $enTranslationCache = [];
+
+    /**
+     * Return the English name when the active language is NOT Italian.
+     */
+    public function getNameAttribute($value)
+    {
+        if ($this->shouldShowEnglish()) {
+            $en = $this->getEnTranslation('name_en');
+            if (!empty($en)) {
+                return $en;
+            }
+        }
+        return $value;
+    }
+
+    /**
+     * Return the English description when the active language is NOT Italian.
+     */
+    public function getDescriptionAttribute($value)
+    {
+        if ($this->shouldShowEnglish()) {
+            $en = $this->getEnTranslation('description_en');
+            if (!empty($en)) {
+                return $en;
+            }
+        }
+        return $value;
+    }
+
+    /**
+     * Check whether the current session language is NOT Italian.
+     */
+    private function shouldShowEnglish(): bool
+    {
+        $lang = session()->get('lang');
+
+        if (empty($lang)) {
+            return true;
+        }
+
+        return $lang !== 'it_IT';
+    }
+
+    /**
+     * Get an English translation field, lazy-loading from DB when the column
+     * was not included in the original SELECT.
+     */
+    private function getEnTranslation(string $field): ?string
+    {
+        if (array_key_exists($field, $this->attributes)) {
+            return $this->attributes[$field];
+        }
+
+        $id = $this->attributes['id'] ?? null;
+        if ($id === null) {
+            return null;
+        }
+
+        if (!isset(self::$enTranslationCache[$id])) {
+            self::$enTranslationCache[$id] = \Illuminate\Support\Facades\DB::table('subcategories')
+                ->where('id', $id)
+                ->select('name_en', 'description_en')
+                ->first();
+        }
+
+        $cached = self::$enTranslationCache[$id];
+        return $cached->{$field} ?? null;
     }
 }
