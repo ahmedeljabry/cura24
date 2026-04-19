@@ -2222,16 +2222,20 @@ function tenant_url_with_protocol($url){
 
  function render_site_meta(){
 
-        $user_lang = LanguageHelper::user_lang_slug();
-        $site_tags = get_static_option('site_meta_tags');
-        $site_desc =  get_static_option('site_meta_description');
+        $user_lang = \App\Helpers\LanguageHelper::user_lang_slug();
+        $is_english = !in_array($user_lang, ['it', 'it_IT']);
+
+        $site_tags = $is_english && get_static_option('site_meta_tags_en') ? get_static_option('site_meta_tags_en') : get_static_option('site_meta_tags');
+        $site_desc = $is_english && get_static_option('site_meta_description_en') ? get_static_option('site_meta_description_en') : get_static_option('site_meta_description');
      
         $meta_title = get_static_option('site_title') .' - '. get_static_option('site_tag_line');
-        $site_og_meta_title =  get_static_option('og_meta_title') ?? $meta_title;
+        $og_meta_title_fetch = $is_english && get_static_option('og_meta_title_en') ? get_static_option('og_meta_title_en') : get_static_option('og_meta_title');
+        $site_og_meta_title =  $og_meta_title_fetch ?? $meta_title;
      
-        $site_og_meta_description =  get_static_option('og_meta_description');
-        $site_og_meta_site_name =  get_static_option('og_meta_site_name');
-        $site_og_meta_url =  get_static_option('og_meta_url');
+        $site_og_meta_description = $is_english && get_static_option('og_meta_description_en') ? get_static_option('og_meta_description_en') : get_static_option('og_meta_description');
+        $site_og_meta_site_name = $is_english && get_static_option('og_meta_site_name_en') ? get_static_option('og_meta_site_name_en') : get_static_option('og_meta_site_name');
+        $site_og_meta_url = $is_english && get_static_option('og_meta_url_en') ? get_static_option('og_meta_url_en') : get_static_option('og_meta_url');
+        
         $site_og_meta_image =  render_og_meta_image_by_attachment_id(get_static_option('og_meta_image'));
         $site_og_meta_image_twitter = render_twitter_meta_image_by_attachment_id(get_static_option('og_meta_image')) ;
         $website_url = \url()->current();

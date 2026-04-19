@@ -39,36 +39,78 @@
                         <form action="{{route('admin.blog.update',$blog_post->id)}}" method="post" enctype="multipart/form-data"
                               id="blog_new_form">
                             @csrf
-                            <div class="form-group">
-                                <label for="title">{{__('Title')}}</label>
-                                <input type="text" class="form-control" name="title" id="title"
-                                       value="{{$blog_post->title}}">
+                            <div class="card mb-4">
+                                <div class="card-header bg-transparent border-bottom-0">
+                                    <ul class="nav nav-tabs" id="blogLangTab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="blog-it-tab" data-toggle="tab" href="#blog-it" role="tab" style="color: blue">{{__('Italian (Default)')}}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="blog-en-tab" data-toggle="tab" href="#blog-en" role="tab" style="color: blue">{{__('English')}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content">
+                                        <!-- Italian Tab -->
+                                        <div class="tab-pane fade show active" id="blog-it" role="tabpanel">
+                                            <div class="form-group">
+                                                <label for="title">{{__('Title (Italian)')}}</label>
+                                                <input type="text" class="form-control" name="title" id="title" value="{{$blog_post->title}}">
+                                            </div>
+
+                                            <div class="form-group permalink_label">
+                                                <label class="text-dark">{{__('Permalink * :')}}
+                                                    <span id="slug_show" class="display-inline"></span>
+                                                    <span id="slug_edit" class="display-inline">
+                                                         <button class="btn btn-warning btn-sm slug_edit_button"> <i class="fas fa-edit"></i> </button>
+                                                          <input type="text" name="slug" value="{{$blog_post->slug}}" class="form-control blog_slug mt-2" style="display: none">
+                                                          <button class="btn btn-info btn-sm slug_update_button mt-2" style="display: none">{{__('Update')}}</button>
+                                                    </span>
+                                                </label>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>{{__('Blog Content (Italian)')}}</label>
+                                                <textarea id="jodit-editor" style="height: 400px;"></textarea>
+                                                <!-- Hidden textarea for form submission -->
+                                                <textarea name="blog_content" id="blog_content" class="d-none">{{ $blog_post->blog_content }}</textarea>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="excerpt">{{__('Excerpt (Italian)')}}</label>
+                                                <textarea name="excerpt" id="excerpt" class="form-control max-height-150" cols="30" rows="10">{{ $blog_post->excerpt }}</textarea>
+                                            </div>
+                                        </div>
+
+                                        <!-- English Tab -->
+                                        <div class="tab-pane fade" id="blog-en" role="tabpanel">
+                                            <div class="form-group">
+                                                <label for="title_en">{{__('Title (English)')}}</label>
+                                                <input type="text" class="form-control" name="title_en" id="title_en" value="{{$blog_post->title_en}}">
+                                            </div>
+
+                                            <div class="form-group border border-primary p-2 mt-3 mb-3 bg-light text-dark">
+                                                <label><strong>{{__('Permalink Notice')}}</strong></label>
+                                                <p>{{__('The permalink is shared across all languages and uses the original title.')}}</p>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>{{__('Blog Content (English)')}}</label>
+                                                <textarea id="jodit-editor-en" style="height: 400px;"></textarea>
+                                                <!-- Hidden textarea for form submission -->
+                                                <textarea name="blog_content_en" id="blog_content_en" class="d-none">{{ $blog_post->blog_content_en }}</textarea>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="excerpt_en">{{__('Excerpt (English)')}}</label>
+                                                <textarea name="excerpt_en" id="excerpt_en" class="form-control max-height-150" cols="30" rows="10">{{ $blog_post->excerpt_en }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-group permalink_label">
-                                <label class="text-dark">{{__('Permalink * :')}}
-                                    <span id="slug_show" class="display-inline"></span>
-                                    <span id="slug_edit" class="display-inline">
-                                         <button class="btn btn-warning btn-sm slug_edit_button"> <i class="fas fa-edit"></i> </button>
-                                          <input type="text" name="slug" value="{{$blog_post->slug}}" class="form-control blog_slug mt-2" style="display: none">
-                                          <button class="btn btn-info btn-sm slug_update_button mt-2" style="display: none">{{__('Update')}}</button>
-                                    </span>
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label>{{__('Blog Content')}}</label>
-                                <input type="hidden" name="blog_content" value="{{ $blog_post->blog_content }}">
-                                <textarea id="jodit-editor" style="height: 400px;"></textarea>
-                                <!-- Hidden textarea for form submission -->
-                                <textarea name="blog_content" id="blog_content" class="d-none">{{ $blog_post->blog_content }}</textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="title">{{__('Excerpt')}}</label>
-                                <textarea name="excerpt" id="excerpt" class="form-control max-height-150" cols="30"
-                                          rows="10">{{ $blog_post->excerpt }}</textarea>
-                            </div>
                     </div>
                 </div>
 
@@ -268,20 +310,26 @@
                                         </div>
 
                                         <div class="form-group " id="blog_tag_list">
-                                            <label for="title">{{__('Blog Tag')}}</label>
-
-
+                                            <label for="title">{{__('Blog Tag (Italian)')}}</label>
                                                 @php
                                                     $tags_arr = json_decode($blog_post->tag_name);
                                                     $tags = is_array($tags_arr) ? implode(",", $tags_arr) : "";
                                                 @endphp
-
                                             <input type="text" class="form-control tags_filed" data-role="tagsinput"
-                                                   name="tag_name[]"  value=" {{ $tags }} ">
-
+                                                   name="tag_name[]"  value="{{ $tags }}">
                                             <div id="show-autocomplete" style="display: none;">
                                                 <ul class="autocomplete-warp" ></ul>
                                             </div>
+                                        </div>
+
+                                        <div class="form-group " id="blog_tag_list_en">
+                                            <label for="title">{{__('Blog Tag (English)')}}</label>
+                                                @php
+                                                    $tags_arr_en = json_decode($blog_post->tag_name_en);
+                                                    $tags_en = is_array($tags_arr_en) ? implode(",", $tags_arr_en) : "";
+                                                @endphp
+                                            <input type="text" class="form-control tags_filed_en" data-role="tagsinput"
+                                                   name="tag_name_en[]"  value="{{ $tags_en }}">
                                         </div>
 
                                         <div class="form-group">
@@ -553,6 +601,38 @@
                     jodit.setEditorValue(initialContent);
                 }
             }
+
+            let joditEn = null;
+            if ($('#jodit-editor-en').length && !$('#jodit-editor-en').hasClass('jodit-initialized')) {
+                $('#jodit-editor-en').addClass('jodit-initialized');
+                joditEn = Jodit.make('#jodit-editor-en', {
+                    height: 400,
+                    placeholder: '{{ __("Type Content") }}',
+                    buttons: [
+                        'bold', 'italic', 'underline', '|',
+                        'ul', 'ol', '|',
+                        'outdent', 'indent', '|',
+                        'font', 'fontsize', 'brush', 'paragraph', '|',
+                        'align', 'undo', 'redo', '|',
+                        'link', 'image', 'video', 'table', '|',
+                        'hr', 'eraser', 'fullsize'
+                    ],
+                    uploader: {
+                        insertImageAsBase64URI: true
+                    }
+                });
+
+                joditEn.events.on('change', () => {
+                    $('#blog_content_en').val(joditEn.getEditorValue());
+                });
+
+                const initialContentEn = $('#blog_content_en').val();
+                if (initialContentEn && initialContentEn.trim() !== '') {
+                    joditEn.setEditorValue(initialContentEn);
+                }
+            }
+
+            $('#blog_tag_list_en .tags_filed_en').tagsinput();
 
         })(jQuery)
     </script>

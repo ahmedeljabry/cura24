@@ -20,6 +20,10 @@ class BlogAction
         $blog->blog_content = $request->blog_content;
         $blog->excerpt = $request->excerpt;
 
+        $blog->title_en = $request->title_en;
+        $blog->blog_content_en = $request->blog_content_en;
+        $blog->excerpt_en = $request->excerpt_en;
+
         $slug = !empty($request->slug) ? $request->slug : Str::slug($request->title);
         $slug_check = Blog::where(['slug' => $slug])->count();
         $slug = $slug_check > 0 ? $slug.'-2' : $slug;
@@ -28,8 +32,20 @@ class BlogAction
         $blog->category_id = $request->category_id;
 
         $tag = $request->tag_name;
-        $new_tag_data = explode(',',$tag[0]);
-        $blog->tag_name = json_encode($new_tag_data) ?? [];
+        if(is_array($tag) && count($tag) > 0) {
+            $new_tag_data = explode(',', $tag[0]);
+            $blog->tag_name = json_encode($new_tag_data) ?? [];
+        } else {
+            $blog->tag_name = json_encode([]) ?? [];
+        }
+
+        $tag_en = $request->tag_name_en;
+        if(is_array($tag_en) && count($tag_en) > 0) {
+            $new_tag_data_en = explode(',', $tag_en[0]);
+            $blog->tag_name_en = json_encode($new_tag_data_en) ?? [];
+        } else {
+            $blog->tag_name_en = json_encode([]) ?? [];
+        }
 
         $blog->featured = $request->featured;
         $blog->visibility = $request->visibility;
@@ -69,6 +85,10 @@ class BlogAction
         $blog_update->title = $request->title;
         $blog_update->blog_content = $request->blog_content;
         $blog_update->excerpt = $request->excerpt;
+
+        $blog_update->title_en = $request->title_en;
+        $blog_update->blog_content_en = $request->blog_content_en;
+        $blog_update->excerpt_en = $request->excerpt_en;
             
         $slug = !empty($request->slug) ? $request->slug : Str::slug($request->title);
         $slug_check = Blog::where(['slug' => $slug])->count();
@@ -78,9 +98,20 @@ class BlogAction
         $blog_update->category_id = $request->category_id;
 
         $tag = $request->tag_name;
-        $new_tag_data = explode(',',$tag[0]);
+        if(is_array($tag) && count($tag) > 0) {
+            $new_tag_data = explode(',', $tag[0]);
+            $blog_update->tag_name = json_encode($new_tag_data) ?? [];
+        } else {
+            $blog_update->tag_name = json_encode([]) ?? [];
+        }
 
-        $blog_update->tag_name =  json_encode($new_tag_data) ?? [];
+        $tag_en = $request->tag_name_en;
+        if(is_array($tag_en) && count($tag_en) > 0) {
+            $new_tag_data_en = explode(',', $tag_en[0]);
+            $blog_update->tag_name_en = json_encode($new_tag_data_en) ?? [];
+        } else {
+            $blog_update->tag_name_en = json_encode([]) ?? [];
+        }
         $blog_update->featured = $request->featured;
         $blog_update->visibility = $request->visibility;
         $blog_update->status = $request->status;
@@ -124,8 +155,12 @@ class BlogAction
             'slug' => !empty($blog_details->slug) ? $blog_details->slug : Str::slug($blog_details->title),
             'blog_content' => $blog_details->blog_content,
             'title' => $blog_details->title,
+            'title_en' => $blog_details->title_en,
             'status' => 'draft',
             'excerpt' => $blog_details->excerpt,
+            'excerpt_en' => $blog_details->excerpt_en,
+            'blog_content_en' => $blog_details->blog_content_en,
+            'tag_name_en' => $blog_details->tag_name_en,
             'image' => $blog_details->image,
             'views' => 0,
             'user_id' => null,

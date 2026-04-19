@@ -30,9 +30,23 @@
                         <form action="{{route('admin.brand.add')}}" method="post">
                             @csrf
                             <div class="tab-content margin-top-40">
-                                <div class="form-group">
-                                    <label for="title">{{__('Brand Title')}}</label>
-                                    <input type="text" class="form-control" name="title" id="title" placeholder="{{__('Title')}}">
+                                <ul class="nav nav-tabs mb-3" role="tablist">
+                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#brand-it" role="tab" style="color:blue">{{__('Italian (Default)')}}</a></li>
+                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#brand-en" role="tab" style="color:blue">{{__('English')}}</a></li>
+                                </ul>
+                                <div class="tab-content mb-3">
+                                    <div class="tab-pane fade show active" id="brand-it" role="tabpanel">
+                                        <div class="form-group">
+                                            <label for="title">{{__('Brand Title (Italian)')}}</label>
+                                            <input type="text" class="form-control" name="title" id="title" placeholder="{{__('Title')}}">
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="brand-en" role="tabpanel">
+                                        <div class="form-group">
+                                            <label for="title_en">{{__('Brand Title (English)')}}</label>
+                                            <input type="text" class="form-control" name="title_en" id="title_en" placeholder="{{__('Title')}}">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="url">{{__('Brand Url')}}</label>

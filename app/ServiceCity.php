@@ -9,7 +9,7 @@ class ServiceCity extends Model
 {
     use HasFactory;
     protected $table = 'service_cities';
-    protected $fillable = ['service_city','status','country_id'];
+    protected $fillable = ['service_city', 'service_city_en', 'status', 'country_id'];
 
     public function countryy()
     {

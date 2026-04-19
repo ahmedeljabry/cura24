@@ -17,8 +17,11 @@ class BlogInsertRequest extends FormRequest
         return [
             'category_id' => 'required',
             'tag_id' => 'nullable',
-            'blog_content' => 'required',
             'title' => 'required|string|max:191',
+            'blog_content' => 'required',
+            'title_en' => 'nullable|string|max:191',
+            'blog_content_en' => 'nullable',
+            'excerpt_en' => 'nullable',
             'status' => 'nullable',
             'slug' => 'nullable',
             'image' => 'nullable|string|max:191',

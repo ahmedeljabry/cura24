@@ -10,7 +10,7 @@ class ChildCategory extends Model
     use HasFactory;
 
     protected $table = 'child_categories';
-    protected $fillable = ['name','slug','category_id','sub_category_id','status','image', 'description'];
+    protected $fillable = ['name', 'name_en', 'slug', 'category_id', 'sub_category_id', 'status', 'image', 'description', 'description_en'];
 
     public function category(){
         return $this->belongsTo('App\Category');

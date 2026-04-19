@@ -33,6 +33,7 @@ class BrandController extends Controller
     
             Brand::create([
                'title' => $request->title,
+               'title_en' => $request->title_en,
                'url' => $request->url,
                'image' => $request->image,
            ]);
@@ -52,8 +53,8 @@ class BrandController extends Controller
             $old_img = Brand::select('image')->find($id);
             Brand::where('id',$id)->update([
                 'title'=>$request->title,
+                'title_en'=>$request->title_en,
                 'url'=>$request->url,
-                'image'=>$request->image,
                 'image' => $request->image ?? $old_img->image,
             ]);
             return redirect()->back()->with(FlashMsg::item_new('Brand Update Success'));

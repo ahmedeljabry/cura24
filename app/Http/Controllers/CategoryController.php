@@ -72,6 +72,16 @@ class CategoryController extends Controller
                 'twitter_meta_tags'=> purify_html($request->twitter_meta_tags),
                 'twitter_meta_description'=> purify_html($request->twitter_meta_description),
                 'twitter_meta_image'=> $request->twitter_meta_image,
+
+                'meta_title_en'=> purify_html($request->meta_title_en),
+                'meta_tags_en'=> purify_html($request->meta_tags_en),
+                'meta_description_en'=> purify_html($request->meta_description_en),
+
+                'facebook_meta_tags_en'=> purify_html($request->facebook_meta_tags_en),
+                'facebook_meta_description_en'=> purify_html($request->facebook_meta_description_en),
+
+                'twitter_meta_tags_en'=> purify_html($request->twitter_meta_tags_en),
+                'twitter_meta_description_en'=> purify_html($request->twitter_meta_description_en),
             ];
            $category->metaData()->create($Metas);
            return redirect()->back()->with(FlashMsg::item_new('New Category Added'));
@@ -122,6 +132,16 @@ class CategoryController extends Controller
                 'twitter_meta_tags'=> purify_html($request->twitter_meta_tags),
                 'twitter_meta_description'=> purify_html($request->twitter_meta_description),
                 'twitter_meta_image'=> $request->twitter_meta_image,
+
+                'meta_title_en'=> purify_html($request->meta_title_en),
+                'meta_tags_en'=> purify_html($request->meta_tags_en),
+                'meta_description_en'=> purify_html($request->meta_description_en),
+
+                'facebook_meta_tags_en'=> purify_html($request->facebook_meta_tags_en),
+                'facebook_meta_description_en'=> purify_html($request->facebook_meta_description_en),
+
+                'twitter_meta_tags_en'=> purify_html($request->twitter_meta_tags_en),
+                'twitter_meta_description_en'=> purify_html($request->twitter_meta_description_en),
             ];
 
             if(is_null($category_meta_update->metaData()->first())){

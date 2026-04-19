@@ -90,6 +90,7 @@
                                                 class="btn btn-primary btn-xs mb-3 mr-1 area_item_edit_btn"
                                                 data-id="{{$data->id}}"
                                                 data-area="{{$data->service_area}}"
+                                                data-area_en="{{$data->service_area_en}}"
                                                 data-city="{{optional($data->city)->id}}"
                                                 data-country="{{optional($data->country)->id}}"
                                                 >
@@ -146,9 +147,27 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="up_service_area">{{__('Service Area')}}</label>
-                            <input type="text" class="form-control" name="up_service_area" id="up_service_area" placeholder="{{__('Service Area')}}">
+                        <ul class="nav nav-tabs mb-3" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#edit-area-it" role="tab" style="color: blue">{{__('Italian (Default)')}}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#edit-area-en" role="tab" style="color: blue">{{__('English')}}</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="edit-area-it" role="tabpanel">
+                                <div class="form-group">
+                                    <label for="up_service_area">{{__('Service Area (Italian)')}}</label>
+                                    <input type="text" class="form-control" name="up_service_area" id="up_service_area" placeholder="{{__('Service Area')}}">
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="edit-area-en" role="tabpanel">
+                                <div class="form-group">
+                                    <label for="up_service_area_en">{{__('Service Area (English)')}}</label>
+                                    <input type="text" class="form-control" name="up_service_area_en" id="up_service_area_en" placeholder="{{__('Service Area')}}">
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -189,11 +208,13 @@
                     var el = $(this);
                     var id = el.data('id');
                     var area = el.data('area');
+                    var area_en = el.data('area_en');
                     var city = el.data('city');
                     var country = el.data('country');
                     var form = $('#area_edit_modal');
                     form.find('#up_id').val(id);
                     form.find('#up_service_area').val(area);
+                    form.find('#up_service_area_en').val(area_en);
                     form.find('#up_service_city_id').val(city);
                     form.find('#up_country_id').val(country);
                 });

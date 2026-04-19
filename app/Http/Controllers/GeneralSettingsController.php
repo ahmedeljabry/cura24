@@ -264,30 +264,43 @@ class GeneralSettingsController extends Controller
     }
     public function update_seo_settings(Request $request)
     {
-        $all_languages = Language::all();
-        foreach ($all_languages as $lang) {
-            $this->validate($request, [
-                'site_meta_tags' => 'nullable|string',
-                'site_meta_description' => 'nullable|string',
-                'og_meta_title' => 'nullable|string',
-                'og_meta_description' => 'nullable|string',
-                'og_meta_site_name' => 'nullable|string',
-                'og_meta_url' => 'nullable|string',
-                'og_meta_image' => 'nullable|string',
-            ]);
-            $fields = [
-                'site_meta_tags',
-                'site_meta_description',
-                'og_meta_title',
-                'og_meta_description',
-                'og_meta_site_name',
-                'og_meta_url',
-                'og_meta_image'
-            ];
-            foreach ($fields as $field) {
-                if ($request->has($field)) {
-                    update_static_option($field, $request->$field);
-                }
+        $this->validate($request, [
+            'site_meta_tags' => 'nullable|string',
+            'site_meta_description' => 'nullable|string',
+            'og_meta_title' => 'nullable|string',
+            'og_meta_description' => 'nullable|string',
+            'og_meta_site_name' => 'nullable|string',
+            'og_meta_url' => 'nullable|string',
+            'og_meta_image' => 'nullable|string',
+
+            'site_meta_tags_en' => 'nullable|string',
+            'site_meta_description_en' => 'nullable|string',
+            'og_meta_title_en' => 'nullable|string',
+            'og_meta_description_en' => 'nullable|string',
+            'og_meta_site_name_en' => 'nullable|string',
+            'og_meta_url_en' => 'nullable|string',
+        ]);
+        
+        $fields = [
+            'site_meta_tags',
+            'site_meta_description',
+            'og_meta_title',
+            'og_meta_description',
+            'og_meta_site_name',
+            'og_meta_url',
+            'og_meta_image',
+
+            'site_meta_tags_en',
+            'site_meta_description_en',
+            'og_meta_title_en',
+            'og_meta_description_en',
+            'og_meta_site_name_en',
+            'og_meta_url_en',
+        ];
+        
+        foreach ($fields as $field) {
+            if ($request->has($field)) {
+                update_static_option($field, $request->$field);
             }
         }
         return redirect()->back()->with(FlashMsg::settings_update());

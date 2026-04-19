@@ -33,9 +33,29 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="service_city">{{__('Service City/State')}}</label>
-                                <input type="text" class="form-control" name="service_city" id="service_city" placeholder="{{__('Service City/State')}}">
+                            <div class="tab-content margin-top-40">
+                                <ul class="nav nav-tabs mb-3" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#city-it" role="tab" style="color: blue">{{__('Italian (Default)')}}</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#city-en" role="tab" style="color: blue">{{__('English')}}</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="city-it" role="tabpanel">
+                                        <div class="form-group">
+                                            <label for="service_city">{{__('Service City/State (Italian)')}}</label>
+                                            <input type="text" class="form-control" name="service_city" id="service_city" placeholder="{{__('Service City/State')}}">
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="city-en" role="tabpanel">
+                                        <div class="form-group">
+                                            <label for="service_city_en">{{__('Service City/State (English)')}}</label>
+                                            <input type="text" class="form-control" name="service_city_en" id="service_city_en" placeholder="{{__('Service City/State')}}">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             
                             <button type="submit" class="btn btn-primary mt-3 submit_btn">{{__('Submit')}}</button>

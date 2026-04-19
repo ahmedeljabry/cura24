@@ -41,9 +41,29 @@
                                         <option value="">{{ __('Select City') }}</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="service_area">{{__('Service Area')}}</label>
-                                    <input type="text" class="form-control" name="service_area" id="service_area" placeholder="{{__('Service Area')}}">
+                                <div class="tab-content margin-top-40">
+                                    <ul class="nav nav-tabs mb-3" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="tab" href="#area-it" role="tab" style="color: blue">{{__('Italian (Default)')}}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#area-en" role="tab" style="color: blue">{{__('English')}}</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="area-it" role="tabpanel">
+                                            <div class="form-group">
+                                                <label for="service_area">{{__('Service Area (Italian)')}}</label>
+                                                <input type="text" class="form-control" name="service_area" id="service_area" placeholder="{{__('Service Area')}}">
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="area-en" role="tabpanel">
+                                            <div class="form-group">
+                                                <label for="service_area_en">{{__('Service Area (English)')}}</label>
+                                                <input type="text" class="form-control" name="service_area_en" id="service_area_en" placeholder="{{__('Service Area')}}">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 
                                 <button type="submit" class="btn btn-primary mt-3 submit_btn">{{__('Submit')}}</button>

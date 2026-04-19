@@ -44,7 +44,9 @@ class ChildCategoryController extends Controller
             $request->slug=='' ? $slug = Str::slug($request->name) : $slug = $request->slug;
             $child_category =  ChildCategory::create([
                 'name' => $request->name,
+                'name_en' => $request->name_en,
                 'description' => $request->description,
+                'description_en' => $request->description_en,
                 'slug' => $slug,
                 'category_id' => $request->category_id,
                 'sub_category_id' => $request->sub_category_id,
@@ -54,14 +56,21 @@ class ChildCategoryController extends Controller
             // category meta data add
             $Metas = [
                 'meta_title'=> purify_html($request->meta_title),
+                'meta_title_en'=> purify_html($request->meta_title_en),
                 'meta_tags'=> purify_html($request->meta_tags),
+                'meta_tags_en'=> purify_html($request->meta_tags_en),
                 'meta_description'=> purify_html($request->meta_description),
+                'meta_description_en'=> purify_html($request->meta_description_en),
 
                 'facebook_meta_tags'=> purify_html($request->facebook_meta_tags),
+                'facebook_meta_tags_en'=> purify_html($request->facebook_meta_tags_en),
                 'facebook_meta_description'=> purify_html($request->facebook_meta_description),
+                'facebook_meta_description_en'=> purify_html($request->facebook_meta_description_en),
                 'facebook_meta_image'=> $request->facebook_meta_image,
                 'twitter_meta_tags'=> purify_html($request->twitter_meta_tags),
+                'twitter_meta_tags_en'=> purify_html($request->twitter_meta_tags_en),
                 'twitter_meta_description'=> purify_html($request->twitter_meta_description),
+                'twitter_meta_description_en'=> purify_html($request->twitter_meta_description_en),
                 'twitter_meta_image'=> $request->twitter_meta_image,
             ];
             $child_category->metaData()->create($Metas);
@@ -117,7 +126,9 @@ class ChildCategoryController extends Controller
             $old_image = ChildCategory::select('image')->where('id', $request->id)->first();
             ChildCategory::where('id', $request->id)->update([
                 'name' => $request->name,
+                'name_en' => $request->name_en,
                 'description' => $request->description,
+                'description_en' => $request->description_en,
                 'category_id' => $request->category_id,
                 'sub_category_id' => $request->sub_category_id,
                 'slug' => $request->slug ?? $old_slug->slug,
@@ -128,15 +139,22 @@ class ChildCategoryController extends Controller
             $child_category_meta_update = ChildCategory::findOrFail($id);
             $Metas = [
                 'meta_title'=> purify_html($request->meta_title),
+                'meta_title_en'=> purify_html($request->meta_title_en),
                 'meta_tags'=> purify_html($request->meta_tags),
+                'meta_tags_en'=> purify_html($request->meta_tags_en),
                 'meta_description'=> purify_html($request->meta_description),
+                'meta_description_en'=> purify_html($request->meta_description_en),
 
                 'facebook_meta_tags' => purify_html($request->facebook_meta_tags),
+                'facebook_meta_tags_en' => purify_html($request->facebook_meta_tags_en),
                 'facebook_meta_description' => purify_html($request->facebook_meta_description),
+                'facebook_meta_description_en' => purify_html($request->facebook_meta_description_en),
                 'facebook_meta_image' => $request->facebook_meta_image,
 
                 'twitter_meta_tags' => purify_html($request->twitter_meta_tags),
+                'twitter_meta_tags_en' => purify_html($request->twitter_meta_tags_en),
                 'twitter_meta_description' => purify_html($request->twitter_meta_description),
+                'twitter_meta_description_en' => purify_html($request->twitter_meta_description_en),
                 'twitter_meta_image' => $request->twitter_meta_image,
             ];
 

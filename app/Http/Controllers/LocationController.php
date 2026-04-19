@@ -57,11 +57,13 @@ class LocationController extends Controller
         if($request->isMethod('post')){
             $request->validate([
                 'service_city'=> 'required|max:191|unique:service_cities',
+                'service_city_en'=> 'nullable|max:191',
                 'country_id'=> 'required',
             ]);
     
             ServiceCity::create([
                'service_city' => $request->service_city,
+               'service_city_en' => $request->service_city_en,
                'country_id' => $request->country_id,
            ]);
     
@@ -76,11 +78,13 @@ class LocationController extends Controller
     {
         $request->validate([
             'up_service_city'=> 'required|max:191|unique:service_cities,service_city,'.$request->up_id,
+            'up_service_city_en'=> 'nullable|max:191',
             'up_country_id'=> 'required',
         ]);
 
         ServiceCity::where('id',$request->up_id)->update([
             'service_city'=>$request->up_service_city,
+            'service_city_en'=>$request->up_service_city_en,
             'country_id'=>$request->up_country_id,
         ]);
         return redirect()->back()->with(FlashMsg::item_new('City Update Success'));
@@ -124,12 +128,14 @@ class LocationController extends Controller
         if($request->isMethod('post')){
             $request->validate([
                 'service_area'=> 'required|max:191|unique:service_areas',
+                'service_area_en'=> 'nullable|max:191',
                 'service_city_id'=> 'required',
                 'country_id'=> 'required',
             ]);
     
             ServiceArea::create([
                'service_area' => $request->service_area,
+               'service_area_en' => $request->service_area_en,
                'service_city_id' => $request->service_city_id,
                'country_id' => $request->country_id,
            ]);
@@ -145,12 +151,14 @@ class LocationController extends Controller
     {
         $request->validate([
             'up_service_area'=> 'required|max:191|unique:service_areas,service_area,'.$request->up_id,
+            'up_service_area_en'=> 'nullable|max:191',
             'up_service_city_id'=> 'required',
             'up_country_id'=> 'required',
         ]);
 
        ServiceArea::where('id',$request->up_id)->update([
             'service_area'=>$request->up_service_area,
+            'service_area_en'=>$request->up_service_area_en,
             'service_city_id'=>$request->up_service_city_id,
             'country_id'=>$request->up_country_id,
         ]);
@@ -193,10 +201,12 @@ class LocationController extends Controller
         if($request->isMethod('post')){
             $request->validate([
                 'country'=> 'required|unique:countries|max:191',
+                'country_en'=> 'nullable|max:191',
             ]);
 
             $country = Country::create([
                 'country' => $request->country,
+                'country_en' => $request->country_en,
             ]);
 
 
@@ -224,11 +234,13 @@ class LocationController extends Controller
     {
         $request->validate([
             'up_country'=> 'required|max:191|unique:countries,country,'.$request->up_id,
+            'up_country_en'=> 'nullable|max:191',
         ]);
 
         try {
             Country::where('id',$request->up_id)->update([
                 'country'=>$request->up_country,
+                'country_en'=>$request->up_country_en,
                 'country_code'=>$request->country_code,
                 'flag_url'=>$request->flag_url,
                 'latitude'=>$request->latitude,

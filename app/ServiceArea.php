@@ -10,7 +10,7 @@ class ServiceArea extends Model
     use HasFactory;
 
     protected $table = 'service_areas';
-    protected $fillable = ['service_area', 'service_city_id', 'status', 'country_id'];
+    protected $fillable = ['service_area', 'service_area_en', 'service_city_id', 'status', 'country_id'];
 
     public function city()
     {

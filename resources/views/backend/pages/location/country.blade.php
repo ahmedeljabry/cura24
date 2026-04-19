@@ -92,6 +92,7 @@
                                                     class="btn btn-primary btn-xs mb-3 mr-1 country_edit_btn"
                                                     data-id="{{$data->id}}"
                                                     data-country="{{$data->country}}"  
+                                                    data-country_en="{{$data->country_en}}"
                                                     data-country_code="{{$data->country_code}}"
                                                     data-flag_url="{{$data->flag_url}}"
                                                     data-latitude="{{$data->latitude}}"
@@ -125,9 +126,29 @@
                         @csrf
                         <input type="hidden" name="up_id" id="up_id">
 
-                        <div class="form-group">
-                            <label for="up_country">{{__('Service Country')}}</label>
-                            <input type="text" class="form-control" name="up_country" id="up_country" placeholder="{{__('Service Country')}}">
+                        <div class="tab-content margin-top-20">
+                            <ul class="nav nav-tabs mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#edit-country-it" role="tab" style="color: blue">{{__('Italian (Default)')}}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#edit-country-en" role="tab" style="color: blue">{{__('English')}}</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="edit-country-it" role="tabpanel">
+                                    <div class="form-group">
+                                        <label for="up_country">{{__('Service Country (Italian)')}}</label>
+                                        <input type="text" class="form-control" name="up_country" id="up_country" placeholder="{{__('Service Country')}}">
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="edit-country-en" role="tabpanel">
+                                    <div class="form-group">
+                                        <label for="up_country_en">{{__('Service Country (English)')}}</label>
+                                        <input type="text" class="form-control" name="up_country_en" id="up_country_en" placeholder="{{__('Service Country')}}">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="country_code">{{__('Country code')}}</label>
@@ -187,6 +208,7 @@
                     var el = $(this);
                     var id = el.data('id');
                     var country = el.data('country');
+                    var country_en = el.data('country_en');
                     var country_code = el.data('country_code');
                     var flag_url = el.data('flag_url');
                     var latitude = el.data('latitude');
@@ -194,6 +216,7 @@
                     var form = $('#country_edit_modal');
                     form.find('#up_id').val(id);
                     form.find('#up_country').val(country);
+                    form.find('#up_country_en').val(country_en);
                     form.find('#country_code').val(country_code);
                     form.find('#flag_url').val(flag_url);
                     form.find('#latitude').val(latitude);

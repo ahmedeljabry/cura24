@@ -86,6 +86,7 @@
                                                 class="btn btn-primary btn-xs mb-3 mr-1 city_item_edit_btn"
                                                 data-id="{{$data->id}}"
                                                 data-name="{{$data->service_city}}"
+                                                data-name_en="{{$data->service_city_en}}"
                                                 data-country_id="{{optional($data->countryy)->id}}"
                                                 data-country="{{optional($data->countryy)->country}}">
                                                 <i class="ti-pencil"></i>
@@ -128,9 +129,27 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="service_city">{{__('Service City/State')}}</label>
-                            <input type="text" class="form-control" name="up_service_city" id="up_service_city" placeholder="{{__('Service City')}}">
+                        <ul class="nav nav-tabs mb-3" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#edit-city-it" role="tab" style="color: blue">{{__('Italian (Default)')}}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#edit-city-en" role="tab" style="color: blue">{{__('English')}}</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="edit-city-it" role="tabpanel">
+                                <div class="form-group">
+                                    <label for="service_city">{{__('Service City/State (Italian)')}}</label>
+                                    <input type="text" class="form-control" name="up_service_city" id="up_service_city" placeholder="{{__('Service City')}}">
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="edit-city-en" role="tabpanel">
+                                <div class="form-group">
+                                    <label for="up_service_city_en">{{__('Service City/State (English)')}}</label>
+                                    <input type="text" class="form-control" name="up_service_city_en" id="up_service_city_en" placeholder="{{__('Service City')}}">
+                                </div>
+                            </div>
                         </div>
                         
                     </div>
@@ -172,10 +191,12 @@
                     var el = $(this);
                     var id = el.data('id');
                     var name = el.data('name');
+                    var name_en = el.data('name_en');
                     var country_id = el.data('country_id');
                     var form = $('#city_edit_modal');
                     form.find('#up_id').val(id);
                     form.find('#up_service_city').val(name);
+                    form.find('#up_service_city_en').val(name_en);
                     form.find('#up_country_id').val(country_id);
                 });
 

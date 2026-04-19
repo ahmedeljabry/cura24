@@ -16,8 +16,47 @@ class Blog extends Model
         'user_id','title','slug','blog_content',
         'image','author','excerpt','status','views',
         'visibility','featured','schedule_date',
-        'admin_id','created_by','tag_name'
+        'admin_id','created_by','tag_name',
+        'title_en', 'blog_content_en', 'excerpt_en', 'tag_name_en'
     ];
+
+    private function shouldShowEnglish(): bool
+    {
+        if (request()->is('admin-home*') || request()->is('seller*') || request()->is('api/v1/seller*')) {
+            return false;
+        }
+
+        $lang = \App\Helpers\LanguageHelper::user_lang_slug();
+        return !in_array($lang, ['it', 'it_IT']);
+    }
+
+    public function getTitleAttribute($value) {
+        if ($this->shouldShowEnglish() && !empty($this->attributes['title_en'])) {
+            return $this->attributes['title_en'];
+        }
+        return $value;
+    }
+
+    public function getBlogContentAttribute($value) {
+        if ($this->shouldShowEnglish() && !empty($this->attributes['blog_content_en'])) {
+            return $this->attributes['blog_content_en'];
+        }
+        return $value;
+    }
+
+    public function getExcerptAttribute($value) {
+        if ($this->shouldShowEnglish() && !empty($this->attributes['excerpt_en'])) {
+            return $this->attributes['excerpt_en'];
+        }
+        return $value;
+    }
+
+    public function getTagNameAttribute($value) {
+        if ($this->shouldShowEnglish() && !empty($this->attributes['tag_name_en'])) {
+            return $this->attributes['tag_name_en'];
+        }
+        return $value;
+    }
 
     protected $dates = ['deleted_at'];
 

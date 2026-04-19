@@ -70,6 +70,16 @@ class SubcategoryController extends Controller
                 'twitter_meta_tags'=> purify_html($request->twitter_meta_tags),
                 'twitter_meta_description'=> purify_html($request->twitter_meta_description),
                 'twitter_meta_image'=> $request->twitter_meta_image,
+
+                'meta_title_en'=> purify_html($request->meta_title_en),
+                'meta_tags_en'=> purify_html($request->meta_tags_en),
+                'meta_description_en'=> purify_html($request->meta_description_en),
+
+                'facebook_meta_tags_en'=> purify_html($request->facebook_meta_tags_en),
+                'facebook_meta_description_en'=> purify_html($request->facebook_meta_description_en),
+
+                'twitter_meta_tags_en'=> purify_html($request->twitter_meta_tags_en),
+                'twitter_meta_description_en'=> purify_html($request->twitter_meta_description_en),
             ];
             $sub_category->metaData()->create($Metas);
 
@@ -142,6 +152,16 @@ class SubcategoryController extends Controller
                  'twitter_meta_tags'=> purify_html($request->twitter_meta_tags),
                  'twitter_meta_description'=> purify_html($request->twitter_meta_description),
                  'twitter_meta_image'=> $request->twitter_meta_image,
+
+                'meta_title_en'=> purify_html($request->meta_title_en),
+                'meta_tags_en'=> purify_html($request->meta_tags_en),
+                'meta_description_en'=> purify_html($request->meta_description_en),
+
+                'facebook_meta_tags_en'=> purify_html($request->facebook_meta_tags_en),
+                'facebook_meta_description_en'=> purify_html($request->facebook_meta_description_en),
+
+                'twitter_meta_tags_en'=> purify_html($request->twitter_meta_tags_en),
+                'twitter_meta_description_en'=> purify_html($request->twitter_meta_description_en),
              ];
 
              if(is_null($subcategory_meta_update->metaData()->first())){
