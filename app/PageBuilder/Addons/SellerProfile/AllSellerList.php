@@ -10,7 +10,9 @@ use App\PageBuilder\Fields\Number;
 use App\PageBuilder\Fields\Select;
 use App\PageBuilder\Fields\Slider;
 use App\PageBuilder\Fields\Text;
+use App\PageBuilder\Fields\TranslatableText;
 use App\PageBuilder\Fields\Textarea;
+use App\PageBuilder\Fields\TranslatableTextarea;
 use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
 use App\Review;
 use App\User;
@@ -32,14 +34,16 @@ class AllSellerList extends \App\PageBuilder\PageBuilderBase
         $output .= $this->default_fields();
         $widget_saved_values = $this->get_settings();
         
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'title',
             'label' => __('Title'),
             'value' => $widget_saved_values['title'] ?? null,
             'info' => __('enter title')
         ]);
 
-        $output .= Textarea::get([
+        $output .= TranslatableTextarea::get([
+            'settings' => $widget_saved_values,
             'name' => 'description',
             'label' => __('Description'),
             'value' => $widget_saved_values['description'] ?? null,

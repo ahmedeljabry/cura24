@@ -5,7 +5,9 @@ namespace App\PageBuilder\Addons\Common;
 
 use App\PageBuilder\Fields\Slider;
 use App\PageBuilder\Fields\Text;
+use App\PageBuilder\Fields\TranslatableText;
 use App\PageBuilder\Fields\Textarea;
+use App\PageBuilder\Fields\TranslatableTextarea;
 use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
 use App\PageBuilder\Fields\Repeater;
 use App\PageBuilder\Helpers\RepeaterField;
@@ -28,7 +30,8 @@ class RawHTML extends \App\PageBuilder\PageBuilderBase
         $widget_saved_values = $this->get_settings();
 
 
-        $output .= Textarea::get([
+        $output .= TranslatableTextarea::get([
+            'settings' => $widget_saved_values,
             'name' => 'raw_html',
             'label' => __('Raw HTML'),
             'value' => $widget_saved_values['raw_html'] ?? null,

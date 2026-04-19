@@ -8,6 +8,7 @@ use App\Service;
 use App\PageBuilder\Fields\Slider;
 use App\PageBuilder\Fields\Number;
 use App\PageBuilder\Fields\Text;
+use App\PageBuilder\Fields\TranslatableText;
 use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
 use App\PageBuilder\Fields\Select;
 
@@ -29,7 +30,8 @@ class PopularService extends \App\PageBuilder\PageBuilderBase
         $widget_saved_values = $this->get_settings();
 
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'title',
             'label' => __('Title'),
             'value' => $widget_saved_values['title'] ?? null,
@@ -40,7 +42,8 @@ class PopularService extends \App\PageBuilder\PageBuilderBase
             'value' => $widget_saved_values['title_text_color'] ?? null,
             'info' => __('select color you want to show in frontend'),
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'subtitle',
             'label' => __('Subtitle'),
             'value' => $widget_saved_values['subtitle'] ?? null,
@@ -104,13 +107,15 @@ class PopularService extends \App\PageBuilder\PageBuilderBase
             'value' => $widget_saved_values['hover_color'] ?? null,
             'info' => __('Select your color')
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'explore_more_link',
             'label' => __('Explore More'),
             'value' => $widget_saved_values['explore_more_link'] ?? null,
             'info' => 'put your link where to go',
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'book_appointment',
             'label' => __('Book Appoinment Button Text'),
             'value' => $widget_saved_values['book_appointment'] ?? 'Book Now',

@@ -137,97 +137,71 @@
                                     <div class="col-lg-9">
                                         <div class="tab-content" id="v-pills-tabContent">
 
-                                            <div class="tab-pane fade show active" id="v-pills-home"
-                                                 role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                                <div class="form-group">
-                                                    <label for="title">{{__('Meta Title')}}</label>
-                                                    <input type="text" class="form-control" name="meta_title"
-                                                           placeholder="{{__('Title')}}">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="slug">{{__('Meta Tags')}}</label>
-                                                    <input type="text" class="form-control" name="meta_tags"
-                                                           placeholder="Slug" data-role="tagsinput">
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="form-group col-md-12">
-                                                        <label for="title">{{__('Meta Description')}}</label>
-                                                        <textarea name="meta_description"
-                                                                  class="form-control max-height-140"
-                                                                  cols="20"
-                                                                  rows="4"></textarea>
+                                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                                <ul class="nav nav-tabs mb-3" role="tablist">
+                                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#blog-meta-it" role="tab" style="color:blue">{{__('Italian (Default)')}}</a></li>
+                                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blog-meta-en" role="tab" style="color:blue">{{__('English')}}</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div class="tab-pane fade show active" id="blog-meta-it" role="tabpanel">
+                                                        <div class="form-group"><label>{{__('Meta Title (Italian)')}}</label><input type="text" class="form-control" name="meta_title" placeholder="{{__('Title')}}"></div>
+                                                        <div class="form-group"><label>{{__('Meta Tags (Italian)')}}</label><input type="text" class="form-control" name="meta_tags" data-role="tagsinput" placeholder="{{__('Tags')}}"></div>
+                                                        <div class="form-group"><label>{{__('Meta Description (Italian)')}}</label><textarea name="meta_description" class="form-control max-height-140" cols="20" rows="4"></textarea></div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="blog-meta-en" role="tabpanel">
+                                                        <div class="form-group"><label>{{__('Meta Title (English)')}}</label><input type="text" class="form-control" name="meta_title_en" placeholder="{{__('Title')}}"></div>
+                                                        <div class="form-group"><label>{{__('Meta Tags (English)')}}</label><input type="text" class="form-control" name="meta_tags_en" data-role="tagsinput" placeholder="{{__('Tags')}}"></div>
+                                                        <div class="form-group"><label>{{__('Meta Description (English)')}}</label><textarea name="meta_description_en" class="form-control max-height-140" cols="20" rows="4"></textarea></div>
                                                     </div>
                                                 </div>
-
                                             </div>
 
-                                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-                                                 aria-labelledby="v-pills-profile-tab">
-                                                <div class="form-group">
-                                                    <label for="title">{{__('Facebook Meta Title')}}</label>
-                                                    <input type="text" class="form-control" data-role="tagsinput"
-                                                           name="facebook_meta_tags">
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="form-group col-md-12">
-                                                        <label for="title">{{__('Facebook Meta Description')}}</label>
-                                                        <textarea name="facebook_meta_description"
-                                                                  class="form-control max-height-140"
-                                                                  cols="20"
-                                                                  rows="4"></textarea>
+                                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                                <ul class="nav nav-tabs mb-3" role="tablist">
+                                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#blog-fb-it" role="tab" style="color:blue">{{__('Italian (Default)')}}</a></li>
+                                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blog-fb-en" role="tab" style="color:blue">{{__('English')}}</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div class="tab-pane fade show active" id="blog-fb-it" role="tabpanel">
+                                                        <div class="form-group"><label>{{__('Facebook Meta Title (Italian)')}}</label><input type="text" class="form-control" data-role="tagsinput" name="facebook_meta_tags"></div>
+                                                        <div class="form-group"><label>{{__('Facebook Meta Description (Italian)')}}</label><textarea name="facebook_meta_description" class="form-control max-height-140" cols="20" rows="4"></textarea></div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="blog-fb-en" role="tabpanel">
+                                                        <div class="form-group"><label>{{__('Facebook Meta Title (English)')}}</label><input type="text" class="form-control" data-role="tagsinput" name="facebook_meta_tags_en"></div>
+                                                        <div class="form-group"><label>{{__('Facebook Meta Description (English)')}}</label><textarea name="facebook_meta_description_en" class="form-control max-height-140" cols="20" rows="4"></textarea></div>
                                                     </div>
                                                 </div>
-
                                                 <div class="form-group">
-                                                    <label for="image">{{__('Facebook Meta Image')}}</label>
+                                                    <label for="image">{{__('Facebook Meta Image (Shared)')}}</label>
                                                     <div class="media-upload-btn-wrapper">
                                                         <div class="img-wrap"></div>
                                                         <input type="hidden" name="facebook_meta_image">
-                                                        <button type="button"
-                                                                class="btn btn-info media_upload_form_btn"
-                                                                data-btntitle="{{__('Select Image')}}"
-                                                                data-modaltitle="{{__('Upload Image')}}"
-                                                                data-toggle="modal"
-                                                                data-target="#media_upload_modal">
-                                                            {{__('Upload Image')}}
-                                                        </button>
+                                                        <button type="button" class="btn btn-info media_upload_form_btn" data-btntitle="{{__('Select Image')}}" data-modaltitle="{{__('Upload Image')}}" data-toggle="modal" data-target="#media_upload_modal">{{__('Upload Image')}}</button>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-                                                 aria-labelledby="v-pills-messages-tab">
-                                                <div class="form-group">
-                                                    <label for="title">{{__('Twitter Meta Title')}}</label>
-                                                    <input type="text" class="form-control" data-role="tagsinput"
-                                                           name="twitter_meta_tags">
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="form-group col-md-12">
-                                                        <label for="title">{{__('Twitter Meta Description')}}</label>
-                                                        <textarea name="twitter_meta_description"
-                                                                  class="form-control max-height-140"
-                                                                  cols="20"
-                                                                  rows="4"></textarea>
+                                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                                                <ul class="nav nav-tabs mb-3" role="tablist">
+                                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#blog-tw-it" role="tab" style="color:blue">{{__('Italian (Default)')}}</a></li>
+                                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#blog-tw-en" role="tab" style="color:blue">{{__('English')}}</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div class="tab-pane fade show active" id="blog-tw-it" role="tabpanel">
+                                                        <div class="form-group"><label>{{__('Twitter Meta Title (Italian)')}}</label><input type="text" class="form-control" data-role="tagsinput" name="twitter_meta_tags"></div>
+                                                        <div class="form-group"><label>{{__('Twitter Meta Description (Italian)')}}</label><textarea name="twitter_meta_description" class="form-control max-height-140" cols="20" rows="4"></textarea></div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="blog-tw-en" role="tabpanel">
+                                                        <div class="form-group"><label>{{__('Twitter Meta Title (English)')}}</label><input type="text" class="form-control" data-role="tagsinput" name="twitter_meta_tags_en"></div>
+                                                        <div class="form-group"><label>{{__('Twitter Meta Description (English)')}}</label><textarea name="twitter_meta_description_en" class="form-control max-height-140" cols="20" rows="4"></textarea></div>
                                                     </div>
                                                 </div>
-
                                                 <div class="form-group">
-                                                    <label for="image">{{__('Twitter Meta Image')}}</label>
+                                                    <label for="image">{{__('Twitter Meta Image (Shared)')}}</label>
                                                     <div class="media-upload-btn-wrapper">
                                                         <div class="img-wrap"></div>
                                                         <input type="hidden" name="twitter_meta_image">
-                                                        <button type="button"
-                                                                class="btn btn-info media_upload_form_btn"
-                                                                data-btntitle="{{__('Select Image')}}"
-                                                                data-modaltitle="{{__('Upload Image')}}"
-                                                                data-toggle="modal"
-                                                                data-target="#media_upload_modal">
-                                                            {{__('Upload Image')}}
-                                                        </button>
+                                                        <button type="button" class="btn btn-info media_upload_form_btn" data-btntitle="{{__('Select Image')}}" data-modaltitle="{{__('Upload Image')}}" data-toggle="modal" data-target="#media_upload_modal">{{__('Upload Image')}}</button>
                                                     </div>
                                                 </div>
                                             </div>

@@ -7,6 +7,7 @@ use App\PageBuilder\Fields\IconPicker;
 use App\PageBuilder\Fields\Image;
 use App\PageBuilder\Fields\Repeater;
 use App\PageBuilder\Fields\Text;
+use App\PageBuilder\Fields\TranslatableText;
 use App\PageBuilder\Helpers\RepeaterField;
 use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
 use App\WidgetsBuilder\WidgetBase;
@@ -30,7 +31,8 @@ class SocialMediaWidget extends WidgetBase
             'value' => $widget_saved_values['facebook_icon'] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'facebook_url',
             'label' => __('Facebook URL'),
             'value' => $widget_saved_values['facebook_url'] ?? null,
@@ -42,7 +44,8 @@ class SocialMediaWidget extends WidgetBase
             'value' => $widget_saved_values['twitter_icon'] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'twitter_url',
             'label' => __('Twitter URL'),
             'value' => $widget_saved_values['twitter_url'] ?? null,
@@ -54,7 +57,8 @@ class SocialMediaWidget extends WidgetBase
             'value' => $widget_saved_values['instagram_icon'] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'instagram_url',
             'label' => __('Instagram URL'),
             'value' => $widget_saved_values['instagram_url'] ?? null,
@@ -66,7 +70,8 @@ class SocialMediaWidget extends WidgetBase
             'value' => $widget_saved_values['google_icon'] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'google_url',
             'label' => __('Google URL'),
             'value' => $widget_saved_values['google_url'] ?? null,

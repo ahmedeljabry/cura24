@@ -699,12 +699,16 @@ class ServiceController extends Controller
                     $request->validate(
                         [
                             'include_service_title.*' => 'required|max:191',
+                            'include_service_title_en.*' => 'max:191',
                             'online_service_price' => 'required|integer',
                             'delivery_days' => 'required|integer',
                             'revision' => 'required|integer',
                             'benifits.*' => 'max:191',
+                            'benifits_en.*' => 'max:191',
                             'faqs_title.*' => 'max:191',
+                            'faqs_title_en.*' => 'max:191',
                             'additional_service_title.*' => 'max:191',
+                            'additional_service_title_en.*' => 'max:191',
                         ],
                         [
                             'include_service_title.*.required' => __('Title is required'),
@@ -715,11 +719,15 @@ class ServiceController extends Controller
                 $request->validate(
                     [
                         'include_service_title.*' => 'required|max:191',
+                        'include_service_title_en.*' => 'max:191',
                         'include_service_price.*' => 'required|numeric',
                         'include_service_quantity.*' => 'required|numeric',
                         'benifits.*' => 'max:191',
+                        'benifits_en.*' => 'max:191',
                         'faqs_title.*' => 'max:191',
+                        'faqs_title_en.*' => 'max:191',
                         'additional_service_title.*' => 'max:191',
+                        'additional_service_title_en.*' => 'max:191',
                     ],
                     [
                         'include_service_title.*.required' => __('Title is required'),
@@ -752,6 +760,7 @@ class ServiceController extends Controller
                                 'service_id' => $request->service_id,
                                 'seller_id' => $request->seller_id,
                                 'include_service_title' => $data['include_service_title'][$key],
+                                'include_service_title_en' => $data['include_service_title_en'][$key] ?? null,
                                 'include_service_price' => 0,
                                 'include_service_quantity' => 0,
                             ];
@@ -766,6 +775,7 @@ class ServiceController extends Controller
                             'service_id' => $request->service_id,
                             'seller_id' => $request->seller_id,
                             'include_service_title' => $data['include_service_title'][$key],
+                            'include_service_title_en' => $data['include_service_title_en'][$key] ?? null,
                             'include_service_price' => $data['include_service_price'][$key],
                             'include_service_quantity' => $data['include_service_quantity'][$key],
                         ];
@@ -783,9 +793,10 @@ class ServiceController extends Controller
                             'service_id' => $request->service_id,
                             'seller_id' => $request->seller_id,
                             'additional_service_title' => $data['additional_service_title'][$key],
+                            'additional_service_title_en' => $data['additional_service_title_en'][$key] ?? null,
                             'additional_service_price' => $data['additional_service_price'][$key],
                             'additional_service_quantity' => $data['additional_service_quantity'][$key],
-                            'additional_service_image' => $data['image'][$key],
+                            'additional_service_image' => $data['image'][$key] ?? null,
                         ];
                     }
                 }
@@ -799,6 +810,7 @@ class ServiceController extends Controller
                             'service_id' => $request->service_id,
                             'seller_id' => $request->seller_id,
                             'benifits' => $data['benifits'][$key],
+                            'benifits_en' => $data['benifits_en'][$key] ?? null,
                         ];
                     }
                 }
@@ -812,7 +824,9 @@ class ServiceController extends Controller
                             'service_id' => $request->service_id,
                             'seller_id' => $request->seller_id,
                             'title' => $data['faqs_title'][$key],
+                            'title_en' => $data['faqs_title_en'][$key] ?? null,
                             'description' => $data['faqs_description'][$key],
+                            'description_en' => $data['faqs_description_en'][$key] ?? null,
                         ];
                     }
                 }
@@ -834,9 +848,13 @@ class ServiceController extends Controller
                 $request->validate(
                     [
                         'include_service_title.*' => 'required|max:191',
+                        'include_service_title_en.*' => 'max:191',
                         'additional_service_title.*' => 'max:191',
+                        'additional_service_title_en.*' => 'max:191',
                         'benifits.*' => 'max:191',
+                        'benifits_en.*' => 'max:191',
                         'faqs_title.*' => 'max:191',
+                        'faqs_title_en.*' => 'max:191',
                     ],
                     [
                         'include_service_title.*.required' => __('Title is required'),
@@ -846,11 +864,15 @@ class ServiceController extends Controller
                 $request->validate(
                     [
                         'include_service_title.*' => 'required|max:191',
+                        'include_service_title_en.*' => 'max:191',
                         'include_service_price.*' => 'required|numeric',
                         'include_service_quantity.*' => 'required|numeric',
                         'benifits.*' => 'max:191',
+                        'benifits_en.*' => 'max:191',
                         'faqs_title.*' => 'max:191',
+                        'faqs_title_en.*' => 'max:191',
                         'additional_service_title.*' => 'max:191',
+                        'additional_service_title_en.*' => 'max:191',
                     ],
                     [
                         'include_service_title.*.required' => __('Title is required'),
@@ -880,6 +902,7 @@ class ServiceController extends Controller
                                     'service_id' => $request->service_id,
                                     'seller_id' => $get_service->seller_id,
                                     'include_service_title' => $data['include_service_title'][$key],
+                                    'include_service_title_en' => $data['include_service_title_en'][$key] ?? null,
                                     'include_service_price' => 0,
                                     'include_service_quantity' => 0,
                                 ];
@@ -896,6 +919,7 @@ class ServiceController extends Controller
                                 'service_id' => $request->service_id,
                                 'seller_id' => $get_service->seller_id,
                                 'include_service_title' => $data['include_service_title'][$key],
+                                'include_service_title_en' => $data['include_service_title_en'][$key] ?? null,
                                 'include_service_price' => $data['include_service_price'][$key],
                                 'include_service_quantity' => $data['include_service_quantity'][$key],
                             ];
@@ -920,9 +944,10 @@ class ServiceController extends Controller
                             'service_id' => $request->service_id,
                             'seller_id' => $get_service->seller_id,
                             'additional_service_title' => $data['additional_service_title'][$key],
+                            'additional_service_title_en' => $data['additional_service_title_en'][$key] ?? null,
                             'additional_service_price' => $data['additional_service_price'][$key],
                             'additional_service_quantity' => $data['additional_service_quantity'][$key],
-                            'additional_service_image' => $data['image'][$key],
+                            'additional_service_image' => $data['image'][$key] ?? null,
                         ];
                         $service_count++;
                     }
@@ -940,6 +965,7 @@ class ServiceController extends Controller
                             'service_id' => $request->service_id,
                             'seller_id' => $get_service->seller_id,
                             'benifits' => $data['benifits'][$key],
+                            'benifits_en' => $data['benifits_en'][$key] ?? null,
                         ];
                         $service_count++;
                     }
@@ -952,12 +978,14 @@ class ServiceController extends Controller
 
             if(isset($data['faqs_title'])){
                 foreach ($data['faqs_title'] as $key => $value) {
-                    if (!empty($data['benifits'][$key])) {
+                    if (!empty($data['faqs_title'][$key])) {
                         $online_service_faqs[] = [
                             'service_id' => $request->service_id,
                             'seller_id' => $get_service->seller_id,
                             'title' => $data['faqs_title'][$key],
+                            'title_en' => $data['faqs_title_en'][$key] ?? null,
                             'description' => $data['faqs_description'][$key],
+                            'description_en' => $data['faqs_description_en'][$key] ?? null,
                         ];
                         $service_count++;
                     }

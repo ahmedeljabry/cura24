@@ -88,6 +88,24 @@ abstract class WidgetBase
     {
         $widget_data = !empty($this->args['id']) ? Widgets::find($this->args['id']) : [];
         $widget_data = !empty($widget_data) ? unserialize($widget_data->widget_content,['class' => false]) : [];
+        
+        if (request()->is('admin-home') || request()->is('admin-home/*')) {
+            return $widget_data;
+        }
+
+        $user_lang = \App\Helpers\LanguageHelper::user_lang_slug();
+        $default_lang = \App\Helpers\LanguageHelper::default_slug();
+        if ($user_lang !== $default_lang && !empty($widget_data)) {
+            $mapped_data = [];
+            foreach ($widget_data as $key => $value) {
+                $mapped_data[$key] = $value;
+                if (isset($widget_data[$key.'_'.$user_lang]) && !empty($widget_data[$key.'_'.$user_lang])) {
+                    $mapped_data[$key] = $widget_data[$key.'_'.$user_lang];
+                }
+            }
+            return $mapped_data;
+        }
+
         return $widget_data;
     }
     /**
@@ -223,8 +241,9 @@ abstract class WidgetBase
 
     public function admin_form_before(){
         $markup = '';
+        $settings = htmlspecialchars(json_encode($this->get_settings()), ENT_QUOTES, 'UTF-8');
         if ($this->args['before']){
-            $markup .= '<li class="ui-state-default widget-handler" data-name="'.$this->widget_name().'">';
+            $markup .= '<li class="ui-state-default widget-handler" data-name="'.$this->widget_name().'" data-settings=\''.$settings.'\'>';
         }
         $markup .= '<h4 class="top-part"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>'.$this->widget_title().'</h4>
         <span class="expand"><i class="ti-angle-down"></i></span>

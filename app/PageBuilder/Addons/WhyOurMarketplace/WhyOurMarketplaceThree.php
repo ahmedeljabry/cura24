@@ -5,7 +5,9 @@ namespace App\PageBuilder\Addons\WhyOurMarketplace;
 use App\PageBuilder\Fields\ColorPicker;
 use App\PageBuilder\Fields\Slider;
 use App\PageBuilder\Fields\Text;
+use App\PageBuilder\Fields\TranslatableText;
 use App\PageBuilder\Fields\Textarea;
+use App\PageBuilder\Fields\TranslatableTextarea;
 use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
 use App\PageBuilder\Fields\Repeater;
 use App\PageBuilder\Helpers\RepeaterField;
@@ -28,12 +30,14 @@ class WhyOurMarketplaceThree extends \App\PageBuilder\PageBuilderBase
         $widget_saved_values = $this->get_settings();
 
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'title',
             'label' => __('Title'),
             'value' => $widget_saved_values['title'] ?? null,
         ]);
-        $output .= Textarea::get([
+        $output .= TranslatableTextarea::get([
+            'settings' => $widget_saved_values,
             'name' => 'subtitle',
             'label' => __('Subtitle'),
             'value' => $widget_saved_values['subtitle'] ?? null,
@@ -64,12 +68,14 @@ class WhyOurMarketplaceThree extends \App\PageBuilder\PageBuilderBase
             'value' => $widget_saved_values['btn_color'] ?? null,
             'info' => __('select color you want to show in frontend'),
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'btn_text',
             'label' => __('Button Text'),
             'value' => $widget_saved_values['btn_text'] ?? null,
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'btn_link',
             'label' => __('Button Link'),
             'value' => $widget_saved_values['btn_link'] ?? null,

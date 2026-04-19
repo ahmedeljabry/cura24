@@ -304,9 +304,29 @@ class FrontendController extends Controller
             session()->put('lang', $selected_lang);
         }
 
-        // Redirect to the localized URL so the URL prefix also changes
-        $localizedUrl = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($selected_lang ?? app()->getLocale(), url()->previous());
-        return redirect($localizedUrl ?: url()->previous());
+        $targetLocale = $selected_lang ?? app()->getLocale();
+        $previousUrl  = url()->previous();
+
+        // Determine if the referrer is an admin / non-frontend page.
+        // Admin routes live at  /admin-home  (no locale prefix, not matched by
+        // LaravelLocalization), so getLocalizedURL() would turn them into
+        // /it/admin-home, seller-dashboard, etc. – all of which 404.
+        $appUrl      = rtrim(config('app.url'), '/');
+        $previousPath = parse_url($previousUrl, PHP_URL_PATH) ?? '/';
+
+        $isNonFrontend = preg_match(
+            '#^/(admin-home|seller-dashboard|buyer-dashboard)#i',
+            $previousPath
+        );
+
+        if ($isNonFrontend) {
+            // Stay on backend – just reload the same admin page without a locale prefix
+            return redirect($previousUrl);
+        }
+
+        // For regular frontend pages, build the properly localized URL
+        $localizedUrl = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($targetLocale, $previousUrl);
+        return redirect($localizedUrl ?: $previousUrl);
     }
 
 

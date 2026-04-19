@@ -6,7 +6,9 @@ namespace App\PageBuilder\Addons\Common;
 use App\PageBuilder\Fields\Slider;
 use App\PageBuilder\Fields\Summernote;
 use App\PageBuilder\Fields\Text;
+use App\PageBuilder\Fields\TranslatableText;
 use App\PageBuilder\Fields\Textarea;
+use App\PageBuilder\Fields\TranslatableTextarea;
 use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
 use App\PageBuilder\Fields\Repeater;
 use App\PageBuilder\Helpers\RepeaterField;
@@ -34,7 +36,8 @@ class OnlyImage extends \App\PageBuilder\PageBuilderBase
             'label' => __('Image'),
             'value' => $widget_saved_values['image'] ?? null,
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'link',
             'label' => __('Link'),
             'value' => $widget_saved_values['link'] ?? null,

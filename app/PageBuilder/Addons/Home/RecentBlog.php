@@ -9,6 +9,7 @@ use App\PageBuilder\Fields\Number;
 use App\PageBuilder\Fields\Select;
 use App\PageBuilder\Fields\Slider;
 use App\PageBuilder\Fields\Text;
+use App\PageBuilder\Fields\TranslatableText;
 use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
 use Str;
 
@@ -29,7 +30,8 @@ class RecentBlog extends \App\PageBuilder\PageBuilderBase
         $widget_saved_values = $this->get_settings();
 
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'title',
             'label' => __('Title'),
             'value' => $widget_saved_values['title'] ?? null,
@@ -40,7 +42,8 @@ class RecentBlog extends \App\PageBuilder\PageBuilderBase
             'value' => $widget_saved_values['title_text_color'] ?? null,
             'info' => __('select color you want to show in frontend'),
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'subtitle',
             'label' => __('Subtitle'),
             'value' => $widget_saved_values['subtitle'] ?? null,

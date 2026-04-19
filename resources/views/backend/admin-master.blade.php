@@ -327,6 +327,84 @@
         $('[data-toggle="tooltip"]').tooltip({'placement': 'top','color':'green'});
     });
 </script>
+<script>
+    (function ($){
+        "use strict";
+
+        $(document).ajaxComplete(function(event, xhr, settings) {
+            if (settings.url.indexOf('widgets/markup') !== -1 || settings.url.indexOf('page-builder') !== -1 || settings.url.indexOf('edit-widget') !== -1 || settings.url.indexOf('edit-addon') !== -1 || settings.url.indexOf('markup') !== -1) {
+                setTimeout(init_bilingual_tabs, 500);
+            }
+        });
+        
+        $(document).ready(function() {
+            setTimeout(init_bilingual_tabs, 500);
+        });
+
+        function init_bilingual_tabs() {
+            $('.widget-handler').each(function() {
+                var container = $(this);
+                if(container.data('bilingual-init')) return;
+                
+                var settings = container.data('settings') || {};
+                var targets = container.find('input[type="text"]:not(.icon_picker):not(.color_picker), textarea:not(.summernote)');
+                
+                var has_fields = false;
+                targets.each(function() {
+                    var n = $(this).attr('name');
+                    if (n && !n.match(/_en$/) && !container.find('[name="'+n+'_en"]').length) {
+                        has_fields = true;
+                    }
+                });
+                
+                if(!has_fields) return;
+                container.data('bilingual-init', true);
+                
+                targets.each(function() {
+                    var el = $(this);
+                    var name = el.attr('name');
+                    if (!name || name.match(/_en$/) || name.match(/_it$/)) return;
+                    
+                    var skip_names = ['widget_name', 'widget_type', 'widget_location', 'widget_order', 'id', 'addon_name', 'addon_namespace', 'addon_type', 'addon_location', 'addon_order', 'addon_page_id', 'addon_page_type', 'padding_top', 'padding_bottom'];
+                    if(skip_names.indexOf(name) !== -1) return;
+                    
+                    var parent = el.closest('.form-group');
+                    if(!parent.length) return;
+                    
+                    if(container.find('[name="'+name+'_en"]').length) return;
+                    if(parent.closest('.tab-content').length) return;
+                    
+                    var uid = Math.random().toString(36).substr(2, 9);
+                    var en_name = name + '_en';
+                    var en_val = settings[en_name] !== undefined ? settings[en_name] : '';
+                    
+                    var clone = parent.clone();
+                    var el_en = clone.find('[name="'+name+'"]');
+                    el_en.attr('name', en_name);
+                    el_en.val(en_val);
+                    clone.find('label').text(function(i, t) { return t + ' (English)'; });
+                    parent.find('label').text(function(i, t) { return t + ' (Italian)'; });
+                    
+                    var tab_html = `
+                        <ul class="nav nav-tabs mb-2" role="tablist">
+                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#it-${uid}" role="tab" style="color:blue">Italian</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#en-${uid}" role="tab" style="color:blue">English</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="it-${uid}" role="tabpanel"></div>
+                            <div class="tab-pane fade" id="en-${uid}" role="tabpanel"></div>
+                        </div>
+                    `;
+                    
+                    var wrap = $(tab_html);
+                    parent.before(wrap);
+                    wrap.find(`#it-${uid}`).append(parent);
+                    wrap.find(`#en-${uid}`).append(clone);
+                });
+            });
+        }
+    })(jQuery);
+</script>
 </body>
 
 </html>

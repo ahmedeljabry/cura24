@@ -14,6 +14,7 @@ use App\PageBuilder\Fields\Number;
 use App\PageBuilder\Fields\Select;
 use App\PageBuilder\Fields\Slider;
 use App\PageBuilder\Fields\Text;
+use App\PageBuilder\Fields\TranslatableText;
 use App\Service;
 use App\User;
 use App\Zone;
@@ -169,53 +170,62 @@ class ServiceListOne extends PageBuilderBase
         ]);
         // service filtering option on/off end
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             "name" => "country",
             "label" => __("Country Title Text"),
             "value" => $widget_saved_values["country"] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             "name" => "city",
             "label" => __("City Title Text"),
             "value" => $widget_saved_values["city"] ?? null,
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             "name" => "area",
             "label" => __("Area Title Text"),
             "value" => $widget_saved_values["area"] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             "name" => "service_search_by_text",
             "label" => __("Search Title Text"),
             "value" => $widget_saved_values["service_search_by_text"] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             "name" => "category",
             "label" => __("Category Title Text"),
             "value" => $widget_saved_values["category"] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             "name" => "subcategory",
             "label" => __("Subcategory Title Text"),
             "value" => $widget_saved_values["subcategory"] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             "name" => "child_category",
             "label" => __("Child Category Title Text"),
             "value" => $widget_saved_values["child_category"] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             "name" => "book_now",
             "label" => __("Book Now Text"),
             "value" => $widget_saved_values["book_now"] ?? null,
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             "name" => "read_more",
             "label" => __("View Details Text"),
             "value" => $widget_saved_values["read_more"] ?? null,

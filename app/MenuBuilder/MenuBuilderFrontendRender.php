@@ -72,6 +72,18 @@ class MenuBuilderFrontendRender
         $ptype =  property_exists($menu_item,'ptype') ? $menu_item->ptype : '';
         $pname =  property_exists($menu_item,'pname') ? $menu_item->pname : '';
         $menu_label =  property_exists($menu_item,'menulabel') ? $menu_item->menulabel : null;
+
+        // Bilingual support: use English label if locale differs from default
+        $default_base_lang = \App\Helpers\LanguageHelper::default_slug();
+        if ($default_lang !== $default_base_lang) {
+            if (property_exists($menu_item,'menulabel_en') && !empty($menu_item->menulabel_en)) {
+                $menu_label = $menu_item->menulabel_en;
+            }
+            if (property_exists($menu_item,'pname_en') && !empty($menu_item->pname_en)) {
+                $pname = $menu_item->pname_en;
+            }
+        }
+
         $output = '';
         if ($ptype === 'custom'){
             //check to activation class
@@ -83,8 +95,8 @@ class MenuBuilderFrontendRender
                 }
             }
             $output .=  $this->render_li_start($pname,$attributes_string,$default_lang);
-            $title = $pname;
-            $output .= $this->get_anchor_markup(__($title),[
+            $title = $menu_label ?? $pname;
+            $output .= $this->get_anchor_markup($title,[
                 'href' => str_replace('@url',url('/'),$menu_item->purl),
                 'target' => $menu_item->antarget ?? '',
             ],$menu_item->icon ?? '');

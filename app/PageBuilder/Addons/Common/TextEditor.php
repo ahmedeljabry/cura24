@@ -5,6 +5,7 @@ namespace App\PageBuilder\Addons\Common;
 
 use App\PageBuilder\Fields\Slider;
 use App\PageBuilder\Fields\Summernote;
+use App\PageBuilder\Fields\TranslatableSummernote;
 use App\PageBuilder\Fields\Text;
 use App\PageBuilder\Fields\Textarea;
 use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
@@ -29,7 +30,8 @@ class TextEditor extends \App\PageBuilder\PageBuilderBase
         $widget_saved_values = $this->get_settings();
 
 
-        $output .= Summernote::get([
+        $output .= TranslatableSummernote::get([
+            'settings' => $widget_saved_values,
             'name' => 'text_editor',
             'label' => __('Text Editor'),
             'value' => $widget_saved_values['text_editor'] ?? null,

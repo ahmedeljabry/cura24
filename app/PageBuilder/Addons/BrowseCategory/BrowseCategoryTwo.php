@@ -12,6 +12,7 @@ use App\PageBuilder\Fields\Select;
 use App\PageBuilder\Fields\Slider;
 use App\PageBuilder\Fields\Switcher;
 use App\PageBuilder\Fields\Text;
+use App\PageBuilder\Fields\TranslatableText;
 use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
 
 class BrowseCategoryTwo extends \App\PageBuilder\PageBuilderBase
@@ -31,17 +32,20 @@ class BrowseCategoryTwo extends \App\PageBuilder\PageBuilderBase
         $widget_saved_values = $this->get_settings();
 
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'title',
             'label' => __('Title'),
             'value' => $widget_saved_values['title'] ?? null,
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'explore_all',
             'label' => __('Explore Text'),
             'value' => $widget_saved_values['explore_all'] ?? null,
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'explore_link',
             'label' => __('Explore Link'),
             'value' => $widget_saved_values['explore_link'] ?? null,

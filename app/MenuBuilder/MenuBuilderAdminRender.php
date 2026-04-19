@@ -95,10 +95,18 @@ class MenuBuilderAdminRender
 
         }elseif ($attributes_string['ptype'] === 'custom'){
             //add field by menu type
+            $output .= '<label style="font-size:11px;margin-bottom:2px">'.  __('Label (Italian)') .'</label>';
             $output .= '<input type="text" class="static_pname" placeholder="eg: fas-fa-facebook" value="'.$attributes_string['pname'].'">';
+            $output .= '<label style="font-size:11px;margin-bottom:2px;margin-top:4px">'.  __('Label (English)') .'</label>';
+            $pname_en = $attributes_string['pname_en'] ?? '';
+            $output .= '<input type="text" class="static_pname_en" placeholder="eg: label (English)" value="'. $pname_en .'">';
         }else{
             $attributes_label = $attributes_string['menulabel'] ?? '';
+            $attributes_label_en = $attributes_string['menulabel_en'] ?? '';
+            $output .= '<label style="font-size:11px;margin-bottom:2px">'.  __('Label (Italian)') .'</label>';
             $output .= '<input type="text" class="menu_label" placeholder="eg: menu label" value="'. $attributes_label .'">';
+            $output .= '<label style="font-size:11px;margin-bottom:2px;margin-top:4px">'.  __('Label (English)') .'</label>';
+            $output .= '<input type="text" class="menu_label_en" placeholder="eg: menu label (English)" value="'. $attributes_label_en .'">';
         }
         $output .= '</div>';
         return $output;
@@ -125,6 +133,7 @@ class MenuBuilderAdminRender
             $attributes_string = array_merge([
                 'purl' =>  $menu_item->purl,
                 'pname' =>  $pname,
+                'pname_en' => property_exists($menu_item,'pname_en') ? $menu_item->pname_en : '',
             ],$attributes);
             $output .=  $this->render_li_start( $pname,$attributes_string,$default_lang);
         }elseif ($ptype === 'static'){
@@ -158,6 +167,7 @@ class MenuBuilderAdminRender
                     $attributes_string = array_merge([
                         'pid' => $menu_item->pid,
                         'menulabel' => property_exists($menu_item,'menulabel') ? $menu_item->menulabel : '',
+                        'menulabel_en' => property_exists($menu_item,'menulabel_en') ? $menu_item->menulabel_en : '',
                     ],$attributes);
                     $model_name = '\\'.$dynamic_menu_type['model'];
                     $model = new $model_name();

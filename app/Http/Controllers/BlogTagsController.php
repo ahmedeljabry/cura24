@@ -37,6 +37,7 @@ class BlogTagsController extends Controller
 
         $tags = new Tag();
         $tags->name = $request->name;
+        $tags->name_en = $request->name_en;
         $tags->status = $request->status;
         $tags->save();
         return redirect()->back()->with(FlashMsg::item_new('Blog Tags Added'));
@@ -50,6 +51,7 @@ class BlogTagsController extends Controller
 
         $tags =  Tag::findOrFail($request->id);
         $tags->name = $request->name;
+        $tags->name_en = $request->name_en;
         $tags->status = $request->status;
         $tags->save();
 

@@ -7,7 +7,9 @@ use App\PageBuilder\Fields\ColorPicker;
 use App\PageBuilder\Fields\Slider;
 use App\PageBuilder\Fields\Switcher;
 use App\PageBuilder\Fields\Text;
+use App\PageBuilder\Fields\TranslatableText;
 use App\PageBuilder\Fields\Textarea;
+use App\PageBuilder\Fields\TranslatableTextarea;
 use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
 use App\PageBuilder\Fields\Repeater;
 use App\PageBuilder\Helpers\RepeaterField;
@@ -30,7 +32,8 @@ class BannerOne extends \App\PageBuilder\PageBuilderBase
         $widget_saved_values = $this->get_settings();
 
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'title',
             'label' => __('Title'),
             'value' => $widget_saved_values['title'] ?? null,
@@ -80,12 +83,14 @@ class BannerOne extends \App\PageBuilder\PageBuilderBase
             'value' => $widget_saved_values['app_image_two'] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'app_button_link_one',
             'label' => __('App Button One Link'),
             'value' => $widget_saved_values['app_button_link_one'] ?? null,
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'app_button_link_two',
             'label' => __('App Button Two Link'),
             'value' => $widget_saved_values['app_button_link_two'] ?? null,

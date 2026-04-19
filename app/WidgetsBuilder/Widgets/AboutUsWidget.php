@@ -4,6 +4,7 @@ namespace App\WidgetsBuilder\Widgets;
 use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
 use App\WidgetsBuilder\WidgetBase;
 use App\PageBuilder\Fields\Textarea;
+use App\PageBuilder\Fields\TranslatableTextarea;
 use App\PageBuilder\Fields\Image;
 
 class AboutUsWidget extends WidgetBase
@@ -17,7 +18,8 @@ class AboutUsWidget extends WidgetBase
         $output .= $this->default_fields();
         $widget_saved_values = $this->get_settings();
 
-        $output .= Textarea::get([
+        $output .= TranslatableTextarea::get([
+            'settings' => $widget_saved_values,
             'name' => 'description',
             'label' => __('Description'),
             'value' => $widget_saved_values['description'] ?? null,

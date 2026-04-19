@@ -85,8 +85,12 @@
                                     <div class="append-additional-includes">
                                         <div class="single-dashboard-input what-include-element">
                                             <div class="single-info-input margin-top-20">
-                                                <label>{{ __('Title') }}</label>
+                                                <label>{{ __('Title (Italian)') }}</label>
                                                 <input class="form--control" type="text" name="include_service_title[]" placeholder="{{__('Service title')}}">
+                                            </div>
+                                            <div class="single-info-input margin-top-20">
+                                                <label>{{ __('Title (English)') }}</label>
+                                                <input class="form--control" type="text" name="include_service_title_en[]" placeholder="{{__('Service title')}}">
                                             </div>
 
                                             @if($get_service->is_service_online == 1)
@@ -137,8 +141,12 @@
                                     <div class="append-additional-services">
                                         <div class="single-dashboard-input additional-services">
                                             <div class="single-info-input margin-top-20">
-                                                <label>{{ __('Title') }}</label>
+                                                <label>{{ __('Title (Italian)') }}</label>
                                                 <input class="form--control" type="text" name="additional_service_title[]" placeholder="{{__('Service title')}}">
+                                            </div>
+                                            <div class="single-info-input margin-top-20">
+                                                <label>{{ __('Title (English)') }}</label>
+                                                <input class="form--control" type="text" name="additional_service_title_en[]" placeholder="{{__('Service title')}}">
                                             </div>
                                             <div class="single-info-input margin-top-20">
                                                 <label>{{ __('Unit Price') }}</label>
@@ -177,7 +185,12 @@
                                     <div class="append-benifits">
                                         <div class="single-dashboard-input benifits">
                                             <div class="single-info-input margin-top-20">
+                                                <label>{{ __('Benefit (Italian)') }}</label>
                                                 <input class="form--control" type="text" name="benifits[]" placeholder="{{__('Type Here')}}">
+                                            </div>
+                                            <div class="single-info-input margin-top-20">
+                                                <label>{{ __('Benefit (English)') }}</label>
+                                                <input class="form--control" type="text" name="benifits_en[]" placeholder="{{__('Type Here')}}">
                                             </div>
                                         </div>
                                     </div>
@@ -192,10 +205,16 @@
                                         <div class="append-faqs">
                                             <div class="single-dashboard-input faqs">
                                                 <div class="single-info-input margin-top-20">
-                                                    <input class="form--control" type="text" name="faqs_title[]" placeholder="{{__('Faq Title')}}">
+                                                    <input class="form--control" type="text" name="faqs_title[]" placeholder="{{__('Faq Title (Italian)')}}">
                                                 </div>
                                                 <div class="single-info-input margin-top-20">
-                                                    <textarea class="form--control" name="faqs_description[]" cols="20" rows="5" placeholder="{{__('Faq Description')}}"></textarea>
+                                                    <input class="form--control" type="text" name="faqs_title_en[]" placeholder="{{__('Faq Title (English)')}}">
+                                                </div>
+                                                <div class="single-info-input margin-top-20">
+                                                    <textarea class="form--control" name="faqs_description[]" cols="20" rows="5" placeholder="{{__('Faq Description (Italian)')}}"></textarea>
+                                                </div>
+                                                <div class="single-info-input margin-top-20">
+                                                    <textarea class="form--control" name="faqs_description_en[]" cols="20" rows="5" placeholder="{{__('Faq Description (English)')}}"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -249,8 +268,12 @@
                         $(".append-additional-includes").append(
                             '<div class="single-dashboard-input what-include-element">\
                                 <div class="single-info-input margin-top-20">\
-                                    <label>'+title+'</label>\
+                                    <label>'+title+' (Italian)</label>\
                                 <input class="form--control" type="text" name="include_service_title[]" placeholder="'+service_title+'">\
+                            </div>\
+                            <div class="single-info-input margin-top-20">\
+                                    <label>'+title+' (English)</label>\
+                                <input class="form--control" type="text" name="include_service_title_en[]" placeholder="'+service_title+'">\
                             </div>\
                           @if($get_service->is_service_online == 1)  <div class="single-info-input margin-top-20 @if($get_service->is_service_online == 0) is_service_online_hide @endif">\
                                 <label>'+unitprice+'</label>\
@@ -279,8 +302,12 @@
                         $(".append-additional-services").append(
                             '<div class="single-dashboard-input additional-services">\
                                   <div class="single-info-input margin-top-20">\
-                                      <label>'+title+'</label>\
+                                      <label>'+title+' (Italian)</label>\
                                <input class="form--control" type="text" name="additional_service_title[]" placeholder="'+service_title+'">\
+                            </div>\
+                            <div class="single-info-input margin-top-20">\
+                                      <label>'+title+' (English)</label>\
+                               <input class="form--control" type="text" name="additional_service_title_en[]" placeholder="'+service_title+'">\
                             </div>\
                             <div class="single-info-input margin-top-20">\
                                 <label>'+price+'</label>\
@@ -319,7 +346,12 @@
                         $(".append-benifits").append(
                             '<div class="single-dashboard-input benifits">\
                               <div class="single-info-input margin-top-20">\
+                                 <label>Benefit (Italian)</label>\
                                  <input class="form--control" type="text" name="benifits[]" placeholder="{{__('Type Here')}}">\
+                        </div>\
+                        <div class="single-info-input margin-top-20">\
+                                 <label>Benefit (English)</label>\
+                                 <input class="form--control" type="text" name="benifits_en[]" placeholder="{{__('Type Here')}}">\
                         </div><span class="btn btn-danger remove-benifits"><i class="las la-times"></i></span>\
                       </div>');
                     }
@@ -357,10 +389,16 @@
                         $(".append-faqs").append(
                             '<div class="single-dashboard-input faqs">\
                             <div class="single-info-input margin-top-20">\
-                            <input class="form--control" type="text" name="faqs_title[]" placeholder="'+faq_title+'">\
+                            <input class="form--control" type="text" name="faqs_title[]" placeholder="'+faq_title+' (Italian)">\
                         </div>\
                         <div class="single-info-input margin-top-20">\
-                        <textarea class="form--control" name="faqs_description[]" cols="20" rows="5" placeholder="'+faq_description+'"></textarea>\
+                            <input class="form--control" type="text" name="faqs_title_en[]" placeholder="'+faq_title+' (English)">\
+                        </div>\
+                        <div class="single-info-input margin-top-20">\
+                        <textarea class="form--control" name="faqs_description[]" cols="20" rows="5" placeholder="'+faq_description+' (Italian)"></textarea>\
+                    </div>\
+                    <div class="single-info-input margin-top-20">\
+                        <textarea class="form--control" name="faqs_description_en[]" cols="20" rows="5" placeholder="'+faq_description+' (English)"></textarea>\
                     </div><span class="btn btn-danger remove-faqs"><i class="las la-times"></i></span>\
                 </div>');
                     }

@@ -71,10 +71,16 @@
                                                                    placeholder="{{__('https://')}}">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="custom_label_text"><strong>{{__("Link Text")}}</strong></label>
+                                                            <label for="custom_label_text"><strong>{{__("Link Text (Italian)")}}</strong></label>
                                                             <input type="text" name="custom_label_text"
                                                                    id="custom_label_text" class="form-control"
                                                                    placeholder="{{__('label text')}}">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="custom_label_text_en"><strong>{{__("Link Text (English)")}}</strong></label>
+                                                            <input type="text" name="custom_label_text_en"
+                                                                   id="custom_label_text_en" class="form-control"
+                                                                   placeholder="{{__('label text (English)')}}">
                                                         </div>
                                                         <div class="form-group">
                                                             <button type="button" id="add_custom_links"
@@ -235,10 +241,13 @@
                         ' <div class="dd-handle">'+$(this).parent().text()+'</div>\n' +
                         '<span class="remove_item">x</span>'+
                         '<span class="expand"><i class="ti-angle-down"></i></span>'+
-                        '<div class="dd-body hide">' +
+                        '<div class="dd-body hide">'+
                         '<input type="text" class="icon_picker" placeholder="eg: fas-fa-facebook"/>'+
                         '<input type="text" class="anchor_target" placeholder="eg: _target">'+
+                        '<label style="font-size:11px;margin-bottom:2px">Label (Italian)</label>'+
                         '<input type="text" class="menu_label" placeholder="eg: menu label" >'+
+                        '<label style="font-size:11px;margin-bottom:2px;margin-top:4px">Label (English)</label>'+
+                        '<input type="text" class="menu_label_en" placeholder="eg: menu label (English)" >'+
                         '</div>'+
                         '</li>');
                 });
@@ -256,13 +265,15 @@
                 var menuSlug = $('#custom_url').val();//custom_url
 
 
-                draggAbleMenuWrap.append('<li class="dd-item" data-id="'+draggAbleMenuLength+'" data-ptype="custom" data-purl="'+removeTags(menuSlug)+'" data-pname="'+removeTags(menuName)+'">\n' +
+                var menuNameEn = $('#custom_label_text_en').val();
+                draggAbleMenuWrap.append('<li class="dd-item" data-id="'+draggAbleMenuLength+'" data-ptype="custom" data-purl="'+removeTags(menuSlug)+'" data-pname="'+removeTags(menuName)+'" data-pname_en="'+removeTags(menuNameEn)+'">\n' +
                     ' <div class="dd-handle">'+removeTags(menuName)+'</div>\n' +
                     '<span class="remove_item">x</span>'+
                     '<span class="expand"><i class="ti-angle-down"></i></span>'+
                     '<div class="dd-body hide"><input type="text" class="anchor_target" placeholder="eg: _blank"/><input type="text" class="icon_picker" placeholder="eg: fas-fa-facebook"/></div>'+
                     '</li>');
                 $('#custom_label_text').val('');
+                $('#custom_label_text_en').val('');
                 $('#custom_url').val('');
             });
             $(document).on('input','.menu_label',function (e) {
@@ -273,6 +284,16 @@
                     el.parent().parent().attr('data-menulabel',value);
                 }else{
                     el.parent().parent().removeAttr('data-menulabel');
+                }
+            });
+            $(document).on('input','.menu_label_en',function (e) {
+                var el = $(this);
+                var value = el.val();
+
+                if(value != '' ){
+                    el.parent().parent().attr('data-menulabel_en',value);
+                }else{
+                    el.parent().parent().removeAttr('data-menulabel_en');
                 }
             });
             $(document).on('input','.icon_picker',function (e) {
@@ -303,6 +324,16 @@
                     el.parent().parent().attr('data-pname',value);
                 }else{
                     el.parent().parent().removeAttr('data-pname');
+                }
+            });
+            $(document).on('input','.static_pname_en',function (e) {
+                var el = $(this);
+                var value = el.val();
+
+                if(value != '' ){
+                    el.parent().parent().attr('data-pname_en',value);
+                }else{
+                    el.parent().parent().removeAttr('data-pname_en');
                 }
             });
 

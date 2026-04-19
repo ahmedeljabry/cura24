@@ -4,8 +4,10 @@ namespace App\WidgetsBuilder\Widgets;
 use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
 use App\WidgetsBuilder\WidgetBase;
 use App\PageBuilder\Fields\Textarea;
+use App\PageBuilder\Fields\TranslatableTextarea;
 use App\PageBuilder\Fields\Image;
 use App\PageBuilder\Fields\Text;
+use App\PageBuilder\Fields\TranslatableText;
 
 class CopyrightText extends WidgetBase
 {
@@ -18,7 +20,8 @@ class CopyrightText extends WidgetBase
         $output .= $this->default_fields();
         $widget_saved_values = $this->get_settings();
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'title',
             'label' => __('Title'),
             'value' => $widget_saved_values['title'] ?? null,

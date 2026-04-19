@@ -75,6 +75,7 @@
                                                         class="btn btn-lg btn-primary btn-sm mb-3 mr-1 category_edit_btn"
                                                         data-id="{{$data->id}}"
                                                         data-name="{{$data->name}}"
+                                                        data-name_en="{{$data->name_en}}"
                                                         data-status="{{$data->status}}"
                                                         data-slug="{{$data->slug}}"
                                                     >
@@ -104,9 +105,23 @@
                                <div class="modal-body">
                                    @csrf
                                    <input type="hidden" name="lang" value="{{$default_lang}}">
-                                   <div class="form-group">
-                                       <label for="edit_name">{{__('Name')}}</label>
-                                       <input type="text" class="form-control"  name="name" placeholder="{{__('Name')}}">
+                                   <ul class="nav nav-tabs mb-3" role="tablist">
+                                       <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tag-add-it" role="tab" style="color:blue">{{__('Italian (Default)')}}</a></li>
+                                       <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tag-add-en" role="tab" style="color:blue">{{__('English')}}</a></li>
+                                   </ul>
+                                   <div class="tab-content mb-3">
+                                       <div class="tab-pane fade show active" id="tag-add-it" role="tabpanel">
+                                           <div class="form-group">
+                                               <label for="name">{{__('Name (Italian)')}}</label>
+                                               <input type="text" class="form-control" name="name" placeholder="{{__('Name')}}">
+                                           </div>
+                                       </div>
+                                       <div class="tab-pane fade" id="tag-add-en" role="tabpanel">
+                                           <div class="form-group">
+                                               <label for="name_en">{{__('Name (English)')}}</label>
+                                               <input type="text" class="form-control" name="name_en" placeholder="{{__('Name')}}">
+                                           </div>
+                                       </div>
                                    </div>
 
                                    <div class="form-group">
@@ -142,9 +157,23 @@
                    <div class="modal-body">
                        @csrf
                        <input type="hidden" name="lang" value="{{$default_lang}}">
-                       <div class="form-group">
-                           <label for="edit_name">{{__('Name')}}</label>
-                           <input type="text" class="form-control"  id="edit_name" name="name" >
+                       <ul class="nav nav-tabs mb-3" role="tablist">
+                           <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tag-edit-it" role="tab" style="color:blue">{{__('Italian (Default)')}}</a></li>
+                           <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tag-edit-en" role="tab" style="color:blue">{{__('English')}}</a></li>
+                       </ul>
+                       <div class="tab-content mb-3">
+                           <div class="tab-pane fade show active" id="tag-edit-it" role="tabpanel">
+                               <div class="form-group">
+                                   <label for="edit_name">{{__('Name (Italian)')}}</label>
+                                   <input type="text" class="form-control" id="edit_name" name="name">
+                               </div>
+                           </div>
+                           <div class="tab-pane fade" id="tag-edit-en" role="tabpanel">
+                               <div class="form-group">
+                                   <label for="edit_name_en">{{__('Name (English)')}}</label>
+                                   <input type="text" class="form-control" id="edit_name_en" name="name_en">
+                               </div>
+                           </div>
                        </div>
 
                        <div class="form-group">
@@ -186,10 +215,12 @@
                    var id = el.data('id');
                    var name = el.data('name');
                    var status = el.data('status');
+                   var name_en = el.data('name_en');
                    var modal = $('#category_edit_modal');
                    modal.find('#tag_id').val(id);
                    modal.find('#edit_status option[value="'+status+'"]').attr('selected',true);
                    modal.find('#edit_name').val(name);
+                   modal.find('#edit_name_en').val(name_en);
                });
             });
         })(jQuery)

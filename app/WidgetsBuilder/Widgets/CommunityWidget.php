@@ -6,6 +6,7 @@ use App\PageBuilder\Traits\LanguageFallbackForPageBuilder;
 use App\WidgetsBuilder\WidgetBase;
 use App\PageBuilder\Fields\Repeater;
 use App\PageBuilder\Fields\Text;
+use App\PageBuilder\Fields\TranslatableText;
 use App\PageBuilder\Helpers\RepeaterField;
 
 class CommunityWidget extends WidgetBase
@@ -19,30 +20,35 @@ class CommunityWidget extends WidgetBase
         $output .= $this->default_fields();
         $widget_saved_values = $this->get_settings();
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'title',
             'label' => __('Title'),
             'value' => $widget_saved_values['title'] ?? null,
         ]);
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'seller_title',
             'label' => __('Become Seller Title'),
             'value' => $widget_saved_values['seller_title'] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'seller_link',
             'label' => __('Become Seller Link'),
             'value' => $widget_saved_values['seller_link'] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'buyer_title',
             'label' => __('Become Buyer Title'),
             'value' => $widget_saved_values['buyer_title'] ?? null,
         ]);
 
-        $output .= Text::get([
+        $output .= TranslatableText::get([
+            'settings' => $widget_saved_values,
             'name' => 'buyer_link',
             'label' => __('Become Buyer Link'),
             'value' => $widget_saved_values['buyer_link'] ?? null,
