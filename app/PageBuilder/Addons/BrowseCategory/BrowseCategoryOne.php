@@ -125,22 +125,22 @@ class BrowseCategoryOne extends \App\PageBuilder\PageBuilderBase
     public function frontend_render() : string
     {
         $settings = $this->get_settings();
-        $title =$settings['title'];
-        $title_text_color =$settings['title_text_color'];
+        $title =$settings['title'] ?? null;
+        $title_text_color =$settings['title_text_color'] ?? null;
         $explode = explode(" ",$title);
         $title_start = current($explode);
         $title_end = end($explode);
-        $subtitle = $settings['subtitle'];
+        $subtitle = $settings['subtitle'] ?? null;
  
-        $order_by =$settings['order_by'];
-        $IDorDate =$settings['order'];
-        $items =$settings['items'];
+        $order_by =$settings['order_by'] ?? null;
+        $IDorDate =$settings['order'] ?? null;
+        $items =$settings['items'] ?? null;
 
         $selected_categories = $settings['selected_categories'] ?? [];
         
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
         $empty_category =$settings['empty_category_show_hide'] ?? '';
 
 

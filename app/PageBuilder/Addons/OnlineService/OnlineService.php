@@ -115,17 +115,17 @@ class OnlineService extends \App\PageBuilder\PageBuilderBase
     {
         
         $settings = $this->get_settings();
-        $title =$settings['title'];
-        $title_text_color =$settings['title_text_color'];
+        $title =$settings['title'] ?? null;
+        $title_text_color =$settings['title_text_color'] ?? null;
         $explode = explode(" ",$title);
         $title_start = current($explode);
         $title_end = end($explode);
-        $subtitle = $settings['subtitle'];
-        $items =$settings['items'];
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
-        $btn_color = $settings['btn_color'];
+        $subtitle = $settings['subtitle'] ?? null;
+        $items =$settings['items'] ?? null;
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
+        $btn_color = $settings['btn_color'] ?? null;
         $btn_text_color = $settings['btn_text_color'] ?? '';
         $dot_color_slider = $settings['dot_color_slider'] ?? null;
         $book_appoinment = $settings['book_appointment'] ?? 'Book Appoinment';

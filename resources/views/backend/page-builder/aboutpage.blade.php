@@ -270,6 +270,15 @@
 
                 $('body').on('click', '.widget_save_change_button', function (e) {
                     e.preventDefault();
+                    // Sync mirror fields (default-lang slug copies) before serializing
+                    $(this).parent().find('.translatable-mirror-field').each(function () {
+                        var target = $(this).data('mirror-target');
+                        var sourceVal = $(this).closest('form').find('[name="' + target + '"]:not([type="hidden"])').val();
+                        if (sourceVal !== undefined) {
+                            $(this).val(sourceVal);
+                        }
+                    });
+
                     var parent = $(this).parent().find('.widget_save_change_button');
                     parent.text('{{__('Saving...')}}').attr('disabled', true);
                     var form = $(this).parent();

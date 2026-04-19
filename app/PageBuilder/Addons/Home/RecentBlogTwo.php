@@ -107,16 +107,16 @@ class RecentBlogTwo extends \App\PageBuilder\PageBuilderBase
     {
         
         $settings = $this->get_settings();
-        $section_title =$settings['title'];
+        $section_title =$settings['title'] ?? null;
         if(empty($settings['explore_link'])){
             $explore_link = '#';
         }
-        $order_by =$settings['order_by'];
-        $IDorDate =$settings['order'];
-        $items =$settings['items'];
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
+        $order_by =$settings['order_by'] ?? null;
+        $IDorDate =$settings['order'] ?? null;
+        $items =$settings['items'] ?? null;
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
 
         $blogs = Blog::select('id','title','image','blog_content','slug','category_id','created_at')
         ->where(['status'=>'publish'])

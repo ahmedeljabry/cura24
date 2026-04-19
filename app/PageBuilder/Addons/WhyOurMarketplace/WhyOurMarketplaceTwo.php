@@ -120,14 +120,14 @@ class WhyOurMarketplaceTwo extends \App\PageBuilder\PageBuilderBase
     {
         
         $settings = $this->get_settings();
-        $section_title =$settings['title'];
-        $subtitle = $settings['subtitle'];
+        $section_title =$settings['title'] ?? null;
+        $subtitle = $settings['subtitle'] ?? null;
 
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
-        $btn_text = $settings['btn_text'];
-        $btn_link = $settings['btn_link'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
+        $btn_text = $settings['btn_text'] ?? null;
+        $btn_link = $settings['btn_link'] ?? null;
         if(empty($settings['btn_link'])){
             $btn_link = route('user.register',['type' => 'seller']);
         }
@@ -137,7 +137,7 @@ class WhyOurMarketplaceTwo extends \App\PageBuilder\PageBuilderBase
             $button_link = '';
         }
 
-        $repeater_data = $settings['contact_page_contact_info_01'];
+        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
         $why_our_marketplace_markup = '';
 
         foreach ($repeater_data['title_'] as $key => $title) {

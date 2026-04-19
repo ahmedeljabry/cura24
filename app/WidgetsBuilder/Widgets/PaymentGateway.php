@@ -48,7 +48,7 @@ class PaymentGateway extends WidgetBase
     {
         $settings = $this->get_settings();
 
-        $repeater_data = $settings['contact_page_contact_info_01'];
+        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
         $payment_gateway_markup = '';
 
         foreach ($repeater_data['url_'] as $key => $url) {

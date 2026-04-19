@@ -50,8 +50,8 @@ class Brands extends \App\PageBuilder\PageBuilderBase
         $settings = $this->get_settings();
 
 
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
 
         $brand_markup = '';
         $brands = Brand::select('title','url','image')->get();

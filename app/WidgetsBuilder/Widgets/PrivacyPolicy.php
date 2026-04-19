@@ -48,7 +48,7 @@ class PrivacyPolicy extends WidgetBase
     {
         $settings = $this->get_settings();
 
-        $repeater_data = $settings['contact_page_contact_info_01'];
+        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
         $privacy_policy_markup = '';
 
         foreach ($repeater_data['title_'] as $key => $title) {

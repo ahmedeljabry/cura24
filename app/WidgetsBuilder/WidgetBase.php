@@ -88,26 +88,42 @@ abstract class WidgetBase
     {
         $widget_data = !empty($this->args['id']) ? Widgets::find($this->args['id']) : [];
         $widget_data = !empty($widget_data) ? unserialize($widget_data->widget_content,['class' => false]) : [];
-        
+
         if (request()->is('admin-home') || request()->is('admin-home/*')) {
             return $widget_data;
         }
 
-        $user_lang = \App\Helpers\LanguageHelper::user_lang_slug();
+        $user_lang    = \App\Helpers\LanguageHelper::user_lang_slug();
         $default_lang = \App\Helpers\LanguageHelper::default_slug();
-        if ($user_lang !== $default_lang && !empty($widget_data)) {
-            $mapped_data = [];
-            foreach ($widget_data as $key => $value) {
-                $mapped_data[$key] = $value;
-                if (isset($widget_data[$key.'_'.$user_lang]) && !empty($widget_data[$key.'_'.$user_lang])) {
-                    $mapped_data[$key] = $widget_data[$key.'_'.$user_lang];
-                }
-            }
-            return $mapped_data;
+
+        // Build a normalised array so plain keys (e.g. 'description') are always set.
+        $mapped_data = [];
+        foreach ((array) $widget_data as $key => $value) {
+            $mapped_data[$key] = $value;
         }
 
-        return $widget_data;
+        // Map legacy default-lang slug-suffixed keys (e.g. description_it) to plain key.
+        foreach ((array) $widget_data as $key => $value) {
+            if (str_ends_with($key, '_'.$default_lang)) {
+                $plain_key = substr($key, 0, -(strlen($default_lang) + 1));
+                if (empty($mapped_data[$plain_key]) && !empty($value)) {
+                    $mapped_data[$plain_key] = $value;
+                }
+            }
+        }
+
+        // Overlay non-default language values over plain keys.
+        if ($user_lang !== $default_lang && !empty($widget_data)) {
+            foreach ((array) $widget_data as $key => $value) {
+                if (isset($mapped_data[$key.'_'.$user_lang]) && !empty($mapped_data[$key.'_'.$user_lang])) {
+                    $mapped_data[$key] = $mapped_data[$key.'_'.$user_lang];
+                }
+            }
+        }
+
+        return $mapped_data;
     }
+
     /**
      * widget_column_start
      * this method will add widget column markup for frontend

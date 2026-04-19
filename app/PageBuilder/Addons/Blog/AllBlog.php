@@ -81,11 +81,11 @@ class AllBlog extends PageBuilderBase
     {
 
         $settings = $this->get_settings();
-        $order_by =$settings['order_by'];
-        $IDorDate =$settings['order'];
-        $items =$settings['items'];
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
+        $order_by =$settings['order_by'] ?? null;
+        $IDorDate =$settings['order'] ?? null;
+        $items =$settings['items'] ?? null;
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
 
 
         $all_blogs = Blog::where('status','publish')->OrderBy($order_by,$IDorDate)->paginate($items);

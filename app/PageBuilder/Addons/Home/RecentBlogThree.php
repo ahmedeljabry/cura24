@@ -112,7 +112,7 @@ class RecentBlogThree extends \App\PageBuilder\PageBuilderBase
 
         $order_by =$settings['order_by'] ?? '';
         $IDorDate =$settings['order'] ?? '';
-        $items =$settings['items'];
+        $items =$settings['items'] ?? null;
         $padding_top = $settings['padding_top'] ?? '';
         $padding_bottom = $settings['padding_bottom'] ?? '';
         $section_bg = $settings['section_bg'] ?? '';

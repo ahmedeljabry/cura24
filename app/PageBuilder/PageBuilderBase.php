@@ -122,25 +122,43 @@ abstract class PageBuilderBase
     {
         $widget_data = !empty($this->args['id']) ? PageBuilder::find($this->args['id']) : [];
         $widget_data = !empty($widget_data) ? unserialize($widget_data->addon_settings,['class' => false]) : [];
-        
+
         if (request()->is('admin-home') || request()->is('admin-home/*')) {
             return $widget_data;
         }
 
-        $user_lang = LanguageHelper::user_lang_slug();
+        $user_lang    = LanguageHelper::user_lang_slug();
         $default_lang = LanguageHelper::default_slug();
-        if ($user_lang !== $default_lang && !empty($widget_data)) {
-            $mapped_data = [];
-            foreach ($widget_data as $key => $value) {
-                $mapped_data[$key] = $value;
-                if (isset($widget_data[$key.'_'.$user_lang]) && !empty($widget_data[$key.'_'.$user_lang])) {
-                    $mapped_data[$key] = $widget_data[$key.'_'.$user_lang];
-                }
-            }
-            return $mapped_data;
+
+        // Build a normalised array regardless of language so that plain keys
+        // (e.g. 'title') are always populated from whatever variant is available.
+        $mapped_data = [];
+        foreach ((array) $widget_data as $key => $value) {
+            $mapped_data[$key] = $value;
         }
 
-        return $widget_data;
+        // For every key that ends with the default-lang suffix (e.g. title_it),
+        // ensure the plain key (title) is also set – handles legacy stored data.
+        foreach ((array) $widget_data as $key => $value) {
+            if (str_ends_with($key, '_'.$default_lang)) {
+                $plain_key = substr($key, 0, -(strlen($default_lang) + 1));
+                if (empty($mapped_data[$plain_key]) && !empty($value)) {
+                    $mapped_data[$plain_key] = $value;
+                }
+            }
+        }
+
+        // When the visitor is on a non-default language, overlay the lang-specific
+        // values over the plain keys (e.g. title_en → title).
+        if ($user_lang !== $default_lang && !empty($widget_data)) {
+            foreach ((array) $widget_data as $key => $value) {
+                if (isset($mapped_data[$key.'_'.$user_lang]) && !empty($mapped_data[$key.'_'.$user_lang])) {
+                    $mapped_data[$key] = $mapped_data[$key.'_'.$user_lang];
+                }
+            }
+        }
+
+        return $mapped_data;
     }
 
     /**

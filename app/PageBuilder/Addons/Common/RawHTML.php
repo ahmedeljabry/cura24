@@ -48,7 +48,7 @@ class RawHTML extends \App\PageBuilder\PageBuilderBase
     {
         
         $settings = $this->get_settings();
-        $raw_html = $settings['raw_html'];
+        $raw_html = $settings['raw_html'] ?? null;
 
 
 return <<<HTML

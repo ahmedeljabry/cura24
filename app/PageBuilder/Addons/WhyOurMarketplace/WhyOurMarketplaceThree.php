@@ -129,7 +129,7 @@ class WhyOurMarketplaceThree extends \App\PageBuilder\PageBuilderBase
         if(empty($settings['btn_link'])){
             $btn_link = route('user.register',['type' => 'seller']);
         }
-        $repeater_data = $settings['contact_page_contact_info_01'];
+        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
 
 
     return $this->renderBlade('marketplaces.why-our-marketplace-three',[

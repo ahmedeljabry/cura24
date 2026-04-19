@@ -100,7 +100,7 @@ class ContactInfoWidget extends WidgetBase
         $phone_html = '<a href="tel:' . $phone . '">' . $phone . '</a>';
         $email_html = '<a href="mailto:' . $email . '">' . $email . '</a>';
         
-        $repeater_data = $settings['contact_page_contact_info_01'];
+        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
         $social_icon_markup = '';
 
         foreach ($repeater_data['icon_'] as $key => $icon) {

@@ -105,18 +105,18 @@ class FeatureServiceTwo extends \App\PageBuilder\PageBuilderBase
     {
         
         $settings = $this->get_settings();
-        $section_title =$settings['title'];
-        $explore_text =$settings['explore_all'];
-        $explore_link =$settings['explore_link'];
+        $section_title =$settings['title'] ?? null;
+        $explore_text =$settings['explore_all'] ?? null;
+        $explore_link =$settings['explore_link'] ?? null;
         if($explore_link==''){
             $explore_link = route('service.all.featured');
         }
-        $items =$settings['items'];
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
+        $items =$settings['items'] ?? null;
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
         $btn_text_color = $settings['btn_text_color'] ?? '';
-        $btn_color = $settings['btn_color'];
+        $btn_color = $settings['btn_color'] ?? null;
         $book_appoinment = $settings['book_appointment'] ?? 'Book Now';
 
 

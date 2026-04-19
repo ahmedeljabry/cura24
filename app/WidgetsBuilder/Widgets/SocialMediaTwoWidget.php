@@ -108,14 +108,14 @@ class SocialMediaTwoWidget extends WidgetBase
         $current_lang = LanguageHelper::user_lang_slug();
         $title =  purify_html($settings['title_'.$current_lang]);
 
-        $facebook_icon = $settings['facebook_icon'];
-        $facebook_url =  $settings['facebook_url'];
-        $linkedin_icon = $settings['linkedin_icon'];
-        $linkedin_url =  $settings['linkedin_url'];
-        $instagram_icon = $settings['instagram_icon'];
-        $instagram_url =  $settings['instagram_url'];
-        $pinterest_icon = $settings['pinterest_icon'];
-        $pinterest_url =  $settings['pinterest_url'];
+        $facebook_icon = $settings['facebook_icon'] ?? null;
+        $facebook_url =  $settings['facebook_url'] ?? null;
+        $linkedin_icon = $settings['linkedin_icon'] ?? null;
+        $linkedin_url =  $settings['linkedin_url'] ?? null;
+        $instagram_icon = $settings['instagram_icon'] ?? null;
+        $instagram_url =  $settings['instagram_url'] ?? null;
+        $pinterest_icon = $settings['pinterest_icon'] ?? null;
+        $pinterest_url =  $settings['pinterest_url'] ?? null;
 
 
     return <<<HTML

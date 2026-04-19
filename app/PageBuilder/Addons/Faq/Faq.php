@@ -83,11 +83,11 @@ class Faq extends \App\PageBuilder\PageBuilderBase
     public function frontend_render() : string
     {
         $settings = $this->get_settings();
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
 
-        $repeater_data = $settings['contact_page_contact_info_01'];
+        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
         $faq_markup = '';
 
         foreach ($repeater_data['title_'] as $key => $title) {

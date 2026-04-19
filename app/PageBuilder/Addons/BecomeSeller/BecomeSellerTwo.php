@@ -121,16 +121,16 @@ class BecomeSellerTwo extends \App\PageBuilder\PageBuilderBase
     {
         
         $settings = $this->get_settings();
-        $title =$settings['title'];
-        $subtitle = $settings['subtitle'];
+        $title =$settings['title'] ?? null;
+        $subtitle = $settings['subtitle'] ?? null;
 
 
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
-        $btn_color = $settings['btn_color'];
-        $btn_text = $settings['btn_text'];
-        $btn_link = $settings['btn_link'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
+        $btn_color = $settings['btn_color'] ?? null;
+        $btn_text = $settings['btn_text'] ?? null;
+        $btn_link = $settings['btn_link'] ?? null;
         if(empty($settings['btn_link'])){
             $btn_link = route('user.register',['type' => 'seller']);
         }

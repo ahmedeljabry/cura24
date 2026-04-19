@@ -71,8 +71,8 @@ class ContactMessage extends PageBuilderBase
         $title = SanitizeInput::esc_html($this->setting_item('title'));
         $custom_form_id = SanitizeInput::esc_html($this->setting_item('custom_form_id'));
         $title = $title ?? $static_text['get_in_touch'];
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
   
       
         if (!empty($custom_form_id)){

@@ -95,15 +95,15 @@ class SellerProfile extends \App\PageBuilder\PageBuilderBase
     public function frontend_render() : string
     {
         $settings = $this->get_settings();
-        $order_by =$settings['order_by'];
-        $IDorDate =$settings['order'];
-        $items =$settings['items'];
+        $order_by =$settings['order_by'] ?? null;
+        $IDorDate =$settings['order'] ?? null;
+        $items =$settings['items'] ?? null;
 
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
         $profile_markup = '';
-        $section_title = $settings['title'];
+        $section_title = $settings['title'] ?? null;
         $seller_lists = User::whereNotNull('image')->where(['user_type'=>0,'user_status' => 1])->orderBy($order_by,$IDorDate)->take($items)->get();
 
         foreach ($seller_lists as $seller){

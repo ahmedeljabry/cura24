@@ -78,15 +78,15 @@ class ProfessionalService extends \App\PageBuilder\PageBuilderBase
     {
         
         $settings = $this->get_settings();
-        $title =$settings['title'];
-        $title_text_color =$settings['title_text_color'];
+        $title =$settings['title'] ?? null;
+        $title_text_color =$settings['title_text_color'] ?? null;
         $explode = explode(" ",$title);
         $title_start = current($explode);
         $title_end = preg_replace("/^(\w+\s)/", "", $title);
-        $subtitle = $settings['subtitle'];
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
+        $subtitle = $settings['subtitle'] ?? null;
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
 
         $categories = Category::WhereHas('services')->select('id','name','image','slug')
         ->where('status','1')

@@ -17,10 +17,11 @@ class TranslatableSummernote extends PageBuilderField
         $output .= $this->field_before();
         $output .= $this->label();
 
-        $all_languages = LanguageHelper::all_languages();
-        $random_id = Str::random(8);
-        $name = $this->name();
-        $settings = $this->args['settings'] ?? [];
+        $all_languages  = LanguageHelper::all_languages();
+        $default_slug   = LanguageHelper::default_slug();
+        $random_id      = Str::random(8);
+        $name           = $this->name();
+        $settings       = $this->args['settings'] ?? [];
 
         $output .= '<ul class="nav nav-tabs" role="tablist">';
         foreach ($all_languages as $key => $lang) {
@@ -34,11 +35,24 @@ class TranslatableSummernote extends PageBuilderField
         $output .= '<div class="tab-content margin-top-20">';
         foreach ($all_languages as $key => $lang) {
             $active = $key == 0 ? 'show active' : '';
-            $value = $settings[$name.'_'.$lang->slug] ?? ($settings[$name] ?? '');
-            
+
+            if ($lang->slug === $default_slug) {
+                $value = $settings[$name] ?? ($settings[$name.'_'.$lang->slug] ?? '');
+            } else {
+                $value = $settings[$name.'_'.$lang->slug] ?? '';
+            }
+
             $output .= '<div class="tab-pane fade '.$active.'" id="tab_'.$name.'_'.$random_id.'_'.$lang->slug.'" role="tabpanel">';
-            $output .= '<textarea name="'.$name.'_'.$lang->slug.'" class="summernote '.$this->field_class().'">'.$value.'</textarea>';
-            if(!empty($this->args['info'])) {
+
+            if ($lang->slug === $default_slug) {
+                // Default language: save under plain key — frontend_render() reads $settings['name']
+                $output .= '<textarea name="'.$name.'" class="summernote '.$this->field_class().'">'.$value.'</textarea>';
+                $output .= '<input type="hidden" value="'.htmlspecialchars($value).'" name="'.$name.'_'.$lang->slug.'">';
+            } else {
+                $output .= '<textarea name="'.$name.'_'.$lang->slug.'" class="summernote '.$this->field_class().'">'.$value.'</textarea>';
+            }
+
+            if (!empty($this->args['info'])) {
                 $output .= '<small class="info-text">'.$this->args['info'].'</small>';
             }
             $output .= '</div>';

@@ -108,19 +108,19 @@ class WhyOurMarketplace extends \App\PageBuilder\PageBuilderBase
     {
         
         $settings = $this->get_settings();
-        $title =$settings['title'];
-        $title_text_color =$settings['title_text_color'];
+        $title =$settings['title'] ?? null;
+        $title_text_color =$settings['title_text_color'] ?? null;
         $title_start = preg_replace('~\\s+\\S+$~', '', $title);
         $explode = explode(" ",$title);
         $title_end = end($explode);
-        $subtitle = $settings['subtitle'];
+        $subtitle = $settings['subtitle'] ?? null;
 
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
 
 
-        $repeater_data = $settings['contact_page_contact_info_01'];
+        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
         $why_our_marketplace_markup = '';
 
         foreach ($repeater_data['title_'] as $key => $title) {

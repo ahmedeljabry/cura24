@@ -114,7 +114,7 @@ class PopularServiceThree extends \App\PageBuilder\PageBuilderBase
         $current_lang = app()->getLocale();
         $section_title = $settings['title_'.$current_lang] ?? $settings['title'] ?? '';
         $explore_text = $settings['explore_all_'.$current_lang] ?? $settings['explore_all'] ?? '';
-        $items =$settings['items'];
+        $items =$settings['items'] ?? null;
         $padding_top = $settings['padding_top'] ?? '';
         $padding_bottom = $settings['padding_bottom'] ?? '';
         $section_bg = $settings['section_bg'] ?? '';

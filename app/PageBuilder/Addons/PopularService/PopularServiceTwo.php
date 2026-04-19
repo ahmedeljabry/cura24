@@ -91,16 +91,16 @@ class PopularServiceTwo extends \App\PageBuilder\PageBuilderBase
     {
         
         $settings = $this->get_settings();
-        $section_title =$settings['title'];
-        $explore_text =$settings['explore_all'];
-        $explore_link =$settings['explore_link'];
+        $section_title =$settings['title'] ?? null;
+        $explore_text =$settings['explore_all'] ?? null;
+        $explore_link =$settings['explore_link'] ?? null;
         $explore_link =$settings['explore_link']?? route('service.all.popular');
 
-        $items =$settings['items'];
+        $items =$settings['items'] ?? null;
 
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
         $book_appoinment = $settings['book_appointment'] ?? 'Book Now';
 
 

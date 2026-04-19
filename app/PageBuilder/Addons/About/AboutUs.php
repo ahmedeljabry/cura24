@@ -150,8 +150,8 @@ class AboutUs extends \App\PageBuilder\PageBuilderBase
 
         $experience_show_hide = $settings['experience_show_hide'] ??  '';
         $about_list_show_hide = $settings['about_list_show_hide'] ??  '';
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
         $about_shape = render_image_markup_by_attachment_id($settings['shape_image']);
         $about_thumb = render_image_markup_by_attachment_id($settings['image']);
         $experience = __('Experience');

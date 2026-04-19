@@ -89,14 +89,14 @@ class SocialMediaWidget extends WidgetBase
     {
         $settings = $this->get_settings();
 
-        $facebook_icon = $settings['facebook_icon'];
-        $facebook_url =  $settings['facebook_url'];
-        $twitter_icon = $settings['twitter_icon'];
-        $twitter_url =  $settings['twitter_url'];
-        $instagram_icon = $settings['instagram_icon'];
-        $instagram_url =  $settings['instagram_url'];
-        $google_icon = $settings['google_icon'];
-        $google_url =  $settings['google_url'];
+        $facebook_icon = $settings['facebook_icon'] ?? null;
+        $facebook_url =  $settings['facebook_url'] ?? null;
+        $twitter_icon = $settings['twitter_icon'] ?? null;
+        $twitter_url =  $settings['twitter_url'] ?? null;
+        $instagram_icon = $settings['instagram_icon'] ?? null;
+        $instagram_url =  $settings['instagram_url'] ?? null;
+        $google_icon = $settings['google_icon'] ?? null;
+        $google_url =  $settings['google_url'] ?? null;
 
 
     return <<<HTML

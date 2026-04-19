@@ -126,24 +126,24 @@ class BecomeSeller extends \App\PageBuilder\PageBuilderBase
     {
         
         $settings = $this->get_settings();
-        $title =$settings['title'];
-        $title_text_color =$settings['title_text_color'];
+        $title =$settings['title'] ?? null;
+        $title_text_color =$settings['title_text_color'] ?? null;
         $explode = explode(" ",$title);
         $title_start = preg_replace('~\\s+\\S+$~', '', $title);
         $title_end = end($explode);
-        $subtitle = $settings['subtitle'];
+        $subtitle = $settings['subtitle'] ?? null;
         $content_list_show_hide = $settings['content_list_show_hide'] ??  '';
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
-        $btn_color = $settings['btn_color'];
-        $btn_text = $settings['btn_text'];
-        $btn_link = $settings['btn_link'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
+        $btn_color = $settings['btn_color'] ?? null;
+        $btn_text = $settings['btn_text'] ?? null;
+        $btn_link = $settings['btn_link'] ?? null;
         if($btn_link==''){
             $btn_link = route('user.register',['type' => 'seller']);
         }
         $seller_image = render_image_markup_by_attachment_id($settings['seller_image']); 
-        $repeater_data = $settings['contact_page_contact_info_01'];
+        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
         $benifits_markup = '';
         foreach ($repeater_data['benifits_'] as $key => $benifits) {
             $benifits = $benifits;

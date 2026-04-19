@@ -133,21 +133,21 @@ class PopularService extends \App\PageBuilder\PageBuilderBase
     {
         
         $settings = $this->get_settings();
-        $title =$settings['title'];
-        $title_text_color =$settings['title_text_color'];
+        $title =$settings['title'] ?? null;
+        $title_text_color =$settings['title_text_color'] ?? null;
         $explode = explode(" ",$title);
         $title_start = current($explode);
         $title_end = end($explode);
-        $subtitle = $settings['subtitle'];
+        $subtitle = $settings['subtitle'] ?? null;
 
-        $items =$settings['items'];
+        $items =$settings['items'] ?? null;
 
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
-        $section_bg = $settings['section_bg'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
         $btn_text_color = $settings['btn_text_color'] ?? '';
-        $btn_color = $settings['btn_color'];
+        $btn_color = $settings['btn_color'] ?? null;
         $explore_btn_color = $settings['explore_btn_color'] ?? null;
         $hover_color = $settings['hover_color'] ?? null;
         $btn_text = __('Explore More');

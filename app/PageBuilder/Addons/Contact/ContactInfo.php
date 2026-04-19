@@ -80,11 +80,11 @@ class ContactInfo extends PageBuilderBase
 
         $settings = $this->get_settings();
 
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
 
 
-        $repeater_data = $settings['contact_page_contact_info_01'];
+        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
         $contact_info_markup = '';
 
         foreach ($repeater_data['title_'] as $key => $title) {

@@ -124,22 +124,22 @@ class BrowseCategoryTwo extends \App\PageBuilder\PageBuilderBase
     public function frontend_render() : string
     {
         $settings = $this->get_settings();
-        $title =$settings['title'];
-        $explore_text =$settings['explore_all'];
-        $explore_link =$settings['explore_link'];
+        $title =$settings['title'] ?? null;
+        $explore_text =$settings['explore_all'] ?? null;
+        $explore_link =$settings['explore_link'] ?? null;
         if($explore_link==''){
             $explore_link = route('all.category.subcategory');
         }
  
-        $order_by =$settings['order_by'];
-        $IDorDate =$settings['order'];
-        $items =$settings['items'];
+        $order_by =$settings['order_by'] ?? null;
+        $IDorDate =$settings['order'] ?? null;
+        $items =$settings['items'] ?? null;
 
         $selected_categories = $settings['selected_categories'] ?? [];
 
-        $padding_top = $settings['padding_top'];
-        $padding_bottom = $settings['padding_bottom'];
-        $section_bg = $settings['section_bg'];
+        $padding_top = $settings['padding_top'] ?? null;
+        $padding_bottom = $settings['padding_bottom'] ?? null;
+        $section_bg = $settings['section_bg'] ?? null;
         $empty_category =$settings['empty_category_show_hide'] ?? '';
 
 
