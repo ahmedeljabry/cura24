@@ -51,7 +51,8 @@ class ContactInfo extends PageBuilderBase
                     'info' => __('new line count as a separate text')
                 ],
 
-            ]
+            ],
+            'multi_lang' => true,
         ]);
 
         $output .= Slider::get([
@@ -84,9 +85,10 @@ class ContactInfo extends PageBuilderBase
         $padding_bottom = $settings['padding_bottom'] ?? null;
 
 
-        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
+        $repeater_data = $this->get_repeater_data('contact_page_contact_info_01');
         $contact_info_markup = '';
 
+        if (!empty($repeater_data) && !empty($repeater_data['title_'])) {
         foreach ($repeater_data['title_'] as $key => $title) {
             
             $title = $title;
@@ -113,6 +115,7 @@ class ContactInfo extends PageBuilderBase
 
 SERVICE;
     }
+        }
         
 
 

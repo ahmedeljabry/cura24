@@ -107,7 +107,8 @@ class BannerOne extends \App\PageBuilder\PageBuilderBase
                     'label' => __('Benifits')
                 ],
 
-            ]
+            ],
+            'multi_lang' => true,
         ]);
 
         $output .= Switcher::get([
@@ -157,7 +158,7 @@ class BannerOne extends \App\PageBuilder\PageBuilderBase
         $app_image_one = render_image_markup_by_attachment_id($settings['app_image_one']);
         $app_image_two = render_image_markup_by_attachment_id($settings['app_image_two']);
 
-        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
+        $repeater_data = $this->get_repeater_data('contact_page_contact_info_01');
 
 
         return $this->renderBlade('banner.banner-one',[

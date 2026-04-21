@@ -69,7 +69,8 @@ class Faq extends \App\PageBuilder\PageBuilderBase
                     'info' => __('new line count as a separate text')
                 ],
 
-            ]
+            ],
+            'multi_lang' => true,
         ]);
 
 
@@ -87,9 +88,10 @@ class Faq extends \App\PageBuilder\PageBuilderBase
         $padding_bottom = $settings['padding_bottom'] ?? null;
         $section_bg = $settings['section_bg'] ?? null;
 
-        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
+        $repeater_data = $this->get_repeater_data('contact_page_contact_info_01');
         $faq_markup = '';
 
+        if (!empty($repeater_data) && !empty($repeater_data['title_'])) {
         foreach ($repeater_data['title_'] as $key => $title) {
             $title = $title;
             $description = $repeater_data['description_'][$key];
@@ -108,6 +110,7 @@ class Faq extends \App\PageBuilder\PageBuilderBase
 
 SERVICE;
     }
+        }
 
 
 return <<<HTML

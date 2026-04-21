@@ -23,7 +23,7 @@ class Repeater extends PageBuilderField
         $all_settings = $this->args['settings'];
         $this->args['settings'] = RepeaterField::remove_default_fields($all_settings);
         $repeater_id = $this->args['settings'][$this->args['id']] ?? [];
-        $last_field = array_key_last($repeater_id);
+        $last_field = !empty($repeater_id) ? array_key_last($repeater_id) : null;
         $last_field = !empty($last_field) ? $repeater_id[$last_field] : [];
         if (!empty($last_field) && is_array($last_field) && count($last_field) > 0) {
             foreach ($last_field as $index => $value) {
@@ -47,9 +47,9 @@ class Repeater extends PageBuilderField
             $value = '';
 
             if (isset($settings[$this->args['id']][$field_name]) && is_array($settings[$this->args['id']][$field_name])){
-                $value = $settings[$this->args['id']][$field_name][$index];
+                $value = $settings[$this->args['id']][$field_name][$index] ?? '';
             }elseif (isset($settings[$this->args['id']][$field_name])){
-                $value = $settings[$this->args['id']][$field_name];
+                $value = $settings[$this->args['id']][$field_name] ?? '';
             }
 
             $instance = new $class(array_merge($field,[

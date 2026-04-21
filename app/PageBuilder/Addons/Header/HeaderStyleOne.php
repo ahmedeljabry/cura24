@@ -120,7 +120,8 @@ class HeaderStyleOne extends \App\PageBuilder\PageBuilderBase
                     'name' => 'satisfied_customer_image',
                     'label' => __('Satisfied Customer Image (maximus add five images)')
                 ],
-            ]
+            ],
+            'multi_lang' => true,
         ]);
 
 

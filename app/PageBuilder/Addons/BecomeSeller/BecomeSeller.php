@@ -92,7 +92,8 @@ class BecomeSeller extends \App\PageBuilder\PageBuilderBase
                     'label' => __('Benifits')
                 ],
 
-            ]
+            ],
+            'multi_lang' => true,
         ]);
 
         $output .= Switcher::get([
@@ -143,8 +144,9 @@ class BecomeSeller extends \App\PageBuilder\PageBuilderBase
             $btn_link = route('user.register',['type' => 'seller']);
         }
         $seller_image = render_image_markup_by_attachment_id($settings['seller_image']); 
-        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
+        $repeater_data = $this->get_repeater_data('contact_page_contact_info_01');
         $benifits_markup = '';
+        if (!empty($repeater_data) && !empty($repeater_data['benifits_'])) {
         foreach ($repeater_data['benifits_'] as $key => $benifits) {
             $benifits = $benifits;
             $benifits_markup.= <<<BENIFITS
@@ -152,6 +154,7 @@ class BecomeSeller extends \App\PageBuilder\PageBuilderBase
 
 BENIFITS;
     }
+        }
     $content_list_markup = '';
     if(!empty($content_list_show_hide)){
     $content_list_markup .=<<<ABOUNTLIST

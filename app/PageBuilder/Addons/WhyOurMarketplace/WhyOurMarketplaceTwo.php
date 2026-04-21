@@ -104,7 +104,8 @@ class WhyOurMarketplaceTwo extends \App\PageBuilder\PageBuilderBase
                     'info' => __('new line count as a separate text')
                 ],
 
-            ]
+            ],
+            'multi_lang' => true,
         ]);
 
 
@@ -137,9 +138,10 @@ class WhyOurMarketplaceTwo extends \App\PageBuilder\PageBuilderBase
             $button_link = '';
         }
 
-        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
+        $repeater_data = $this->get_repeater_data('contact_page_contact_info_01');
         $why_our_marketplace_markup = '';
 
+        if (!empty($repeater_data) && !empty($repeater_data['title_'])) {
         foreach ($repeater_data['title_'] as $key => $title) {
             $inner_title = $title;
             $image = render_image_markup_by_attachment_id($repeater_data['image_'][$key]); 
@@ -159,6 +161,7 @@ class WhyOurMarketplaceTwo extends \App\PageBuilder\PageBuilderBase
                 </div>
 SERVICE;
     }
+        }
 
 
 return <<<HTML

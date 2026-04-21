@@ -51,16 +51,17 @@ class PaymentGateway extends WidgetBase
         $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
         $payment_gateway_markup = '';
 
-        foreach ($repeater_data['url_'] as $key => $url) {
-            $image = render_image_markup_by_attachment_id($repeater_data['image_'][$key]); 
-            $url = $url;
-            $payment_gateway_markup.= <<<PAYMENTGATEWAY
+        if (!empty($repeater_data) && is_array($repeater_data) && !empty($repeater_data['url_'])) {
+            foreach ($repeater_data['url_'] as $key => $url) {
+                $image = render_image_markup_by_attachment_id($repeater_data['image_'][$key] ?? '');
+                $payment_gateway_markup .= <<<PAYMENTGATEWAY
             <li class="list">
                 <a href="{$url}">{$image}</a>
             </li>
 
 PAYMENTGATEWAY;
-    }
+            }
+        }
    
    return <<<HTML
     <div class="col-lg-4 col-md-6">

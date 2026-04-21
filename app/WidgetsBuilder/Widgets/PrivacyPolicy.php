@@ -51,16 +51,18 @@ class PrivacyPolicy extends WidgetBase
         $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
         $privacy_policy_markup = '';
 
-        foreach ($repeater_data['title_'] as $key => $title) {
-            $title = purify_html($title);
-            $url = url($repeater_data['url_'][$key]);
-            $privacy_policy_markup.= <<<PRIVACYPOLICY
+        if (!empty($repeater_data) && is_array($repeater_data) && !empty($repeater_data['title_'])) {
+            foreach ($repeater_data['title_'] as $key => $title) {
+                $title = purify_html($title);
+                $url = url($repeater_data['url_'][$key] ?? '#');
+                $privacy_policy_markup .= <<<PRIVACYPOLICY
             <li class="list">
                 <a href="{$url}">{$title}</a>
             </li>
 
 PRIVACYPOLICY;
-    }
+            }
+        }
    
    return <<<HTML
     <div class="col-lg-4 col-md-6">

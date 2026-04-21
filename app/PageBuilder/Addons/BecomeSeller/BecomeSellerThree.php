@@ -86,7 +86,8 @@ class BecomeSellerThree extends \App\PageBuilder\PageBuilderBase
                     'label' => __('Benifits')
                 ],
 
-            ]
+            ],
+            'multi_lang' => true,
         ]);
 
         $output .= Switcher::get([
@@ -133,7 +134,7 @@ class BecomeSellerThree extends \App\PageBuilder\PageBuilderBase
             $btn_link = route('user.register',['type' => 'seller']);
         }
         $seller_image = render_image_markup_by_attachment_id($settings['seller_image']); 
-        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
+        $repeater_data = $this->get_repeater_data('contact_page_contact_info_01');
 
 
         return $this->renderBlade('become-seller.become-seller-three',[

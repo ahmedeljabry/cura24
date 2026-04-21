@@ -89,30 +89,31 @@ class ContactInfoWidget extends WidgetBase
     public function frontend_render()
     {
         $settings = $this->get_settings();
-        $title = purify_html($settings['title']);
-        $address = purify_html($settings['address']);
-        $address_icon = purify_html($settings['address_icon']);
-        $phone = purify_html($settings['phone']);
-        $phone_icon = purify_html($settings['phone_icon']);
-        $email = purify_html($settings['email']);
-        $email_icon = purify_html($settings['email_icon']);
+        $title        = purify_html($settings['title'] ?? '');
+        $address      = purify_html($settings['address'] ?? '');
+        $address_icon = purify_html($settings['address_icon'] ?? '');
+        $phone        = purify_html($settings['phone'] ?? '');
+        $phone_icon   = purify_html($settings['phone_icon'] ?? '');
+        $email        = purify_html($settings['email'] ?? '');
+        $email_icon   = purify_html($settings['email_icon'] ?? '');
 
         $phone_html = '<a href="tel:' . $phone . '">' . $phone . '</a>';
         $email_html = '<a href="mailto:' . $email . '">' . $email . '</a>';
         
-        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
+        $repeater_data      = $settings['contact_page_contact_info_01'] ?? null;
         $social_icon_markup = '';
 
-        foreach ($repeater_data['icon_'] as $key => $icon) {
-            $icon = $icon;
-            $url = $repeater_data['url_'][$key];
-            $social_icon_markup.= <<<SOCIALICON
+        if (!empty($repeater_data) && is_array($repeater_data) && !empty($repeater_data['icon_'])) {
+            foreach ($repeater_data['icon_'] as $key => $icon) {
+                $url = $repeater_data['url_'][$key] ?? '#';
+                $social_icon_markup .= <<<SOCIALICON
             <li class="lists">
                 <a class="facebook" href="{$url}"> <i class="{$icon}"></i> </a>
             </li>
 
 SOCIALICON;
-    }
+            }
+        }
    
    return <<<HTML
    <div class="col-lg-3 col-md-6 col-sm-6">

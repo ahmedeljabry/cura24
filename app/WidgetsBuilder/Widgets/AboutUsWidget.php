@@ -42,7 +42,7 @@ class AboutUsWidget extends WidgetBase
     public function frontend_render()
     {
         $settings = $this->get_settings();
-        $description = purify_html($settings['description']);
+        $description = purify_html($settings['description'] ?? '');
         $route = route('homepage');
         $logo = render_image_markup_by_attachment_id($settings['image']);
    

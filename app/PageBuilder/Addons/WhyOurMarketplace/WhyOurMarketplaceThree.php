@@ -104,7 +104,8 @@ class WhyOurMarketplaceThree extends \App\PageBuilder\PageBuilderBase
                     'info' => __('new line count as a separate text')
                 ],
 
-            ]
+            ],
+            'multi_lang' => true,
         ]);
 
 
@@ -129,7 +130,7 @@ class WhyOurMarketplaceThree extends \App\PageBuilder\PageBuilderBase
         if(empty($settings['btn_link'])){
             $btn_link = route('user.register',['type' => 'seller']);
         }
-        $repeater_data = $settings['contact_page_contact_info_01'] ?? null;
+        $repeater_data = $this->get_repeater_data('contact_page_contact_info_01');
 
 
     return $this->renderBlade('marketplaces.why-our-marketplace-three',[

@@ -113,7 +113,8 @@ class AboutUs extends \App\PageBuilder\PageBuilderBase
                     'label' => __('Benifits')
                 ],
 
-            ]
+            ],
+            'multi_lang' => true,
         ]);
 
         $output .= Slider::get([

@@ -162,6 +162,68 @@ abstract class PageBuilderBase
     }
 
     /**
+     * get_repeater_data
+     * Resolves multilingual repeater arrays for the visitor's current locale.
+     *
+     * When the Repeater field uses multi_lang=true it stores data under suffixed
+     * keys like `title_it`, `title_en`.  frontend_render() methods expect the
+     * canonical "no-lang" `title_` format.  This helper:
+     *   1. Tries the current locale suffix  (e.g. title_en → title_)
+     *   2. Falls back to the default locale  (e.g. title_it → title_)
+     *   3. Falls back to the trailing-underscore key already present
+     *
+     * @param  string $repeater_key  The group ID used when registering the Repeater
+     * @return array
+     */
+    public function get_repeater_data(string $repeater_key): array
+    {
+        $settings     = $this->get_settings();
+        $raw          = $settings[$repeater_key] ?? [];
+        if (empty($raw) || !is_array($raw)) {
+            return [];
+        }
+
+        $user_lang    = LanguageHelper::user_lang_slug();
+        $default_lang = LanguageHelper::default_slug();
+
+        // Collect all field base names (strip trailing lang suffixes)
+        $base_names = [];
+        foreach (array_keys($raw) as $k) {
+            // Keys can be:  title_it  title_en  icon_  (legacy no-lang trailing underscore)
+            if (preg_match('/^(.+)_([a-z]{2})$/', $k, $m)) {
+                $base_names[$m[1]] = true;   // e.g. "title"
+            } elseif (str_ends_with($k, '_')) {
+                $base_names[rtrim($k, '_')] = true;   // e.g. "icon"
+            }
+        }
+
+        $resolved = [];
+        foreach ($base_names as $base => $_) {
+            $user_key    = $base . '_' . $user_lang;    // title_en
+            $default_key = $base . '_' . $default_lang; // title_it
+            $legacy_key  = $base . '_';                 // title_  (old storage)
+            $plain_key   = $base . '_';                 // what frontend reads
+
+            if (isset($raw[$user_key])) {
+                $resolved[$plain_key] = $raw[$user_key];
+            } elseif (isset($raw[$default_key])) {
+                $resolved[$plain_key] = $raw[$default_key];
+            } elseif (isset($raw[$legacy_key])) {
+                $resolved[$plain_key] = $raw[$legacy_key];
+            }
+
+            // Keep all original keys too so nothing is lost
+            foreach ($raw as $k => $v) {
+                if (!isset($resolved[$k])) {
+                    $resolved[$k] = $v;
+                }
+            }
+        }
+
+        return $resolved ?: $raw;
+    }
+
+    /**
      * widget_before
      * this method will add widget before html markup for widget in frontend
      * @since 1.0.0
