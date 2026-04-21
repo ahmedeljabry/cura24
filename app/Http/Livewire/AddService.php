@@ -303,6 +303,7 @@ class AddService extends Component
                             'service_id' => $service->id,
                             'seller_id' => Auth::guard('web')->user()->id,
                             'include_service_title' => $this->include_service_title[$key],
+                            'include_service_title_en' => $this->include_service_title[$key],
                             'include_service_price' => 0,
                             'include_service_quantity' => 0,
                         ];
@@ -326,6 +327,7 @@ class AddService extends Component
                         'service_id' => $service->id,
                         'seller_id' => Auth::guard('web')->user()->id,
                         'include_service_title' => $title,
+                        'include_service_title_en' => $title,
                         'include_service_price' => $price,
                         'include_service_quantity' => $qty,
                     ];
@@ -351,6 +353,7 @@ class AddService extends Component
                         'service_id' => $service->id,
                         'seller_id' => Auth::guard('web')->user()->id,
                         'additional_service_title' => $title,
+                        'additional_service_title_en' => $title,
                         'additional_service_price' => $this->additional_service_price[$key] ?? $req_additional_prices[$key] ?? null,
                         'additional_service_quantity' => max(1, (int)($req_additional_quantities[$key] ?? 1)),
                         'additional_service_image' => $this->additional_service_image[$key] ?? $req_additional_images[$key] ?? null,
@@ -367,6 +370,7 @@ class AddService extends Component
                      'service_id' =>$service->id,
                      'seller_id' => Auth::guard('web')->user()->id,
                      'benifits' => $this->benifits[$key] ?? null,
+                     'benifits_en' => $this->benifits[$key] ?? null,
                  ];
              }
          }

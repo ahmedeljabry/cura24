@@ -409,6 +409,7 @@ class EditService extends Component
                                 'service_id' => $id,
                                 'seller_id' => Auth::guard('web')->user()->id,
                                 'include_service_title' => $value['include_service_title'] ?? null,
+                                'include_service_title_en' => $value['include_service_title'] ?? null,
                                 'include_service_price' => 0,
                                 'include_service_quantity' => 0,
                             ];
@@ -429,6 +430,7 @@ class EditService extends Component
                             'service_id' => $id,
                             'seller_id' => Auth::guard('web')->user()->id,
                             'include_service_title' => $value['include_service_title'] ?? null,
+                            'include_service_title_en' => $value['include_service_title'] ?? null,
                             'include_service_price' => $value['include_service_price'] ?? 0,
                             'include_service_quantity' => $value['include_service_quantity'] ?? 1,
                         ];
@@ -456,6 +458,7 @@ class EditService extends Component
                         'service_id' => $id,
                         'seller_id' => Auth::guard('web')->user()->id,
                         'additional_service_title' => $value['additional_service_title'] ?? null,
+                        'additional_service_title_en' => $value['additional_service_title'] ?? null,
                         'additional_service_price' => $value['additional_service_price'] ?? null,
                         'additional_service_quantity' => $value['additional_service_quantity'] ?? 1,
                         'additional_service_image' => $value['additional_service_image'] ?? null,
@@ -474,6 +477,7 @@ class EditService extends Component
                         'service_id' => $id,
                         'seller_id' => Auth::guard('web')->user()->id,
                         'benifits' => $value['benifits'] ?? null,
+                        'benifits_en' => $value['benifits'] ?? null,
                     ];
                 }
             }

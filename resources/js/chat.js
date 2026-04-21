@@ -152,55 +152,57 @@
         // here listen for pusher events
         setTimeout(() => {
             let current_user_id = $("#current_user").val();
-            window.Echo.private(`chat-message.${current_user_id}`)
-                .listen('.message.sent', (e) => {
+            if (typeof window.Echo !== 'undefined') {
+                window.Echo.private(`chat-message.${current_user_id}`)
+                    .listen('.message.sent', (e) => {
 
-                    // Update global header unread count first
-                    let $headerBadge = $("#chat-unread-count");
-                    if ($headerBadge.length) {
-                        let currentUnreadCountHeader = parseInt($headerBadge.text()) || 0;
-                        currentUnreadCountHeader++;
-                        let headerDisplayCount = currentUnreadCountHeader > 9 ? '9+' : currentUnreadCountHeader;
-                        $headerBadge.text(headerDisplayCount);
-                        $('.dashboard__header__chat').show();
-                        // console.log('Updated header badge:', headerDisplayCount);
-                    } else {
-                        // console.log('Header badge #chat-unread-count not found');
-                    }
-
-                    // Update specific user badge
-                    let senderId = e.message.from_user.id;
-                    let isSeller = e.message.seller_id == current_user_id;
-                    let otherUserId = isSeller ? e.message.buyer_id : e.message.seller_id;
-                    let badgeId = isSeller
-                        ? `#seller-unread-count-badge-${otherUserId}`
-                        : `#buyer-unread-count-badge-${otherUserId}`;
-                    let $badge = $(badgeId);
-                    let currentUnreadCountBadge = parseInt($badge.text()) || 0;
-                    currentUnreadCountBadge++;
-                    let badgeDisplayCount = currentUnreadCountBadge > 9 ? '9+' : currentUnreadCountBadge;
-
-                    if ($badge.length === 0) {
-                        // console.log('Badge not found, creating new badge for:', badgeId);
-                        $badge = $(`<div class="unread-count-badge" id="${badgeId.replace('#', '')}">${badgeDisplayCount}</div>`);
-                        let $chatItem = $(`.chat_wrapper__contact__list__item[data-id="${otherUserId}"] .chat_wrapper__contact__list__flex`);
-                        if ($chatItem.length) {
-                            $chatItem.append($badge);
+                        // Update global header unread count first
+                        let $headerBadge = $("#chat-unread-count");
+                        if ($headerBadge.length) {
+                            let currentUnreadCountHeader = parseInt($headerBadge.text()) || 0;
+                            currentUnreadCountHeader++;
+                            let headerDisplayCount = currentUnreadCountHeader > 9 ? '9+' : currentUnreadCountHeader;
+                            $headerBadge.text(headerDisplayCount);
+                            $('.dashboard__header__chat').show();
+                            // console.log('Updated header badge:', headerDisplayCount);
+                        } else {
+                            // console.log('Header badge #chat-unread-count not found');
                         }
-                    } else {
-                        $badge.text(badgeDisplayCount);
-                        if (currentUnreadCountBadge > 0) {
-                            $badge.removeClass('hidden');
-                        }
-                    }
 
-                    // Update chat UI only if elements exist
-                    if ($('#chat-overlay').length) {
-                        displayReceiverMessage(e.message);
-                    } else {
-                        // console.log('Chat UI not present, skipping message display');
-                    }
-                });
+                        // Update specific user badge
+                        let senderId = e.message.from_user.id;
+                        let isSeller = e.message.seller_id == current_user_id;
+                        let otherUserId = isSeller ? e.message.buyer_id : e.message.seller_id;
+                        let badgeId = isSeller
+                            ? `#seller-unread-count-badge-${otherUserId}`
+                            : `#buyer-unread-count-badge-${otherUserId}`;
+                        let $badge = $(badgeId);
+                        let currentUnreadCountBadge = parseInt($badge.text()) || 0;
+                        currentUnreadCountBadge++;
+                        let badgeDisplayCount = currentUnreadCountBadge > 9 ? '9+' : currentUnreadCountBadge;
+
+                        if ($badge.length === 0) {
+                            // console.log('Badge not found, creating new badge for:', badgeId);
+                            $badge = $(`<div class="unread-count-badge" id="${badgeId.replace('#', '')}">${badgeDisplayCount}</div>`);
+                            let $chatItem = $(`.chat_wrapper__contact__list__item[data-id="${otherUserId}"] .chat_wrapper__contact__list__flex`);
+                            if ($chatItem.length) {
+                                $chatItem.append($badge);
+                            }
+                        } else {
+                            $badge.text(badgeDisplayCount);
+                            if (currentUnreadCountBadge > 0) {
+                                $badge.removeClass('hidden');
+                            }
+                        }
+
+                        // Update chat UI only if elements exist
+                        if ($('#chat-overlay').length) {
+                            displayReceiverMessage(e.message);
+                        } else {
+                            // console.log('Chat UI not present, skipping message display');
+                        }
+                    });
+            }
         }, 200);
 
 

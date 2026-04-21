@@ -26299,8 +26299,8 @@ if (window.BROADCAST_DRIVER === 'reverb' && window.REVERB_CONFIG) {
     // here listen for pusher events
     setTimeout(function () {
       var current_user_id = $("#current_user").val();
-      window.Echo["private"]("chat-message.".concat(current_user_id)).listen('.message.sent', function (e) {
-        // Update global header unread count first
+      if (typeof window.Echo !== 'undefined') {
+        window.Echo["private"]("chat-message.".concat(current_user_id)).listen('.message.sent', function (e) {
         var $headerBadge = $("#chat-unread-count");
         if ($headerBadge.length) {
           var currentUnreadCountHeader = parseInt($headerBadge.text()) || 0;
@@ -26343,6 +26343,7 @@ if (window.BROADCAST_DRIVER === 'reverb' && window.REVERB_CONFIG) {
           // console.log('Chat UI not present, skipping message display');
         }
       });
+    }
     }, 200);
   })();
   function openChatBox(user_id, username, callback) {

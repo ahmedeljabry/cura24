@@ -1157,6 +1157,7 @@ class SellerController extends Controller
         $get_service = Service::where('id', $id)->where('seller_id', Auth::guard('web')->user()->id)->first();
         if ($request->isMethod('post')) {
             $data = $request->all();
+            $original_data = $data;
             $data = $this->translateFlatServicePayload($translator, $data);
 
             $all_include_service = [];
@@ -1176,6 +1177,7 @@ class SellerController extends Controller
                                     'service_id' => $request->service_id,
                                     'seller_id' => Auth::guard('web')->user()->id,
                                     'include_service_title' => $data['include_service_title'][$key],
+                                    'include_service_title_en' => $original_data['include_service_title'][$key] ?? null,
                                     'include_service_price' => 0,
                                     'include_service_quantity' => 0,
                                 ];
@@ -1192,6 +1194,7 @@ class SellerController extends Controller
                                 'service_id' => $request->service_id,
                                 'seller_id' => Auth::guard('web')->user()->id,
                                 'include_service_title' => $data['include_service_title'][$key],
+                                'include_service_title_en' => $original_data['include_service_title'][$key] ?? null,
                                 'include_service_price' => (int)$data['include_service_price'][$key],
                                 'include_service_quantity' => (int)$data['include_service_quantity'][$key],
                             ];
@@ -1216,6 +1219,7 @@ class SellerController extends Controller
                             'service_id' => $request->service_id,
                             'seller_id' => Auth::guard('web')->user()->id,
                             'additional_service_title' => $data['additional_service_title'][$key],
+                            'additional_service_title_en' => $original_data['additional_service_title'][$key] ?? null,
                             'additional_service_price' => $data['additional_service_price'][$key],
                             'additional_service_quantity' => $data['additional_service_quantity'][$key],
                             'additional_service_image' => $data['image'][$key],
@@ -1236,6 +1240,7 @@ class SellerController extends Controller
                             'service_id' => $request->service_id,
                             'seller_id' => Auth::guard('web')->user()->id,
                             'benifits' => $data['benifits'][$key],
+                            'benifits_en' => $original_data['benifits'][$key] ?? null,
                         ];
                         $service_count++;
                     }
