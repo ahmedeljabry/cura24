@@ -391,12 +391,10 @@ $country_tax = App\Tax::select('id','tax')->where('country_id',$service_country)
                                                                             class="quantity-input package_quantity__input inc_dec_include_service"
                                                                             data-id="{{ $include->id }}"
                                                                             data-price="{{ $include->include_service_price }}"
-                                                                            <<<<<<< HEAD
-                                                                            value="1" oninput="validateNumberInput(this)">
-                                                                        <span class="plus package_quantity__icon inc_dec_include_service {{ $include->include_service_quantity <= 1 ? 'disabled' : '' }}"=======value="1" {{ $include->include_service_quantity <= 1 ? 'readonly' : '' }}
+                                                                            value="1" {{ $include->include_service_quantity <= 1 ? 'readonly' : '' }}
                                                                             oninput="validateNumberInput(this)">
-                                                                            <span class="plus package_quantity__icon include_service_qty_increment {{ $include->include_service_quantity <= 1 ? 'disabled' : '' }}">>>>>>> ab4c5a4 (refactor: update increment/decrement functionality for service quantities in service booking pages)
-                                                                                style="{{ $include->include_service_quantity <= 1 ? 'opacity:0.35; pointer-events:none; cursor:not-allowed;' : '' }}">
+                                                                        <span class="plus package_quantity__icon inc_dec_include_service {{ $include->include_service_quantity <= 1 ? 'disabled' : '' }}"
+                                                                            style="{{ $include->include_service_quantity <= 1 ? 'opacity:0.35; pointer-events:none; cursor:not-allowed;' : '' }}">
                                                                                 <i class="fa-solid fa-plus"></i></span>
                                                                     </div>
                                                                 </div>

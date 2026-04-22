@@ -1,16 +1,16 @@
 @section('scripts')
-    <script>
-        const UserSelectedLangSlug = "{{current(explode('_',\App\Helpers\LanguageHelper::user_lang_slug()))}}";
-    </script>
-    <!--google map js -->
-    @if(!empty(get_static_option('google_map_settings')))
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key={{get_static_option('service_google_map_api_key')}}"></script>
-    @endif
-    <script src="{{asset('assets/common/js/flatpickr.js')}}"></script>
-    <script src="//npmcdn.com/flatpickr/dist/l10n/{{current(explode('_',\App\Helpers\LanguageHelper::user_lang_slug()))}}.js"></script>
-    <x-payment-gateway-js/>
-    <script>
-        (function($) {
+<script>
+    const UserSelectedLangSlug = "{{current(explode('_',\App\Helpers\LanguageHelper::user_lang_slug()))}}";
+</script>
+<!--google map js -->
+@if(!empty(get_static_option('google_map_settings')))
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key={{get_static_option('service_google_map_api_key')}}"></script>
+@endif
+<script src="{{asset('assets/common/js/flatpickr.js')}}"></script>
+<script src="//npmcdn.com/flatpickr/dist/l10n/{{current(explode('_',\App\Helpers\LanguageHelper::user_lang_slug()))}}.js"></script>
+<x-payment-gateway-js />
+<script>
+    (function($) {
             "use strict";
 
             $(document).ready(async function() {
@@ -23,18 +23,20 @@
                 let applied_coupon_amount = 0;
                 let applied_coupon_code = null; // Store coupon code
                 let applied_discount_type = null; // Store discount type
-                $('#choose_service_city').on('change',function(){
+                $('#choose_service_city').on('change', function() {
                     let city_id = $(this).val();
                     $.ajax({
-                        method:'post',
-                        url:"{{route('user.city.area')}}",
-                        data:{city_id:city_id},
-                        success:function(res){
-                            if(res.status=='success'){
+                        method: 'post',
+                        url: "{{route('user.city.area')}}",
+                        data: {
+                            city_id: city_id
+                        },
+                        success: function(res) {
+                            if (res.status == 'success') {
                                 var alloptions = '';
                                 var allAreas = res.areas;
-                                $.each(allAreas,function(index,value){
-                                    alloptions +="<option value='" + value.id + "'>" + value.service_area + "</option>";
+                                $.each(allAreas, function(index, value) {
+                                    alloptions += "<option value='" + value.id + "'>" + value.service_area + "</option>";
                                 });
                                 $(".get_service_area").html(alloptions);
                                 $('#choose_service_area').niceSelect('update');
@@ -43,7 +45,7 @@
                     })
                 })
 
-                function extra_service_calculate(){
+                function extra_service_calculate() {
                     let additional_total_price = 0;
                     let additional_services = $("div.single-additional");
 
@@ -54,14 +56,14 @@
 
                         additional_total_price += (service_count * unit_price);
                     }
-                    $('.extra-service-fee').text(site_default_currency_symbol+additional_total_price);
+                    $('.extra-service-fee').text(site_default_currency_symbol + additional_total_price);
                 }
 
-                function subtotal_calculate(){
+                function subtotal_calculate() {
                     let package_fee = parseInt($('input[name="package_fee_input_hiddend_field_for_js_calculation"]').val());
-                    let extra_service_fee = parseInt($('.extra-service-fee').text().replace(',','').replace(site_default_currency_symbol,''));
-                    let service_subtotal = package_fee+extra_service_fee;
-                    $('.service-subtotal').text(site_default_currency_symbol+service_subtotal);
+                    let extra_service_fee = parseInt($('.extra-service-fee').text().replace(',', '').replace(site_default_currency_symbol, ''));
+                    let service_subtotal = package_fee + extra_service_fee;
+                    $('.service-subtotal').text(site_default_currency_symbol + service_subtotal);
                     $('input[name="service_subtotal_input_hidden_field_for_js_calculation"]').val(service_subtotal);
                 }
                 subtotal_calculate();
@@ -83,7 +85,7 @@
                                 total_amount: total_amount,
                                 seller_id: $('#seller_id').val(),
                             },
-                            success: function (res) {
+                            success: function(res) {
                                 if (res.status == 'success') {
                                     applied_coupon_amount = parseFloat(res.coupon_amount); // Update coupon amount
                                     total_amount -= applied_coupon_amount; // Apply new discount
@@ -97,7 +99,7 @@
                                     $('.coupon_amount_for_apply_code').html('');
                                 }
                             },
-                            error: function () {
+                            error: function() {
                                 // Handle AJAX error by clearing coupon
                                 applied_coupon_amount = 0;
                                 applied_coupon_code = null;
@@ -113,15 +115,15 @@
                 }
                 total_amount()
 
-                function tax_calculate(){
+                function tax_calculate() {
                     let subtotal = $('input[name="service_subtotal_input_hidden_field_for_js_calculation"]').val();
                     let service_tax = parseFloat($('.service-tax').text());
-                    if(service_tax >0){
-                        let tax_amount = (subtotal * service_tax)/100;
-                        $('.tax-amount').text(site_default_currency_symbol+tax_amount);
-                    }else{
+                    if (service_tax > 0) {
+                        let tax_amount = (subtotal * service_tax) / 100;
+                        $('.tax-amount').text(site_default_currency_symbol + tax_amount);
+                    } else {
                         let tax_amount = 0;
-                        $('.tax-amount').text(site_default_currency_symbol+tax_amount);
+                        $('.tax-amount').text(site_default_currency_symbol + tax_amount);
                     }
                 }
 
@@ -142,16 +144,16 @@
                     var check_user_address = '';
 
                     @if(!empty(get_static_option('google_map_settings')))
-                       google_map_user_address = $('.user_address').val();
-                      check_user_address = google_map_user_address == '';
+                    google_map_user_address = $('.user_address').val();
+                    check_user_address = google_map_user_address == '';
                     @else
-                        check_user_address =  area_name=='';
+                    check_user_address = area_name == '';
                     @endif
 
                     $('.city_name_text').text(city_text);
                     $('.country_name_text').text(country_text);
 
-                    if(check_user_address) {
+                    if (check_user_address) {
                         Command: toastr["warning"]("{{ __('Please select your area!') }}", "{{ __('Aviso') }}");
                         toastr.options = {
                             "closeButton": true,
@@ -171,7 +173,8 @@
                             "hideMethod": "fadeOut"
                         }
                         return false;
-                    }else{
+                    }
+                    else {
 
                         var current_fs, next_fs, previous_fs;
                         var opacity;
@@ -208,510 +211,358 @@
 
                 //Service start
                 $(document).on('click', '.remove-service-list', function() {
-                    let include_service_id = $(this).data('id');
-                    $('.include_service_id_' + include_service_id).remove();
+                        let include_service_id = $(this).data('id');
+                        $('.include_service_id_' + include_service_id).remove();
 
-                    var include_total_price = 0;
-                    var quantity = Number($(this).val());
+                        var include_total_price = 0;
+                        var quantity = Number($(this).val());
 
-                    $('#include_service_quantity_2_' + include_service_id).text(quantity);
-                    $('#include_service_quantity_3_' + include_service_id).text(quantity);
+                        $('#include_service_quantity_2_' + include_service_id).text(quantity);
+                        $('#include_service_quantity_3_' + include_service_id).text(quantity);
 
-                    if (isNaN(quantity)) {
-                        alert('Please Enter Numbers Only');
-                    } else {
-                        let included_services = $("div.single-include");
+                        if (isNaN(quantity)) {
+                            alert('Please Enter Numbers Only');
+                        } else {
+                            let included_services = $("div.single-include");
 
-                        for (let i = 0; i < included_services.length; i++) {
-                            let service_data = $(included_services[i]).find('.inc_dec_include_service');
-                            let service_count = Number(service_data.val());
-                            let service_total_price = Number(service_data.data('price'));
-                            include_total_price += (service_count * service_total_price);
-                        }
-                        $('input[name="package_fee_input_hiddend_field_for_js_calculation"]').val(parseFloat(include_total_price));
-                        $('.package-fee').text(site_default_currency_symbol+include_total_price);
-                        subtotal_calculate();
-                        total_amount();
-                    }
-
-                })
-
-                // Increment/Decrement (include service) - change value exactly once
-                $(document).on('click', '.include_service_qty_increment, .include_service_qty_decrement', function() {
-                    const $parent = $(this).closest('.package_quantity');
-                    const $input = $parent.find('input.inc_dec_include_service');
-                    if (!$input.length) return;
-
-                    const max = parseInt($input.attr('max') || '0', 10) || null;
-                    let current = parseInt($input.val() || '1', 10) || 1;
-
-                    if ($(this).hasClass('include_service_qty_increment')) current += 1;
-                    if ($(this).hasClass('include_service_qty_decrement')) current -= 1;
-
-                    if (current < 1) current = 1;
-                    if (max !== null && current > max) current = max;
-
-                    $input.val(current).trigger('input').trigger('change').trigger('quantitychange');
-                });
-
-                // Recalculate when include service quantity changes
-                $(document).on('input change keyup quantitychange', '.inc_dec_include_service', function() {
-
-                    var include_total_price = 0;
-                    var include_service_id = 0;
-                    var quantity = 0;
-
-                     include_service_id = $(this).data('id');
-                     quantity = Number($(this).val());
-
-
-
-                    $('#include_service_quantity_2_' + include_service_id).text(quantity);
-                    $('#include_service_quantity_3_' + include_service_id).text(quantity);
-
-                    if (isNaN(quantity)) {
-
-                    } else {
-
-                        let included_services = $("div.single-include");
-
-                        for (let i = 0; i < included_services.length; i++) {
-                            let service_data = $(included_services[i]).find('.inc_dec_include_service');
-                            let service_count = Number(service_data.val());
-                            let service_total_price = Number(service_data.data('price'));
-                            include_total_price += (service_count * service_total_price);
+                            for (let i = 0; i < included_services.length; i++) {
+                                let service_data = $(included_services[i]).find('.inc_dec_include_service');
+                                let service_count = Number(service_data.val());
+                                let service_total_price = Number(service_data.data('price'));
+                                include_total_price += (service_count * service_total_price);
+                            }
+                            $('input[name="package_fee_input_hiddend_field_for_js_calculation"]').val(parseFloat(include_total_price));
+                            $('.package-fee').text(site_default_currency_symbol + include_total_price);
+                            subtotal_calculate();
+                            total_amount();
                         }
 
-                        $('.package-fee').text(site_default_currency_symbol+include_total_price);
-                        $('input[name="package_fee_input_hiddend_field_for_js_calculation"]').val(parseFloat(include_total_price));
-                        subtotal_calculate();
-                        total_amount();
-                    }
-                })
+                    })
 
-                //Upgrade order with extras
-                $(document).on('click','.extra-services .check-input',function(){
+                //Increment Decrement include service
+                // Helper to refresh +/- button states after any quantity change
+                function refreshIncludeButtons($input) {
+                    var val = parseInt($input.val()) || 1;
+                    var min = parseInt($input.attr('min')) || 1;
+                    var max = parseInt($input.attr('max')) || 1;
+                    var $container = $input.closest('.package_quantity');
+                    var $minus = $container.find('.include_service_qty_decrement');
+                    var $plus = $container.find('.plus.inc_dec_include_service');
 
-                    let additional_service_id = $(this).val();
-                    let service_name = $('label[for=' + additional_service_id + ']').text();
-                    let unit_price = $('span[price=' + additional_service_id + ']').text().replace(site_default_currency_symbol, '');
-                    let quantity = $('#additional_service_quantity_'+additional_service_id).val();
-
-                    if($(this).is(":checked")) {
-                        $('.extra-service-list').append('<div class="single-additional">\
-                            <li class="list inc_dec_additional_service" id="additional_service_id_'+additional_service_id+'">\
-                                <span class="rooms">'+ service_name +'</span>\
-                                <span class="room-count service_quantity_count item_count">'+quantity+'</span>\
-                                <span class="value-count">'+site_default_currency_symbol+unit_price+ '</span>\
-                            </li>\
-                        </div>');
-
-                        $('.extra-service-list-2').append('<div class="single-additional-2">\
-                            <li class="list inc_dec_additional_service additional_service_list" id="additional_service_id_2_'+additional_service_id+'">\
-                                <input type="hidden" class="additionalServiceID" value="'+additional_service_id+'">\
-                                <span class="rooms">'+ service_name +'</span>\
-                                <span class="room-count additional_service_quantity service_quantity_count">'+quantity+'</span>\
-                                <span class="value-count">'+site_default_currency_symbol+unit_price+ '</span>\
-                            </li>\
-                        </div>');
-
-                        $('.extra-service-list').addClass('border_top');
-
-                        extra_service_calculate();
-                        subtotal_calculate();
-                        total_amount();
-                        tax_calculate()
-                    }else{
-                        $(".single-additional #additional_service_id_"+additional_service_id).remove();
-                        $(".single-additional-2 #additional_service_id_2_"+additional_service_id).remove();
-                        $('.extra-service-list').removeClass('border_top');
-                        extra_service_calculate();
-                        subtotal_calculate();
-                        total_amount();
-                    }
-                })
-
-                // Increment/Decrement (additional service) - change value exactly once
-                $(document).on('click', '.additional_service_qty_increment, .additional_service_qty_decrement', function() {
-                    const $parent = $(this).closest('.package_quantity');
-                    const $input = $parent.find('input.inc_dec_additional_service');
-                    if (!$input.length) return;
-
-                    const max = parseInt($input.attr('max') || '0', 10) || null;
-                    let current = parseInt($input.val() || '1', 10) || 1;
-
-                    if ($(this).hasClass('additional_service_qty_increment')) current += 1;
-                    if ($(this).hasClass('additional_service_qty_decrement')) current -= 1;
-
-                    if (current < 1) current = 1;
-                    if (max !== null && current > max) current = max;
-
-                    $input.val(current).trigger('input').trigger('change').trigger('quantitychange');
-                });
-
-                // Recalculate when additional service quantity changes
-                $(document).on('input change keyup quantitychange', '.inc_dec_additional_service', function() {
-
-
-                    var additional_service_id = 0;
-                    var quantity = 0;
-
-                        additional_service_id = $(this).data('id');
-                        quantity = Number($(this).val());
-
-
-
-
-                    $('.single-additional #additional_service_id_'+additional_service_id+' .room-count').text(quantity);
-                    $('.single-additional-2 #additional_service_id_2_'+additional_service_id+' .room-count').text(quantity);
-
-                    if (isNaN(quantity)) {
-
-                    } else {
-                        extra_service_calculate();
-                        subtotal_calculate();
-                        total_amount();
-                        tax_calculate()
-                    }
-                })
-
-                //confirm-service
-                $('.confirm-service .next').on('click', function() {
-                    $('.flatpickr-day.today').trigger('click');
-                    var current_fs, next_fs, previous_fs;
-                    var opacity;
-                    var current = 1;
-                    var steps = $("fieldset").length;
-                    current_fs = $(this).parent();
-                    next_fs = $(this).parent().next();
-
-                    $(".step-list li, .step-list-two li").eq($("fieldset").index(next_fs)).addClass(
-                        "active");
-
-                    next_fs.show();
-                    current_fs.animate({
-                        opacity: 0
-                    }, {
-                        step: function(now) {
-                            opacity = 1 - now;
-
-                            current_fs.css({
-                                'display': 'none',
-                                'position': 'relative'
-                            });
-                            next_fs.css({
-                                'opacity': opacity
-                            });
-                        },
-                        duration: 500
-                    });
-                })
-
-                //Service end
-
-                //Date and time
-                $("#service_available_dates").flatpickr({
-                    minDate: "today",
-                    maxDate: new Date().fp_incr({{ $days_count }}),
-                    inline: true,
-                    altInput: true,
-                    altFormat: "F j, Y",
-                    dateFormat: "Y-m-d",
-                    locale: UserSelectedLangSlug
-                });
-
-
-                //find schedule for a day
-                $(".schedule_loader").hide();
-                var date_string_format='';
-                $(document).on('change','#service_available_dates',function(){
-                    let date_string = $(this).val();
-                    let day_date = new Date($(this).val());
-                    date_string_format = day_date.toDateString();
-                    let day = date_string_format.split(' ')[0];
-                    let seller_id = $('.seller-id-for-schedule').text();
-
-                    //set value in confirmation fieldset
-                    $('.confirm-overview-left .available_date').text(date_string);
-
-                    $.ajax({
-                        url:"{{ route('service.schedule.by.day') }}",
-                        method:'post',
-                        data:{
-                            day:day,
-                            date_string:date_string,
-                            seller_id:seller_id
-
-                        },
-                        beforeSend: function() {
-                            $(".schedule_loader").show();
-                        },
-                        success:function(res){
-                            if(res.status=='success'){
-                                let all_lists = '';
-                                let all_schedules = res.schedules;
-                                $.each(all_schedules, function(index, value) {
-                                 all_lists += '<div class="custom_radio__single mt-2 get-schedule"><input class="custom_radio__single__input" type="radio" name="time" id="radio3"> <label for="radio3">'+value.schedule+'</label></div>';
+                            if (val <= min) {
+                                $minus.addClass('disabled').css({
+                                    'opacity': '0.35',
+                                    'pointer-events': 'none',
+                                    'cursor': 'not-allowed'
                                 });
-                                $(".show-schedule").html(all_lists);
-                                $(".schedule_loader").hide();
-                            }if(res.status=='no schedule'){
-                                $(".show-schedule").html('<div class="alert alert-warning mt-3"><li class="list">{{ __("Schedule not available") }}</li></div>');
-                                $(".schedule_loader").hide();
+                            } else {
+                                $minus.removeClass('disabled').css({
+                                    'opacity': '',
+                                    'pointer-events': '',
+                                    'cursor': ''
+                                });
+                            }
+
+                            if (val >= max) {
+                                $plus.addClass('disabled').css({
+                                    'opacity': '0.35',
+                                    'pointer-events': 'none',
+                                    'cursor': 'not-allowed'
+                                });
+                            } else {
+                                $plus.removeClass('disabled').css({
+                                    'opacity': '',
+                                    'pointer-events': '',
+                                    'cursor': ''
+                                });
                             }
                         }
-                    })
-                })
 
-                //get available schedule
-                var available_schedule ='';
-                $(document).on('click','.get-schedule',function(){
-                    available_schedule = $(this).text();
-                    //set value in confirmation fieldset
-                    $('.confirm-overview-left .available_schedule').text(available_schedule);
-                })
-
-                //confirm-date-time
-                $('.confirm-date-time .next').on('click',function(){
-
-                    if(date_string_format=='' || available_schedule==''){
-                        Command: toastr["warning"]("{{__('Please select date and schedule!')}}", "{{ __('Aviso') }}")
-                        toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": true,
-                            "positionClass": "toast-top-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        }
-                        return false;
-                    }else{
-                        var current_fs, next_fs, previous_fs;
-                        var opacity;
-                        var current = 1;
-                        var steps = $("fieldset").length;
-                        current_fs = $(this).parent();
-                        next_fs = $(this).parent().next();
-
-                        $(".step-list li, .step-list-two li").eq($("fieldset").index(next_fs)).addClass("active");
-
-                        next_fs.show();
-                        current_fs.animate({ opacity: 0 }, {
-                            step: function(now) {
-                                opacity = 1 - now;
-
-                                current_fs.css({
-                                    'display': 'none',
-                                    'position': 'relative'
-                                });
-                                next_fs.css({ 'opacity': opacity });
-                            },
-                            duration: 500
+                        // Initialise button states on page load
+                        $('.inc_dec_include_service.quantity-input').each(function() {
+                            refreshIncludeButtons($(this));
                         });
-                    }
-                })
 
-                //confirm-information
-                $('.confirm-information .next').on('click',function(){
-
-                    let name =  $('#name').val();
-                    let email = $('#email').val();
-                    let phone = $('#phone').val();
-                    let post_code = $('#post_code').val();
-                    let address =   $('#address').val();
-                    let order_note = $('#order_note').val();
-
-                    //set value in confirmation fieldset
-                    $('.booking-details .get_name').text(name);
-                    $('.booking-details .get_email').text(email);
-                    $('.booking-details .get_phone').text(phone);
-                    $('.booking-details .get_post_code').text(post_code);
-                    $('.booking-details .get_address').text(address);
-                    $('.booking-details .get_order_note').text(order_note);
-                    if(name=='' || email=='' || phone=='' || post_code=='' || address==''){
-                        Command: toastr["warning"]("{{__('Please fill all fields!')}}", "{{ __('Aviso') }}")
-                        toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": true,
-                            "positionClass": "toast-top-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        }
-                        return false;
-                    }else{
-                        var current_fs, next_fs, previous_fs;
-                        var opacity;
-                        var current = 1;
-                        var steps = $("fieldset").length;
-                        current_fs = $(this).parent();
-                            next_fs = $(this).parent().next();
-                        $(".step-list li, .step-list-two li").eq($("fieldset").index(next_fs)).addClass("active");
-
-                        next_fs.show();
-                        current_fs.animate({ opacity: 0 }, {
-                            step: function(now) {
-                                opacity = 1 - now;
-
-                                current_fs.css({
-                                    'display': 'none',
-                                    'position': 'relative'
-                                });
-                                next_fs.css({ 'opacity': opacity });
-                            },
-                            duration: 500
+                        // Minus button click
+                        $(document).on('click', '.include_service_qty_decrement', function() {
+                            var $input = $(this).closest('.package_quantity').find('.quantity-input.inc_dec_include_service');
+                            var val = parseInt($input.val()) || 1;
+                            var min = parseInt($input.attr('min')) || 1;
+                            if (val > min) {
+                                $input.val(val - 1).trigger('quantitychange');
+                            }
                         });
-                    }
-                })
 
-                //Order Confirm
-                $(document).on('submit','.ms-order-form',function(e){
+                        // Plus button click
+                        $(document).on('click', '.plus.inc_dec_include_service', function() {
+                            var $input = $(this).closest('.package_quantity').find('.quantity-input.inc_dec_include_service');
+                            var val = parseInt($input.val()) || 1;
+                            var max = parseInt($input.attr('max')) || 99;
+                            if (val < max) {
+                                $input.val(val + 1).trigger('quantitychange');
+                            }
+                        });
 
-                    if(!$('.terms-and-conditions .check-input').is(":checked")){
-                        //error msg
-                        Command: toastr["warning"]("{{__('Please agree with terms and conditions!')}}", "{{ __('Aviso') }}")
-                        toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": true,
-                            "positionClass": "toast-top-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        }
-                        return false;
-                    }
-                    if($('input[name="selected_payment_gateway"]').val() == ''){
-                        //error msg
-                        Command: toastr["warning"]("{{__('Please select payment gateway!')}}", "{{ __('Aviso') }}")
-                        toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": true,
-                            "positionClass": "toast-top-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        }
-                        return false;
-                    }
+                        // Recalculate on quantity change (manual input or triggered)
+                        $(document).on('keyup quantitychange', '.quantity-input.inc_dec_include_service', function() {
+                            var include_total_price = 0;
+                            var $input = $(this);
+                            var include_service_id = $input.data('id');
+                            var min = parseInt($input.attr('min')) || 1;
+                            var max = parseInt($input.attr('max')) || 99;
+                            var quantity = parseInt($input.val()) || min;
 
-                    let formContainer = $('#msform');
+                            // Clamp value
+                            if (quantity < min) {
+                                quantity = min;
+                                $input.val(min);
+                            }
+                            if (quantity > max) {
+                                quantity = max;
+                                $input.val(max);
+                            }
 
-                    let available_date = $('.available_date').text();
+                            refreshIncludeButtons($input);
 
-                    formContainer.find('input[name=date]').val(available_date);
-                    let available_schedule = $('.available_schedule').text();
-                    formContainer.find('input[name=schedule]').val(available_schedule);
-                    let coupon_code = $('.coupon_code').val();
-                    formContainer.find('input[name=coupon_code]').val(coupon_code);
+                            $('#include_service_quantity_2_' + include_service_id).text(quantity);
+                            $('#include_service_quantity_3_' + include_service_id).text(quantity);
 
-                    let services = [];
-                    let included_services = $("li.include_service_list");
+                            let included_services = $("div.single-include");
+                            for (let i = 0; i < included_services.length; i++) {
+                                let service_data = $(included_services[i]).find('.quantity-input.inc_dec_include_service');
+                                let service_count = parseInt(service_data.val()) || 1;
+                                let service_total_price = Number(service_data.data('price'));
+                                include_total_price += (service_count * service_total_price);
+                            }
 
-                    for (let i = 0; i < included_services.length; i++) {
-                        let include_service_quantity = $(included_services[i]).find('.include_service_quantity').text();
-                        let include_service_id = $(included_services[i]).find('.includeServiceID').val();
-                        services.push({
-                            id: include_service_id,
-                            quantity: include_service_quantity
+                            $('.package-fee').text(site_default_currency_symbol + include_total_price);
+                            $('input[name="package_fee_input_hiddend_field_for_js_calculation"]').val(parseFloat(include_total_price));
+                            subtotal_calculate();
+                            total_amount();
                         })
-                        $('#msform').append('<input type="hidden" name="services['+i+'][id]" value="'+include_service_id+'"/>');
-                        $('#msform').append('<input type="hidden" name="services['+i+'][quantity]" value="'+include_service_quantity+'"/>');
-                    }
 
-                    let additionals = [];
-                    let additional_services = $("li.additional_service_list");
+                        //Upgrade order with extras
+                        $(document).on('click', '.extra-services .check-input', function() {
 
-                    for (let i = 0; i < additional_services.length; i++) {
-                        let additional_service_quantity = $(additional_services[i]).find('.additional_service_quantity').text();
-                        let additional_service_id = $(additional_services[i]).find('.additionalServiceID').val();
-                        additionals.push({
-                            id: additional_service_id,
-                            quantity: additional_service_quantity
-                        })
-                        $('#msform').append('<input type="hidden" name="additionals['+i+'][id]" value="'+additional_service_id+'"/>');
-                        $('#msform').append('<input type="hidden" name="additionals['+i+'][quantity]" value="'+additional_service_quantity+'"/>');
-                    }
+                            let additional_service_id = $(this).val();
+                            let service_name = $('label[for=' + additional_service_id + ']').text();
+                            let unit_price = $('span[price=' + additional_service_id + ']').text().replace(site_default_currency_symbol, '');
+                            let quantity = $('#additional_service_quantity_' + additional_service_id).val();
 
-                });
+                            if ($(this).is(":checked")) {
+                                $('.extra-service-list').append('<div class="single-additional">\
+                            <li class="list inc_dec_additional_service" id="additional_service_id_' + additional_service_id + '">\
+                                <span class="rooms">' + service_name + '</span>\
+                                <span class="room-count service_quantity_count item_count">' + quantity + '</span>\
+                                <span class="value-count">' + site_default_currency_symbol + unit_price + '</span>\
+                            </li>\
+                        </div>');
 
-                //apply coupon code
-                $(document).on('click', '.apply-coupon', function (e) {
-                    e.preventDefault();
-                    let total_amount = $('.total_amount_for_coupon').text().replace(',', '').replace(site_default_currency_symbol, '');
-                    let coupon_code = $('.coupon_code').val();
-                    let seller_id = $('#seller_id').val();
+                                $('.extra-service-list-2').append('<div class="single-additional-2">\
+                            <li class="list inc_dec_additional_service additional_service_list" id="additional_service_id_2_' + additional_service_id + '">\
+                                <input type="hidden" class="additionalServiceID" value="' + additional_service_id + '">\
+                                <span class="rooms">' + service_name + '</span>\
+                                <span class="room-count additional_service_quantity service_quantity_count">' + quantity + '</span>\
+                                <span class="value-count">' + site_default_currency_symbol + unit_price + '</span>\
+                            </li>\
+                        </div>');
 
-                    $.ajax({
-                        url: "{{ route('service.coupon.apply') }}",
-                        method: "get",
-                        data: {
-                            coupon_code: coupon_code,
-                            total_amount: total_amount,
-                            seller_id: seller_id,
-                        },
-                        success: function (res) {
+                                $('.extra-service-list').addClass('border_top');
 
-                            if (res.status == 'success') {
-                                let coupon_amount = parseFloat(res.coupon_amount); // Use the backend-provided amount directly
-                                applied_coupon_code = coupon_code; // Store coupon code
-                                applied_discount_type = res.discount_type;
-                                let new_total = parseFloat(total_amount) - coupon_amount; // Subtract coupon_amount directly
-
-                                // Update UI
-                                $('#total_amount_for_coupon').text(site_default_currency_symbol + new_total.toFixed(2));
-                                $('.coupon_input_field').hide();
-                                $('.coupon_amount_for_apply_code').html('<strong>{{__("Coupon Discount")}}</strong>' + site_default_currency_symbol + coupon_amount.toFixed(2));
-                                applied_coupon_amount = coupon_amount; // Store the calculated discount
-                                total_amount(); // Recalculate total to ensure consistency
+                                extra_service_calculate();
+                                subtotal_calculate();
+                                total_amount();
+                                tax_calculate()
                             } else {
-                                // Handle error cases (invalid, expired, etc.)
-                                let message = '';
-                                if (res.status == 'invalid') {
-                                    message = "{{__('Coupon is invalid!')}}";
-                                } else if (res.status == 'expired') {
-                                    message = "{{__('Coupon already expired!')}}";
-                                } else if (res.status == 'notapplicable') {
-                                    message = "{{__('Coupon is not applicable for this service!')}}";
-                                } else if (res.status == 'emptycoupon') {
-                                    message = "{{__('Please enter your coupon!')}}";
+                                $(".single-additional #additional_service_id_" + additional_service_id).remove();
+                                $(".single-additional-2 #additional_service_id_2_" + additional_service_id).remove();
+                                $('.extra-service-list').removeClass('border_top');
+                                extra_service_calculate();
+                                subtotal_calculate();
+                                total_amount();
+                            }
+                        })
+
+                        // Helper to refresh +/- button states after any quantity change for additional services
+                        function refreshAdditionalButtons($input) {
+                            var val = parseInt($input.val()) || 1;
+                            var min = parseInt($input.attr('min')) || 1;
+                            var max = parseInt($input.attr('max')) || 99;
+                            var $container = $input.closest('.package_quantity');
+                            var $minus = $container.find('.additional_service_qty_decrement');
+                            var $plus = $container.find('.plus.inc_dec_additional_service');
+
+                            if (val <= min) {
+                                $minus.addClass('disabled').css({'opacity': '0.35', 'pointer-events': 'none', 'cursor': 'not-allowed'});
+                            } else {
+                                $minus.removeClass('disabled').css({'opacity': '', 'pointer-events': '', 'cursor': ''});
+                            }
+
+                            if (val >= max) {
+                                $plus.addClass('disabled').css({'opacity': '0.35', 'pointer-events': 'none', 'cursor': 'not-allowed'});
+                            } else {
+                                $plus.removeClass('disabled').css({'opacity': '', 'pointer-events': '', 'cursor': ''});
+                            }
+                        }
+
+                        // Initialise button states on page load for additional services
+                        $('.inc_dec_additional_service.quantity-input').each(function() {
+                            refreshAdditionalButtons($(this));
+                        });
+
+                        // Minus button click (additional service)
+                        $(document).on('click', '.additional_service_qty_decrement', function() {
+                            var $input = $(this).closest('.package_quantity').find('.quantity-input.inc_dec_additional_service');
+                            var val = parseInt($input.val()) || 1;
+                            var min = parseInt($input.attr('min')) || 1;
+                            if (val > min) {
+                                $input.val(val - 1).trigger('quantitychange');
+                            }
+                        });
+
+                        // Plus button click (additional service)
+                        $(document).on('click', '.plus.inc_dec_additional_service', function() {
+                            var $input = $(this).closest('.package_quantity').find('.quantity-input.inc_dec_additional_service');
+                            var val = parseInt($input.val()) || 1;
+                            var max = parseInt($input.attr('max')) || 99;
+                            if (val < max) {
+                                $input.val(val + 1).trigger('quantitychange');
+                            }
+                        });
+
+                        // Recalculate on quantity change (manual input or triggered)
+                        $(document).on('keyup quantitychange', '.quantity-input.inc_dec_additional_service', function() {
+                            var $input = $(this);
+                            var additional_service_id = $input.data('id');
+                            var min = parseInt($input.attr('min')) || 1;
+                            var max = parseInt($input.attr('max')) || 99;
+                            var quantity = parseInt($input.val()) || min;
+
+                            // Clamp value
+                            if (quantity < min) {
+                                quantity = min;
+                                $input.val(min);
+                            }
+                            if (quantity > max) {
+                                quantity = max;
+                                $input.val(max);
+                            }
+
+                            refreshAdditionalButtons($input);
+
+                            $('.single-additional #additional_service_id_' + additional_service_id + ' .room-count').text(quantity);
+                            $('.single-additional-2 #additional_service_id_2_' + additional_service_id + ' .room-count').text(quantity);
+
+                            extra_service_calculate();
+                            subtotal_calculate();
+                            total_amount();
+                            tax_calculate();
+                        });
+
+                        //confirm-service
+                        $('.confirm-service .next').on('click', function() {
+                            $('.flatpickr-day.today').trigger('click');
+                            var current_fs, next_fs, previous_fs;
+                            var opacity;
+                            var current = 1;
+                            var steps = $("fieldset").length;
+                            current_fs = $(this).parent();
+                            next_fs = $(this).parent().next();
+
+                            $(".step-list li, .step-list-two li").eq($("fieldset").index(next_fs)).addClass(
+                                "active");
+
+                            next_fs.show();
+                            current_fs.animate({
+                                opacity: 0
+                            }, {
+                                step: function(now) {
+                                    opacity = 1 - now;
+
+                                    current_fs.css({
+                                        'display': 'none',
+                                        'position': 'relative'
+                                    });
+                                    next_fs.css({
+                                        'opacity': opacity
+                                    });
+                                },
+                                duration: 500
+                            });
+                        })
+
+                        //Service end
+
+                        //Date and time
+                        $("#service_available_dates").flatpickr({
+                            minDate: "today",
+                            maxDate: new Date().fp_incr({
+                                {
+                                    $days_count
                                 }
-                                toastr["warning"](message, "{{ __('Warning!') }}");
+                            }),
+                            inline: true,
+                            altInput: true,
+                            altFormat: "F j, Y",
+                            dateFormat: "Y-m-d",
+                            locale: UserSelectedLangSlug
+                        });
+
+
+                        //find schedule for a day
+                        $(".schedule_loader").hide();
+                        var date_string_format = ''; $(document).on('change', '#service_available_dates', function() {
+                            let date_string = $(this).val();
+                            let day_date = new Date($(this).val());
+                            date_string_format = day_date.toDateString();
+                            let day = date_string_format.split(' ')[0];
+                            let seller_id = $('.seller-id-for-schedule').text();
+
+                            //set value in confirmation fieldset
+                            $('.confirm-overview-left .available_date').text(date_string);
+
+                            $.ajax({
+                                url: "{{ route('service.schedule.by.day') }}",
+                                method: 'post',
+                                data: {
+                                    day: day,
+                                    date_string: date_string,
+                                    seller_id: seller_id
+
+                                },
+                                beforeSend: function() {
+                                    $(".schedule_loader").show();
+                                },
+                                success: function(res) {
+                                    if (res.status == 'success') {
+                                        let all_lists = '';
+                                        let all_schedules = res.schedules;
+                                        $.each(all_schedules, function(index, value) {
+                                            all_lists += '<div class="custom_radio__single mt-2 get-schedule"><input class="custom_radio__single__input" type="radio" name="time" id="radio3"> <label for="radio3">' + value.schedule + '</label></div>';
+                                        });
+                                        $(".show-schedule").html(all_lists);
+                                        $(".schedule_loader").hide();
+                                    }
+                                    if (res.status == 'no schedule') {
+                                        $(".show-schedule").html('<div class="alert alert-warning mt-3"><li class="list">{{ __("Schedule not available") }}</li></div>');
+                                        $(".schedule_loader").hide();
+                                    }
+                                }
+                            })
+                        })
+
+                        //get available schedule
+                        var available_schedule = ''; $(document).on('click', '.get-schedule', function() {
+                            available_schedule = $(this).text();
+                            //set value in confirmation fieldset
+                            $('.confirm-overview-left .available_schedule').text(available_schedule);
+                        })
+
+                        //confirm-date-time
+                        $('.confirm-date-time .next').on('click', function() {
+
+                            if (date_string_format == '' || available_schedule == '') {
+                                Command: toastr["warning"]("{{__('Please select date and schedule!')}}", "{{ __('Aviso') }}")
                                 toastr.options = {
                                     "closeButton": true,
                                     "debug": false,
@@ -728,191 +579,454 @@
                                     "hideEasing": "linear",
                                     "showMethod": "fadeIn",
                                     "hideMethod": "fadeOut"
-                                };
+                                }
+                                return false;
                             }
+                            else {
+                                var current_fs, next_fs, previous_fs;
+                                var opacity;
+                                var current = 1;
+                                var steps = $("fieldset").length;
+                                current_fs = $(this).parent();
+                                next_fs = $(this).parent().next();
+
+                                $(".step-list li, .step-list-two li").eq($("fieldset").index(next_fs)).addClass("active");
+
+                                next_fs.show();
+                                current_fs.animate({
+                                    opacity: 0
+                                }, {
+                                    step: function(now) {
+                                        opacity = 1 - now;
+
+                                        current_fs.css({
+                                            'display': 'none',
+                                            'position': 'relative'
+                                        });
+                                        next_fs.css({
+                                            'opacity': opacity
+                                        });
+                                    },
+                                    duration: 500
+                                });
+                            }
+                        })
+
+                        //confirm-information
+                        $('.confirm-information .next').on('click', function() {
+
+                            let name = $('#name').val();
+                            let email = $('#email').val();
+                            let phone = $('#phone').val();
+                            let post_code = $('#post_code').val();
+                            let address = $('#address').val();
+                            let order_note = $('#order_note').val();
+
+                            //set value in confirmation fieldset
+                            $('.booking-details .get_name').text(name);
+                            $('.booking-details .get_email').text(email);
+                            $('.booking-details .get_phone').text(phone);
+                            $('.booking-details .get_post_code').text(post_code);
+                            $('.booking-details .get_address').text(address);
+                            $('.booking-details .get_order_note').text(order_note);
+                            if (name == '' || email == '' || phone == '' || post_code == '' || address == '') {
+                                Command: toastr["warning"]("{{__('Please fill all fields!')}}", "{{ __('Aviso') }}")
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": true,
+                                    "positionClass": "toast-top-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                }
+                                return false;
+                            }
+                            else {
+                                var current_fs, next_fs, previous_fs;
+                                var opacity;
+                                var current = 1;
+                                var steps = $("fieldset").length;
+                                current_fs = $(this).parent();
+                                next_fs = $(this).parent().next();
+                                $(".step-list li, .step-list-two li").eq($("fieldset").index(next_fs)).addClass("active");
+
+                                next_fs.show();
+                                current_fs.animate({
+                                    opacity: 0
+                                }, {
+                                    step: function(now) {
+                                        opacity = 1 - now;
+
+                                        current_fs.css({
+                                            'display': 'none',
+                                            'position': 'relative'
+                                        });
+                                        next_fs.css({
+                                            'opacity': opacity
+                                        });
+                                    },
+                                    duration: 500
+                                });
+                            }
+                        })
+
+                        //Order Confirm
+                        $(document).on('submit', '.ms-order-form', function(e) {
+
+                            if (!$('.terms-and-conditions .check-input').is(":checked")) {
+                                //error msg
+                                Command: toastr["warning"]("{{__('Please agree with terms and conditions!')}}", "{{ __('Aviso') }}")
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": true,
+                                    "positionClass": "toast-top-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                }
+                                return false;
+                            }
+                            if ($('input[name="selected_payment_gateway"]').val() == '') {
+                                //error msg
+                                Command: toastr["warning"]("{{__('Please select payment gateway!')}}", "{{ __('Aviso') }}")
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": true,
+                                    "positionClass": "toast-top-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                }
+                                return false;
+                            }
+
+                            let formContainer = $('#msform');
+
+                            let available_date = $('.available_date').text();
+
+                            formContainer.find('input[name=date]').val(available_date);
+                            let available_schedule = $('.available_schedule').text();
+                            formContainer.find('input[name=schedule]').val(available_schedule);
+                            let coupon_code = $('.coupon_code').val();
+                            formContainer.find('input[name=coupon_code]').val(coupon_code);
+
+                            let services = [];
+                            let included_services = $("li.include_service_list");
+
+                            for (let i = 0; i < included_services.length; i++) {
+                                let include_service_quantity = $(included_services[i]).find('.include_service_quantity').text();
+                                let include_service_id = $(included_services[i]).find('.includeServiceID').val();
+                                services.push({
+                                    id: include_service_id,
+                                    quantity: include_service_quantity
+                                })
+                                $('#msform').append('<input type="hidden" name="services[' + i + '][id]" value="' + include_service_id + '"/>');
+                                $('#msform').append('<input type="hidden" name="services[' + i + '][quantity]" value="' + include_service_quantity + '"/>');
+                            }
+
+                            let additionals = [];
+                            let additional_services = $("li.additional_service_list");
+
+                            for (let i = 0; i < additional_services.length; i++) {
+                                let additional_service_quantity = $(additional_services[i]).find('.additional_service_quantity').text();
+                                let additional_service_id = $(additional_services[i]).find('.additionalServiceID').val();
+                                additionals.push({
+                                    id: additional_service_id,
+                                    quantity: additional_service_quantity
+                                })
+                                $('#msform').append('<input type="hidden" name="additionals[' + i + '][id]" value="' + additional_service_id + '"/>');
+                                $('#msform').append('<input type="hidden" name="additionals[' + i + '][quantity]" value="' + additional_service_quantity + '"/>');
+                            }
+
+                        });
+
+                        //apply coupon code
+                        $(document).on('click', '.apply-coupon', function(e) {
+                            e.preventDefault();
+                            let total_amount = $('.total_amount_for_coupon').text().replace(',', '').replace(site_default_currency_symbol, '');
+                            let coupon_code = $('.coupon_code').val();
+                            let seller_id = $('#seller_id').val();
+
+                            $.ajax({
+                                url: "{{ route('service.coupon.apply') }}",
+                                method: "get",
+                                data: {
+                                    coupon_code: coupon_code,
+                                    total_amount: total_amount,
+                                    seller_id: seller_id,
+                                },
+                                success: function(res) {
+
+                                    if (res.status == 'success') {
+                                        let coupon_amount = parseFloat(res.coupon_amount); // Use the backend-provided amount directly
+                                        applied_coupon_code = coupon_code; // Store coupon code
+                                        applied_discount_type = res.discount_type;
+                                        let new_total = parseFloat(total_amount) - coupon_amount; // Subtract coupon_amount directly
+
+                                        // Update UI
+                                        $('#total_amount_for_coupon').text(site_default_currency_symbol + new_total.toFixed(2));
+                                        $('.coupon_input_field').hide();
+                                        $('.coupon_amount_for_apply_code').html('<strong>{{__("Coupon Discount")}}</strong>' + site_default_currency_symbol + coupon_amount.toFixed(2));
+                                        applied_coupon_amount = coupon_amount; // Store the calculated discount
+                                        total_amount(); // Recalculate total to ensure consistency
+                                    } else {
+                                        // Handle error cases (invalid, expired, etc.)
+                                        let message = '';
+                                        if (res.status == 'invalid') {
+                                            message = "{{__('Coupon is invalid!')}}";
+                                        } else if (res.status == 'expired') {
+                                            message = "{{__('Coupon already expired!')}}";
+                                        } else if (res.status == 'notapplicable') {
+                                            message = "{{__('Coupon is not applicable for this service!')}}";
+                                        } else if (res.status == 'emptycoupon') {
+                                            message = "{{__('Please enter your coupon!')}}";
+                                        }
+                                        toastr["warning"](message, "{{ __('Warning!') }}");
+                                        toastr.options = {
+                                            "closeButton": true,
+                                            "debug": false,
+                                            "newestOnTop": false,
+                                            "progressBar": true,
+                                            "positionClass": "toast-top-right",
+                                            "preventDuplicates": false,
+                                            "onclick": null,
+                                            "showDuration": "300",
+                                            "hideDuration": "1000",
+                                            "timeOut": "5000",
+                                            "extendedTimeOut": "1000",
+                                            "showEasing": "swing",
+                                            "hideEasing": "linear",
+                                            "showMethod": "fadeIn",
+                                            "hideMethod": "fadeOut"
+                                        };
+                                    }
+                                }
+                            });
+                        });
+
+                        //order loader
+                        $('.order_loader').hide(); $(document).on('click', '.pay_and_confirm_order', function(e) {
+                            $('.order_loader').show();
+                        });
+
+
+
+
+                        @if(!empty(get_static_option('google_map_settings')))
+                        // Declare the formattedAddress as a global variable
+                        var formattedAddress = "";
+                        var autocomplete = new google.maps.places.Autocomplete(document.getElementById('user_address'));
+
+                        autocomplete.setFields(['formatted_address']); autocomplete.addListener('place_changed', function() {
+                            var place = autocomplete.getPlace();
+                            // Extract the formatted address
+                            if (place.formatted_address) {
+                                formattedAddress = place.formatted_address;
+                                // Update the input field with the formatted address
+                                $('#user_address').val(formattedAddress);
+                            }
+                        });
+
+
+                        // Add click event listener to the input field
+                        $('#user_address').on('click', function() {
+                            // Focus on the input field to open the autocomplete dropdown
+                            $(this).focus();
+                        });
+
+                        // Select address from Google Maps and pass it to another input field  start
+                        var stepFormBtn = $('.stepForm_btn.next');
+                        // Add click event listener to the stepForm_btn
+                        stepFormBtn.on('click', function() {
+                            var isFullAddressNextPage = $('.full_address_get_next_page.active').length > 0;
+                            if (isFullAddressNextPage) {
+                                var user_order_address = $('#user_address').val();
+                                $('#address').val(user_order_address);
+                            }
+                        });
+                        // Add click event listener to the previous step button
+                        $('.stepForm_btn.stepPrevious').on('click', function() {
+                            // Add your code for handling the previous step button click here
+                        });
+                        // Select address from Google Maps and pass it to another input field  end
+                        // =========== user profile wise location end ===========
+
+                        //============== default country select value ============
+                        @php $service_seller = \App\ User::find($service_details_for_book - > seller_id);
+                        //                  $seller_city = \App\ServiceCity::findOrFail($service_seller->service_city);
+                        //                  $seller_country = \App\Country::findOrFail($seller_city->country_id);
+                        @endphp
+
+                        @if(!empty($service_seller - > latitude)) var seller_lat = '{{$service_seller->latitude}}';
+                        var seller_long = '{{$service_seller->longitude}}'; @else
+                        var seller_lat = 0;
+                        var seller_long = 0; @endif
+
+
+                        // Create a geocoder instance
+                        var geocoder = new google.maps.Geocoder();
+                        // Create a LatLng object with the seller's coordinates
+                        var sellerLatLng = new google.maps.LatLng(seller_lat, seller_long);
+
+                        // Call the geocode function to retrieve the address information
+                        var countryName = null;
+                        var cityName = null;
+
+                        var get_country_name = null;
+                        var get_city_name = null;
+                        let data;
+
+                        // seller zone settings wise country and city name get
+                        const geocoderResults = async (geocoder, sellerLatLng) => {
+                            const result = await geocoder.geocode({
+                                'location': sellerLatLng
+                            }, function(results, status) {
+                                if (status === 'OK' && results) {
+                                    return {
+                                        'result': results[0]
+                                    };
+                                    result.push({
+                                        'result': results[0]
+                                    });
+                                } else {
+                                    return {
+                                        'result': 'Geocoder failed due to: ' + status
+                                    };
+                                    result.push({
+                                        'result': 'Geocoder failed due to: ' + status
+                                    });
+                                }
+                            });
+                            return result;
                         }
+
+                        let items; await geocoderResults(geocoder, sellerLatLng).then(function(res) {
+                            let addressComponents = res.results[0].address_components;
+                            for (let i = 0; i < addressComponents.length; i++) {
+                                let types = addressComponents[i].types;
+                                if (types.includes('country')) {
+                                    countryName = addressComponents[i].long_name;
+
+                                } else if (types.includes('locality') || types.includes('postal_town') || types.includes('administrative_area_level_1') || types.includes('administrative_area_level_2')) {
+                                    cityName = addressComponents[i].long_name;
+                                }
+                            }
+                            data = {
+                                "country_name": countryName,
+                                "city_name": cityName
+                            };
+                            return data;
+                        });
+
+
+                        // Access the values outside the function
+                        var user_country = data.country_name;
+                        var user_city = data.city_name;
+
+                        // Concatenate country and city names
+                        var countryAndCity = user_country + ', ' + user_city;
+
+                        // Set the concatenated value to the element
+                        $('.service_wise_seller_country').val(countryAndCity);
+                        // Add an event listener for when the input value changes
+                        $('#user_address').on('input', function() {
+                            // Get the current input value
+                            var currentValue = $(this).val();
+                            // Prepend the country name if it's not already included
+                            if (!currentValue.startsWith(countryAndCity)) {
+                                currentValue = '';
+                                var newValue = countryAndCity + ',' + currentValue;
+                                $(this).val(newValue);
+                            }
+                        }); @endif
+
                     });
+            })(jQuery);
+</script>
+
+<!-- for input qty validation -->
+<script>
+    function validateNumberInput(input) {
+        // Get the entered value
+        var value = parseInt(input.value);
+        var max = parseInt(input.getAttribute('max'));
+        // Check if the value is less than 1
+        if (value < 1 || isNaN(value) || /^0/.test(input.value)) {
+            // Set the input value to 1
+            input.value = 1;
+            value = 1;
+        } else if (max && value > max) {
+            input.value = max;
+            value = max;
+        }
+
+        let parent = $(input).closest('.package_quantity');
+        if (parent.length) {
+            if (value <= 1) {
+                parent.find('.substract').addClass('disabled').css({
+                    'opacity': '0.35',
+                    'pointer-events': 'none',
+                    'cursor': 'not-allowed'
                 });
-
-                //order loader
-                $('.order_loader').hide();
-                $(document).on('click','.pay_and_confirm_order',function(e){
-                    $('.order_loader').show();
+            } else {
+                parent.find('.substract').removeClass('disabled').css({
+                    'opacity': '1',
+                    'pointer-events': 'auto',
+                    'cursor': 'pointer'
                 });
-
-
-
-
-      @if(!empty(get_static_option('google_map_settings')))
-                // Declare the formattedAddress as a global variable
-                var formattedAddress = "";
-                var autocomplete = new google.maps.places.Autocomplete(document.getElementById('user_address'));
-
-                autocomplete.setFields(['formatted_address']);
-                  autocomplete.addListener('place_changed', function() {
-                    var place = autocomplete.getPlace();
-                    // Extract the formatted address
-                    if (place.formatted_address) {
-                        formattedAddress = place.formatted_address;
-                        // Update the input field with the formatted address
-                        $('#user_address').val(formattedAddress);
-                    }
-                });
-
-
-               // Add click event listener to the input field
-                $('#user_address').on('click', function() {
-                    // Focus on the input field to open the autocomplete dropdown
-                    $(this).focus();
-                });
-
-              // Select address from Google Maps and pass it to another input field  start
-                var stepFormBtn = $('.stepForm_btn.next');
-                // Add click event listener to the stepForm_btn
-                stepFormBtn.on('click', function() {
-                    var isFullAddressNextPage = $('.full_address_get_next_page.active').length > 0;
-                    if (isFullAddressNextPage) {
-                        var user_order_address = $('#user_address').val();
-                        $('#address').val(user_order_address);
-                    }
-                });
-                // Add click event listener to the previous step button
-                $('.stepForm_btn.stepPrevious').on('click', function() {
-                    // Add your code for handling the previous step button click here
-                });
-                // Select address from Google Maps and pass it to another input field  end
-                // =========== user profile wise location end ===========
-
-                //============== default country select value ============
-                @php
-                   $service_seller =  \App\User::find($service_details_for_book->seller_id);
-//                  $seller_city = \App\ServiceCity::findOrFail($service_seller->service_city);
-//                  $seller_country = \App\Country::findOrFail($seller_city->country_id);
-                @endphp
-
-                @if(!empty($service_seller->latitude))
-                    var seller_lat =  '{{$service_seller->latitude}}';
-                    var seller_long = '{{$service_seller->longitude}}';
-                @else
-                    var seller_lat =  0;
-                    var seller_long = 0;
-                @endif
-
-
-                // Create a geocoder instance
-                 var geocoder = new google.maps.Geocoder();
-                // Create a LatLng object with the seller's coordinates
-                 var sellerLatLng = new google.maps.LatLng(seller_lat, seller_long);
-
-                // Call the geocode function to retrieve the address information
-                var countryName = null;
-                var cityName = null;
-
-                var get_country_name = null;
-                var get_city_name = null;
-                let data;
-
-                // seller zone settings wise country and city name get
-                const geocoderResults = async (geocoder, sellerLatLng) => {
-                    const result = await geocoder.geocode({'location': sellerLatLng}, function (results, status) {
-                        if (status === 'OK' && results) {
-                            return {'result': results[0]};
-                            result.push({'result': results[0]});
-                        } else {
-                            return {'result': 'Geocoder failed due to: ' + status};
-                            result.push({'result': 'Geocoder failed due to: ' + status});
-                        }
-                    });
-                    return result;
-                }
-
-                let items;
-                await geocoderResults(geocoder, sellerLatLng).then(function (res){
-                    let addressComponents = res.results[0].address_components;
-                    for (let i = 0; i < addressComponents.length; i++) {
-                        let types = addressComponents[i].types;
-                        if (types.includes('country')) {
-                            countryName = addressComponents[i].long_name;
-
-                        } else if (types.includes('locality') || types.includes('postal_town') || types.includes('administrative_area_level_1') || types.includes('administrative_area_level_2')) {
-                            cityName = addressComponents[i].long_name;
-                        }
-                    }
-                    data = {
-                        "country_name" : countryName,
-                        "city_name" : cityName
-                    };
-                    return data;
-                });
-
-
-               // Access the values outside the function
-                var user_country = data.country_name;
-                var user_city = data.city_name;
-
-                // Concatenate country and city names
-                var countryAndCity = user_country + ', ' + user_city;
-
-                // Set the concatenated value to the element
-                $('.service_wise_seller_country').val(countryAndCity);
-                    // Add an event listener for when the input value changes
-                    $('#user_address').on('input', function() {
-                        // Get the current input value
-                        var currentValue = $(this).val();
-                        // Prepend the country name if it's not already included
-                        if (!currentValue.startsWith(countryAndCity)) {
-                            currentValue = '';
-                            var newValue = countryAndCity + ',' + currentValue;
-                            $(this).val(newValue);
-                        }
-                    });
-                @endif
-
-            });
-        })(jQuery);
-    </script>
-
-    <!-- for input qty validation -->
-    <script>
-        function validateNumberInput(input) {
-            // Get the entered value
-            var value = parseInt(input.value);
-            var max = parseInt(input.getAttribute('max'));
-            // Check if the value is less than 1
-            if (value < 1 || isNaN(value) || /^0/.test(input.value)) {
-                // Set the input value to 1
-                input.value = 1;
-                value = 1;
-            } else if (max && value > max) {
-                input.value = max;
-                value = max;
             }
 
-            let parent = $(input).closest('.package_quantity');
-            if (parent.length) {
-                if (value <= 1) {
-                    parent.find('.substract').addClass('disabled').css({'opacity': '0.35', 'pointer-events': 'none', 'cursor': 'not-allowed'});
-                } else {
-                    parent.find('.substract').removeClass('disabled').css({'opacity': '1', 'pointer-events': 'auto', 'cursor': 'pointer'});
-                }
-
-                if (max && value >= max) {
-                    parent.find('.plus').addClass('disabled').css({'opacity': '0.35', 'pointer-events': 'none', 'cursor': 'not-allowed'});
-                } else {
-                    parent.find('.plus').removeClass('disabled').css({'opacity': '1', 'pointer-events': 'auto', 'cursor': 'pointer'});
-                }
+            if (max && value >= max) {
+                parent.find('.plus').addClass('disabled').css({
+                    'opacity': '0.35',
+                    'pointer-events': 'none',
+                    'cursor': 'not-allowed'
+                });
+            } else {
+                parent.find('.plus').removeClass('disabled').css({
+                    'opacity': '1',
+                    'pointer-events': 'auto',
+                    'cursor': 'pointer'
+                });
             }
         }
-    </script>
+    }
+</script>
 
-    @if(!empty(get_static_option('google_map_settings')))
-    <!-- google map -->
-    <script>
-        google.maps.event.addDomListener(window, 'load', function ()
-        {
-            var places = new google.maps.places.Autocomplete(document.getElementById('user_address'));
-        });
-    </script>
-    @endif
-    <x-payment-gateway-two-js/>
+@if(!empty(get_static_option('google_map_settings')))
+<!-- google map -->
+<script>
+    google.maps.event.addDomListener(window, 'load', function() {
+        var places = new google.maps.places.Autocomplete(document.getElementById('user_address'));
+    });
+</script>
+@endif
+<x-payment-gateway-two-js />
 @endsection
