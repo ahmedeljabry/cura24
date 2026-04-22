@@ -251,11 +251,11 @@
                     if (current < 1) current = 1;
                     if (max !== null && current > max) current = max;
 
-                    $input.val(current).trigger('input');
+                    $input.val(current).trigger('input').trigger('change').trigger('quantitychange');
                 });
 
                 // Recalculate when include service quantity changes
-                $(document).on('input', '.inc_dec_include_service', function() {
+                $(document).on('input change keyup quantitychange', '.inc_dec_include_service', function() {
 
                     var include_total_price = 0;
                     var include_service_id = 0;
@@ -346,11 +346,11 @@
                     if (current < 1) current = 1;
                     if (max !== null && current > max) current = max;
 
-                    $input.val(current).trigger('input');
+                    $input.val(current).trigger('input').trigger('change').trigger('quantitychange');
                 });
 
                 // Recalculate when additional service quantity changes
-                $(document).on('input', '.inc_dec_additional_service', function() {
+                $(document).on('input change keyup quantitychange', '.inc_dec_additional_service', function() {
 
 
                     var additional_service_id = 0;
