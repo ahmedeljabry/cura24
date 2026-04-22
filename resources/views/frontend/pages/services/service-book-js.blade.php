@@ -879,12 +879,12 @@
                         // =========== user profile wise location end ===========
 
                         //============== default country select value ============
-                        @php $service_seller = \App\ User::find($service_details_for_book - > seller_id);
+                        @php $service_seller = \App\User::find($service_details_for_book->seller_id);
                         //                  $seller_city = \App\ServiceCity::findOrFail($service_seller->service_city);
                         //                  $seller_country = \App\Country::findOrFail($seller_city->country_id);
                         @endphp
 
-                        @if(!empty($service_seller - > latitude)) var seller_lat = '{{$service_seller->latitude}}';
+                        @if(!empty($service_seller->latitude)) var seller_lat = '{{$service_seller->latitude}}';
                         var seller_long = '{{$service_seller->longitude}}'; @else
                         var seller_lat = 0;
                         var seller_long = 0; @endif
