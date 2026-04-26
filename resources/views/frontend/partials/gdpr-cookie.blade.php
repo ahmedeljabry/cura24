@@ -7,6 +7,8 @@
             var delayTime = "{{get_static_option('site_gdpr_cookie_delay')}}";
             delayTime = delayTime ? delayTime : 4000;
             @php
+                $lang_suffix = get_user_lang() == 'en' ? '_en' : '';
+                
                 $all_title_fields = get_static_option('site_gdpr_cookie_manage_item_title');
                 $all_title_fields = !empty($all_title_fields) ? unserialize($all_title_fields,['class' => false]) : [''];
                 $all_description_fields = get_static_option('site_gdpr_cookie_manage_item_description');
@@ -24,17 +26,17 @@
             @endforeach
                 // $.gdprcookie/
             $('body').ihavecookies({
-                title: "{{get_static_option('site_gdpr_cookie_title')}}",
-                message: `{{get_static_option('site_gdpr_cookie_message')}}`,
+                title: "{{get_static_option('site_gdpr_cookie_title'.$lang_suffix) ?: get_static_option('site_gdpr_cookie_title')}}",
+                message: `{{get_static_option('site_gdpr_cookie_message'.$lang_suffix) ?: get_static_option('site_gdpr_cookie_message')}}`,
                 expires: "{{get_static_option('site_gdpr_cookie_expire')}}",
                 link: "{{$gdpr_cookie_link}}",
                 delay: delayTime,
-                moreInfoLabel: "{{get_static_option('site_gdpr_cookie_more_info_label')}}",
-                acceptBtnLabel: "{{get_static_option('site_gdpr_cookie_accept_button_label')}}",
-                advancedBtnLabel: "{{get_static_option('site_gdpr_cookie_decline_button_label')}}",
+                moreInfoLabel: "{{get_static_option('site_gdpr_cookie_more_info_label'.$lang_suffix) ?: get_static_option('site_gdpr_cookie_more_info_label')}}",
+                acceptBtnLabel: "{{get_static_option('site_gdpr_cookie_accept_button_label'.$lang_suffix) ?: get_static_option('site_gdpr_cookie_accept_button_label')}}",
+                advancedBtnLabel: "{{get_static_option('site_gdpr_cookie_decline_button_label'.$lang_suffix) ?: get_static_option('site_gdpr_cookie_decline_button_label')}}",
                 cookieTypes: {!!   json_encode($cookie_mange_data) !!},
-                moreBtnLabel: "{{get_static_option('site_gdpr_cookie_manage_button_label',"Manage")}}",
-                cookieTypesTitle: "{{get_static_option('site_gdpr_cookie_manage_title',"Manage Cookies")}}",
+                moreBtnLabel: "{{get_static_option('site_gdpr_cookie_manage_button_label'.$lang_suffix) ?: get_static_option('site_gdpr_cookie_manage_button_label',"Manage")}}",
+                cookieTypesTitle: "{{get_static_option('site_gdpr_cookie_manage_title'.$lang_suffix) ?: get_static_option('site_gdpr_cookie_manage_title',"Manage Cookies")}}",
             });
             $('body').on('click', '#gdpr-cookie-close', function (e) {
                 e.preventDefault();

@@ -190,6 +190,9 @@ class GeneralSettingsController extends Controller
             'site_title' => 'nullable|string',
             'site_tag_line' => 'nullable|string',
             'site_footer_copyright' => 'nullable|string',
+            'site_title_en' => 'nullable|string',
+            'site_tag_line_en' => 'nullable|string',
+            'site_footer_copyright_en' => 'nullable|string',
         ]);
     
             $this->validate($request, [
@@ -203,6 +206,11 @@ class GeneralSettingsController extends Controller
             update_static_option($_title, $request->$_title);
             update_static_option($_tag_line, $request->$_tag_line);
             update_static_option($_footer_copyright, $request->$_footer_copyright);
+
+            // Save English fields
+            update_static_option('site_title_en', $request->site_title_en);
+            update_static_option('site_tag_line_en', $request->site_tag_line_en);
+            update_static_option('site_footer_copyright_en', $request->site_footer_copyright_en);
     
 
         $all_fields = [
@@ -995,6 +1003,16 @@ class GeneralSettingsController extends Controller
             "site_gdpr_cookie_more_info_link" => 'nullable|string',
             "site_gdpr_cookie_accept_button_label" => 'nullable|string',
             "site_gdpr_cookie_decline_button_label" => 'nullable|string',
+            "site_gdpr_cookie_manage_button_label" => 'nullable|string',
+            "site_gdpr_cookie_manage_title" => 'nullable|string',
+            
+            "site_gdpr_cookie_title_en" => 'nullable|string',
+            "site_gdpr_cookie_message_en" => 'nullable|string',
+            "site_gdpr_cookie_more_info_label_en" => 'nullable|string',
+            "site_gdpr_cookie_accept_button_label_en" => 'nullable|string',
+            "site_gdpr_cookie_decline_button_label_en" => 'nullable|string',
+            "site_gdpr_cookie_manage_button_label_en" => 'nullable|string',
+            "site_gdpr_cookie_manage_title_en" => 'nullable|string',
         ]);
 
 
@@ -1007,6 +1025,14 @@ class GeneralSettingsController extends Controller
             "site_gdpr_cookie_decline_button_label",
             "site_gdpr_cookie_manage_button_label",
             "site_gdpr_cookie_manage_title",
+
+            "site_gdpr_cookie_title_en",
+            "site_gdpr_cookie_message_en",
+            "site_gdpr_cookie_more_info_label_en",
+            "site_gdpr_cookie_accept_button_label_en",
+            "site_gdpr_cookie_decline_button_label_en",
+            "site_gdpr_cookie_manage_button_label_en",
+            "site_gdpr_cookie_manage_title_en",
         ];
         
         foreach ($fields as $field){ 

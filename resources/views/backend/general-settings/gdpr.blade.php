@@ -12,6 +12,7 @@
                         <h4 class="header-title">{{__("GDPR Compliant Cookie Settings")}}</h4>
                         <form action="{{route('admin.general.gdpr.settings')}}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            <h5 class="mt-4 mb-3 text-primary">{{__('Italian Content')}}</h5>
                             <div class="form-group">
                                 <label for="site_gdpr_cookie_title">{{__('GDPR Title')}}</label>
                                 <input type="text" name="site_gdpr_cookie_title"  class="form-control" value="{{get_static_option('site_gdpr_cookie_title')}}" id="site_gdpr_cookie_title">
@@ -45,6 +46,37 @@
                                 <label for="site_gdpr_cookie_manage_title">{{__('GDPR Cookie Manage Title')}}</label>
                                 <input type="text" name="site_gdpr_cookie_manage_title"  class="form-control" value="{{get_static_option('site_gdpr_cookie_manage_title')}}" >
                             </div>
+
+                            <h5 class="mt-4 mb-3 text-info">{{__('English Content')}}</h5>
+                            <div class="form-group">
+                                <label for="site_gdpr_cookie_title_en">{{__('GDPR Title (English)')}}</label>
+                                <input type="text" name="site_gdpr_cookie_title_en"  class="form-control" value="{{get_static_option('site_gdpr_cookie_title_en')}}" id="site_gdpr_cookie_title_en">
+                            </div>
+                            <div class="form-group">
+                                <label for="site_gdpr_cookie_message_en">{{__('GDPR Message (English)')}}</label>
+                                <textarea name="site_gdpr_cookie_message_en"  class="form-control" rows="5" id="site_gdpr_cookie_message_en">{{get_static_option('site_gdpr_cookie_message_en')}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="site_gdpr_cookie_more_info_label_en">{{__('GDPR More Info Link Label (English)')}}</label>
+                                <input type="text" name="site_gdpr_cookie_more_info_label_en"  class="form-control" value="{{get_static_option('site_gdpr_cookie_more_info_label_en')}}" id="site_gdpr_cookie_more_info_label_en">
+                            </div>
+                            <div class="form-group">
+                                <label for="site_gdpr_cookie_accept_button_label_en">{{__('GDPR Cookie Accept Button Label (English)')}}</label>
+                                <input type="text" name="site_gdpr_cookie_accept_button_label_en"  class="form-control" value="{{get_static_option('site_gdpr_cookie_accept_button_label_en')}}" id="site_gdpr_cookie_accept_button_label_en">
+                            </div>
+                            <div class="form-group">
+                                <label for="site_gdpr_cookie_decline_button_label_en">{{__('GDPR Cookie Decline Button Label (English)')}}</label>
+                                <input type="text" name="site_gdpr_cookie_decline_button_label_en"  class="form-control" value="{{get_static_option('site_gdpr_cookie_decline_button_label_en')}}" id="site_gdpr_cookie_decline_button_label_en">
+                            </div>
+                            <div class="form-group">
+                                <label for="site_gdpr_cookie_manage_button_label_en">{{__('GDPR Cookie Manage Button Label (English)')}}</label>
+                                <input type="text" name="site_gdpr_cookie_manage_button_label_en"  class="form-control" value="{{get_static_option('site_gdpr_cookie_manage_button_label_en')}}" >
+                            </div>
+                            <div class="form-group">
+                                <label for="site_gdpr_cookie_manage_title_en">{{__('GDPR Cookie Manage Title (English)')}}</label>
+                                <input type="text" name="site_gdpr_cookie_manage_title_en"  class="form-control" value="{{get_static_option('site_gdpr_cookie_manage_title_en')}}" >
+                            </div>
+                            <hr class="my-4">
                                         
                             <div class="form-group">
                                 <label for="site_gdpr_cookie_enabled"><strong>{{__('GDPR Cookie Enable/Disable')}}</strong></label>
