@@ -11,7 +11,7 @@
 
                         @if(!empty(get_static_option('google_map_settings')))
                             <!--google map -->
-                            <form action="{{get_static_option('select_home_page_search_service_page_url') ?? '/service-list'}}" class="new_banner__search__form banner-search-location" method="get">
+                            <form action="{{get_static_option('select_home_page_search_service_page_url') ?? \Mcamara\LaravelLocalization\Facades\LaravelLocalization::localizeURL('/service-list')}}" class="new_banner__search__form banner-search-location" method="get">
                                 <div class="new_banner__search__input">
                                     <div class="new_banner__search__location_left" id="myLocationGetAddress">
                                         <i class="fa-solid fa-location-crosshairs"></i>
@@ -22,7 +22,7 @@
                                 <button type="submit" class="new_banner__search__button setLocation_btn">{{ get_static_option('google_map_search_button_title') ?? __('Set Location') }}</button>
                             </form>
                         @else
-                            <form action="{{get_static_option('select_home_page_search_service_page_url') ?? '/service-list'}}" method="get" class="new_banner__search__form mt-4">
+                            <form action="{{get_static_option('select_home_page_search_service_page_url') ?? \Mcamara\LaravelLocalization\Facades\LaravelLocalization::localizeURL('/service-list')}}" method="get" class="new_banner__search__form mt-4">
                                 <div class="new_banner__search__input">
                                     <input class="form--control" type="text" name="home_search" id="home_search" placeholder="{{ __('What are you looking for?') }}">
                                 </div>

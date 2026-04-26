@@ -138,15 +138,16 @@ $footer_variant = !is_null(get_footer_style()) ? get_footer_style() : '02';
 
 @if(!empty(get_static_option('google_map_settings')))
 @php
-    $root_url = url('/');
-    $service_page_url = url('/service-list');
+    $locale_prefix = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale();
+    $root_url = url($locale_prefix ? $locale_prefix : '/');
+    $service_page_url = url(($locale_prefix ? $locale_prefix . '/' : '') . 'service-list');
     $request_url = URL::current();
 
     // get page info
-      $home_page_one_with_root = url('/', 'home-page-one');
-      $home_page_two_with_root = url('/', 'home-page-two');
-      $home_page_three_with_root = url('/', 'home-page-three');
-      $home_page_four_with_root = url('/', 'home-page-four');
+      $home_page_one_with_root = url($locale_prefix ? $locale_prefix . '/home-page-one' : 'home-page-one');
+      $home_page_two_with_root = url($locale_prefix ? $locale_prefix . '/home-page-two' : 'home-page-two');
+      $home_page_three_with_root = url($locale_prefix ? $locale_prefix . '/home-page-three' : 'home-page-three');
+      $home_page_four_with_root = url($locale_prefix ? $locale_prefix . '/home-page-four' : 'home-page-four');
       $check_google_map_for_page = $root_url == $request_url || $home_page_one_with_root == $request_url || $home_page_two_with_root == $request_url
          || $home_page_three_with_root == $request_url || $home_page_four_with_root == $request_url
 @endphp

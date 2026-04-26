@@ -3,7 +3,7 @@
     <div class="container">
         <div class="new_sectionTitle text-left title_flex">
             <h2 class="title">{{ $section_title }}</h2>
-            <form action="{{ get_static_option('select_home_page_search_service_page_url') ?? url('/service-list') }}" method="get">
+            <form action="{{ get_static_option('select_home_page_search_service_page_url') ?? \Mcamara\LaravelLocalization\Facades\LaravelLocalization::localizeURL('/service-list') }}" method="get">
                 <button class="new_exploreBtn bg-transparent border-0">{{ $explore_text }} <i class="fa-solid fa-angle-right"></i></button>
                 <input type="hidden" name="sortby" value="popular"/>
             </form>
