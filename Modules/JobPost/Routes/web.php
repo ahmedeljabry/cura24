@@ -1,5 +1,6 @@
 <?php
 
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 // backend routes
 
@@ -18,7 +19,7 @@ Route::group(['prefix' => 'admin-home/jobs','as'=>'admin.', 'middleware' => ['gl
 });
 
 // frontend routes
-Route::group(['prefix'=>'buyer/jobpost','middleware'=>['auth','inactiveuser','UserRoleCheck','userEmailVerify','setlang']],function() {
+Route::group(['prefix'=> LaravelLocalization::setLocale() . '/buyer/jobpost','middleware'=>['auth','inactiveuser','UserRoleCheck','userEmailVerify','setlang', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],function() {
     Route::get('/all-jobs', 'Frontend\JobPostController@all_jobs')->name('buyer.all.jobs');
     Route::match(['get','post'],'/add-job', 'Frontend\JobPostController@add_job')->name('buyer.add.job');
     Route::match(['get','post'],'/edit-job/{id}', 'Frontend\JobPostController@edit_job')->name('buyer.edit.job');
@@ -29,8 +30,8 @@ Route::group(['prefix'=>'buyer/jobpost','middleware'=>['auth','inactiveuser','Us
     Route::post('/delete/{id}', 'Frontend\JobPostController@job_delete')->name('buyer.job.delete');
 });
 
-// seller job
-Route::group(['prefix'=>'buyer/job','middleware'=>['auth','inactiveuser','UserRoleCheck','userEmailVerify','setlang','globalVariable']],function() {
+// buyer job request
+Route::group(['prefix'=> LaravelLocalization::setLocale() . '/buyer/job','middleware'=>['auth','inactiveuser','UserRoleCheck','userEmailVerify','setlang','globalVariable', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],function() {
     Route::get('/request/all', 'Frontend\JobRequestController@all_jobs')->name('buyer.all.jobs.request');
     Route::post('request/delete/{id}','Frontend\JobRequestController@request_delete')->name('buyer.job.request.delete');
     Route::get('request/conversation/{id}','Frontend\JobRequestController@conversation')->name('buyer.job.request.conversation');
@@ -40,7 +41,7 @@ Route::group(['prefix'=>'buyer/job','middleware'=>['auth','inactiveuser','UserRo
 });
 
 // seller job
-Route::group(['prefix'=>'seller/job','middleware'=>['auth','inactiveuser','BuyerCheck','userEmailVerify','setlang','globalVariable']],function(){
+Route::group(['prefix'=> LaravelLocalization::setLocale() . '/seller/job','middleware'=>['auth','inactiveuser','BuyerCheck','userEmailVerify','setlang','globalVariable', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],function(){
     Route::get('notification/new/jobs','Frontend\JobRequestController@new_jobs')->name('seller.new.jobs');
     Route::get('/request/all', 'Frontend\JobRequestController@seller_all_jobs')->name('seller.all.jobs.request');
     Route::post('/job-request/edit', 'Frontend\JobRequestController@sellerJobRequestEdit')->name('seller.job.offer.price.edit');

@@ -1,5 +1,7 @@
 <?php
 
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
 // backend routes
 use Modules\Subscription\Http\Controllers\Frontend\BuySubscriptionController;
 
@@ -30,7 +32,7 @@ Route::group(['prefix' => 'admin-home/subscription','as'=>'admin.', 'middleware'
 // frontend routes
 
 //show seller subscription
-Route::group(['prefix'=>'seller','as'=>'seller.','middleware'=>['auth','inactiveuser','BuyerCheck','userEmailVerify','setlang','globalVariable']],function() {
+Route::group(['prefix'=> LaravelLocalization::setLocale() . '/seller','as'=>'seller.','middleware'=>['auth','inactiveuser','BuyerCheck','userEmailVerify','setlang','globalVariable', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],function() {
     Route::get('/subscription', 'Frontend\SellerSubsController@subscriptions')->name('subscription.all');
     Route::post('/subscription/renew', 'Frontend\SellerSubsController@sub_renew')->name('subscription.renew');
 });

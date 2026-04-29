@@ -1,5 +1,6 @@
 <?php
 
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 // backend routes
 use Modules\LiveChat\Http\Controllers\Frontend\BuyerChatController;
@@ -20,7 +21,7 @@ Route::group(['prefix'=>'public-chat'],function() {
 });
 
 //seller routes
-Route::group(['prefix'=>'seller','middleware'=> ['auth','inactiveuser','BuyerCheck','userEmailVerify','setlang','globalVariable']],function() {
+Route::group(['prefix' => LaravelLocalization::setLocale() . '/seller','middleware'=> ['auth','inactiveuser','BuyerCheck','userEmailVerify','setlang','globalVariable', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],function() {
     Route::get('live-chat', 'Frontend\SellerChatController@liveChat')->name('seller.live.chat');
     Route::get('/load-latest-messages', 'Frontend\SellerChatController@getLoadLatestMessages')->name('load.latest.message');
     Route::post('/seller/chat/mark-as-read', 'Frontend\SellerChatController@markAsRead')->name('seller.chat.mark.as.read');
@@ -30,7 +31,7 @@ Route::group(['prefix'=>'seller','middleware'=> ['auth','inactiveuser','BuyerChe
 });
 
 //buyer routes
-Route::group(['prefix'=>'buyer','middleware'=>['auth','inactiveuser','UserRoleCheck','userEmailVerify','setlang','globalVariable']],function() {
+Route::group(['prefix' => LaravelLocalization::setLocale() . '/buyer','middleware'=>['auth','inactiveuser','UserRoleCheck','userEmailVerify','setlang','globalVariable', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],function() {
     Route::get('live-chat', 'Frontend\BuyerChatController@liveChat')->name('buyer.live.chat');
     Route::get('/load-latest-messages', 'Frontend\BuyerChatController@getLoadLatestMessages');
     Route::post('/buyer/chat/mark-as-read', 'Frontend\BuyerChatController@markAsRead')->name('buyer.chat.mark.as.read');

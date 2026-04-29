@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 // backend routes
 Route::group(['prefix' => 'admin-home/wallet','as'=>'admin.wallet.', 'middleware' => ['globalVariable','setlang']], function () {
@@ -16,7 +17,7 @@ Route::group(['prefix' => 'admin-home/wallet','as'=>'admin.wallet.', 'middleware
 });
 
 //buyer routes
-Route::group(['as'=>'buyer.','prefix'=>'buyer','middleware'=>['auth','inactiveuser','UserRoleCheck','userEmailVerify','setlang','globalVariable']],function(){
+Route::group(['as'=>'buyer.','prefix'=> LaravelLocalization::setLocale() . '/buyer','middleware'=>['auth','inactiveuser','UserRoleCheck','userEmailVerify','setlang','globalVariable', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],function(){
     Route::controller(Frontend\BuyerWalletController::class)->group(function () {
         Route::get('/wallet-history', 'wallet_history')->name('wallet.history');
         Route::post('/wallet/deposit', 'deposit')->name('wallet.deposit');
@@ -46,8 +47,8 @@ Route::group(['prefix' => 'wallet'],function (){
     Route::post('/kineticpay-ipn','Frontend\BuyerWalletPaymentController@kineticpay_ipn_for_wallet' )->name('buyer.kineticpay.ipn.wallet');
 });
 
-//buyer routes
-Route::group(['as'=>'seller.','prefix'=>'seller','middleware'=>['auth','inactiveuser','BuyerCheck','userEmailVerify','setlang','globalVariable']],function(){
+//seller routes
+Route::group(['as'=>'seller.','prefix'=> LaravelLocalization::setLocale() . '/seller','middleware'=>['auth','inactiveuser','BuyerCheck','userEmailVerify','setlang','globalVariable', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],function(){
     Route::controller(Frontend\SellerWalletController::class)->group(function () {
         Route::get('/wallet-history', 'wallet_history')->name('wallet.history');
         Route::post('/wallet/deposit', 'deposit')->name('wallet.deposit');
